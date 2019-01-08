@@ -1,0 +1,61 @@
+
+\begin{itemize}
+\item[\textbf{\texttt{ALGORITHM}:}]~~~~~~~\textit{Conditional BPF}\label{ag:1}
+%\item[\texttt{INPUT}] ~~~~~~~$\ts$ and $x_{0:T}^{\mathcal{R}}$
+\item[\texttt{START}]
+\begin{itemize}
+\item[] \underline{\textbf{I. Initiliaze} $(t=0):$}
+\item[] For $i=1,\ldots,N$:
+\begin{itemize}
+\item[1.] Sample $x_{0}^i\sim p(x_0)$
+\item[3.] Set $w_{0}^i=\frac{1}{N}$
+\item[\tc{PineGreen}{2.}] \tc{PineGreen}{Set $x_{0}^N=x_{0}^\mathcal{R}$ (conditioning)}
+\end{itemize} 
+\item[] \underline{\textbf{II. For $t=1$ to $T$:}}
+\item[] For $i=1,\ldots,N$:
+\begin{itemize}
+\item[1.] Draw $a_{t}^i\sim \mathcal{C}\left(\left\lbrace\wt\right\rbrace_{j=1}^N\right)$
+\item[2.] Sample $\xt^i\sim q(\xt\given x_{t-1}^{a_{t}^i},\ts)\underbrace{=}_{\text{BPF}}p(\xt\given x_{t-1}^{a_{t}^i},\ts)$
+\end{itemize}
+\item[] For $i=N$:
+\begin{itemize}
+\item[\tc{PineGreen}{3.}] \tc{PineGreen}{Set $x_{t}^N=x_{t}^\mathcal{R}$ (conditioning)}
+\item[\tc{purple}{4.}] \tc{purple}{Sample $a_{t}^N\in\left\lbrace 1,\ldots,N\right\rbrace$ with probability}
+\begin{align*}
+\tc{purple}{\mathbb{P}\left(a_t^N=i\pt \wtt p\left(\xt^{\mathcal{R}}|\xtt^i,\ts\right)\right)\;,~~~\text{(AS-step)}}
+\end{align*}
+\end{itemize}
+\item[] For $i=1,\ldots,N$:
+\begin{itemize}
+%\item[5.] Set $x_{\seqt}^i\leftarrow\big(x^{a_{t}^i}_{\seqtm},x_{t}^i)$ for $i=1,\ldots,N$
+\item[5.] Set $\wtun=p\left(\yt|x_t^i\right)$
+\item[6.] Normalize weights $\wt=\frac{\wtun}{\sumt \wtun}$
+\end{itemize}
+%\item[\tc{blue}{10.}] \tc{blue}{Return a particle trajectory by sampling $X_\seqnN\sim p()$}
+\end{itemize}
+\begin{itemize}
+\item[] \underline{\textbf{III. For t=T:}}
+\begin{itemize}
+\item[1.] Draw $b\sim \mathcal{C}\left(\left\lbrace w_T^i\right\rbrace_{i=1}^N\right)$ and compute $x_{0:T}^b$
+\end{itemize}
+\item[\texttt{END}] ~~~\textit{Output} $x_{0:T}^{\mathcal{R}}=x_{0:T}^b$
+%\item[] ~~~~~~~
+\end{itemize}
+\item[]
+\end{itemize}
+\begin{itemize}
+\item[\textbf{\texttt{ALGORITHM}:}]~~~~~~~\textit{PGAS with conditional BPF}\label{ag:2}
+\item[\texttt{START}]
+\begin{itemize}
+\item[] \underline{\textbf{Initiliaze (m=1):}}
+\begin{itemize}
+\item[1.] Set $x_{0:T}\left[ 1\right]$ and $\ts\left[ 1\right]$ arbitrarily
+\end{itemize}
+\item[] \underline{\textbf{For $m=1,\ldots,N$:}}
+\begin{itemize}
+\item[2.] Draw $\ts\left[ m \right] \sim p\left(\ts|x_{0:T}\left[ m-1 \right] , x_{0:T}^{\mathcal{R}}\right)$
+\item[3.] Draw $x_{0:T}\left[ m \right] \sim \kappa_{N,\ts\left[ m \right]} \left(x_{0:T}\left[ m-1 \right] , x_{0:T}^{\mathcal{R}}\right)$
+\end{itemize}
+\end{itemize}
+\item[\texttt{END}]  ~~~~~~~\textit{Output}  $\ts\left[ 1:m \right] $ and $x_{0:T}\left[1:m \right]$
+\end{itemize}

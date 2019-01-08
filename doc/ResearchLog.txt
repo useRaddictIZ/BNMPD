@@ -1,0 +1,55 @@
+Liesenfeld Comments:
+
+- Papier relates to:
+	Determinants and Dynamics of Current Account Reversals: An Empirical Analysis
+	Roman Liesenfeld, Guilherme Valle Moura, Jean‐François Richard
+	2010/8/1, Oxford Bulletin of Economics and Statistics
+
+- include error term in latent state process: \epsilon_{it} i.e. similar to
+	adding random effects over time
+
+- resolve contemporaneous error term dependence with correct regressor 			specification in latent state process
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% To-Do %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%
+%
+%
+%
+%%%%% Code:
+- add branch: master
+- add branch: "MLE with Gauss hermite" --> MLE_GH
+- add branch: "HMC" --> HMC
+- @branch master:
+	- import data generating process code
+	- clean  data generating process code
+- @branch MLE_GH: 
+	- 4 R-packages: find best
+		- check computing time (C++ implement vs. rest)
+		- check accuracy
+- @branch HMC: 
+	- port Code
+	- clean-up
+	- make faster
+	- investigate blocking
+%
+%
+%
+%
+%
+%%%%% Summary: 
++ summarize MLE with Gauss hermite model equation
+- summarize MLE with Gauss hermite estimation Algorithm
+%
+%
+%
+%
+%
+%%%%% Data:
+- find data
+- sort Simons literature review

@@ -1,0 +1,423 @@
+\usepackage[margin=3cm]{geometry} % sets the borders to 3cm each
+\usepackage[english]{babel}     %defines language for spacing
+\usepackage[T1]{fontenc}        % sets font to T1 and allows umlaute
+\usepackage{lmodern}            % improves font display in PDFs
+\usepackage{microtype}          % improves spacing when using lmodern
+\usepackage{amsmath,amsfonts,amssymb}   % allows particular math environments
+\usepackage{graphicx}           % allows using graphics
+\usepackage{booktabs}           %allows creating professional tables with commands like \toprule
+\usepackage{csquotes}           % better use of quotation marks, makes them context-sensitive
+%\usepackage{longtable}          % allows for Table over more than one page
+%\usepackage{sidewaystable}          % allows creating landscape tables
+\usepackage[labelfont=bf,format=hang]{caption} % more powerful caption of figures and tables; The language for the caption label like Figure is boldface (bf). The language is taken from the babel package, i.e. Abbildung if german instead of english.
+
+\usepackage{setspace}           % allows for \onehalfspacing and \doublespacing to set linespacing
+\usepackage{epstopdf}           % allows using eps-file with pdflatex
+\usepackage{textcomp}           % adds more symbols
+%\usepackage{indentfirst}       % use if you want to indent first row
+\usepackage{bigints} % for large integrals
+\usepackage{dsfont} 
+%%%% define the usage of BibLaTeX for citations and bibliographies
+%\usepackage[%
+%citestyle=authoryear-comp,%use compressed author-year citation
+%bibstyle=JME,% use JME-style; change to JME_sentencecase to have all titles converted to lowercase letters
+%maxbibnames=5,% %maximum number of names printed in bibliography before truncation with ``et al.'' is used
+%minbibnames=1, % number of authors displayed if truncation happens
+%maxnames=4,% maximum number of names printed in citation before et al. is used
+%minnames=1,% number of authors displayed if truncation happens
+%datezeros=false,% no leading 0 if dates are printed
+%date=long,%
+%isbn=false,% show no ISBNs
+%natbib=true,% enable natbib-compatibility
+%url=false,% show no urls
+%backend=bibtex %use bibtex as backend
+%]{biblatex}
+%
+%\addglobalbib{mybibfile.bib} % defines the name of the .bib-file	
+
+
+\usepackage[pdfpagelabels=true,plainpages=false,pdftex,bookmarksnumbered=false,bookmarksopen=true]{hyperref}%plainpage and pdfpagelabels allows for correct figure links when using different page numberings
+% bookmarksnumbered=false shuts off TOC numbers in TOC of PDF
+% bookmarksopen=true opens TOC in Abobe Reader on the left
+%
+%
+%
+%
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Color PACKAGES %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[dvipsnames]{xcolor}
+% in combination with tikz or pstricks this package
+% must be declared before tikz or pstricks to proivde
+% the colors correctly
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Table PACKAGES %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{array} % for multicolumn{#1}{#2} command mergin #1 and 2# together 
+\usepackage{booktabs} % improvements on multicolumn
+% For tables aligned horizontally on the page, see packages below
+\usepackage{graphicx,rotating}
+\usepackage[verbose]{placeins}
+\usepackage{blindtext}
+\usepackage{caption}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% Float PACKAGES %%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{float} % prevents LaTeX from repositioning tables
+\restylefloat{table} % for this, use [H] like \begin{table}[H]
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%% TIKZ PACKAGES %%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\usepackage[ansinew]{inputenc}
+%\usepackage{amsthm}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathmorphing} % noisy shapes
+\usetikzlibrary{fit}		% fitting shapes to coordinates
+\usetikzlibrary{matrix}  % for lattice/chessboard of spatial units  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usetikzlibrary{backgrounds}	
+\usepackage{setspace}           % allows for \onehalfspacing and \doublespacing to set linespacing
+\usepackage{epstopdf}           % allows using eps-file with pdflatex
+\usepackage{textcomp}           % adds more symbols
+%\usepackage{indentfirst}       % use if you want to indent first row
+
+
+
+
+
+\hypersetup{
+pdfproducer = {LaTeX},
+colorlinks,
+linkcolor=black,
+filecolor=yellow,
+urlcolor=blue,
+citecolor=black,
+pdftitle ={Title of the thesis},
+pdfsubject ={Thesis},
+pdfauthor = {Your Name },
+pdfkeywords = {Some keywords}
+pdfcreator={pdfLaTex}}
+
+
+\usepackage[%
+nonumberlist, %switch of displaying page numbers
+acronym,      %creates List of Abbreviations
+%toc,          %triggers entry into table of content
+%section      %defines the level where the TOC entry appears
+]{glossaries} % used to create list of symbols and abbreviations; one of the few packages to be defined after hyperref
+
+\newglossary[slg]{symbolslist}{syi}{syg}{List of Symbols} %defines a new list called symbolslist for the List of symbols
+
+\makeglossaries %need for sorting of entries to list of symbols and abbreviations; must be defined after all \newglossary commands
+
+%% define terms for List of Symbols; entries only appear if they have been referenced in the main document  using either \gls{} or \glsadd{}
+
+\newglossaryentry{symb:pi}{%
+    name={\ensuremath{\pi}}, %define symbol; the \ensuremath ensures the symbol can be used inside and outside math environments
+    description={ratio of circumference of circle to its diameter}, % the description that appears in the list of symbols
+    sort=symbolpi, % key for sorting the symbols
+    type=symbolslist % specifies that the entry belongs to the symbolslist-list and not the default (acronym) list
+    }
+
+\newglossaryentry{symb:i}{name={\ensuremath{i}},description={square root of $-1$},sort=symboli,type=symbolslist}
+\newglossaryentry{symb:e}{name={\ensuremath{e}},description={Euler number},sort=symbole,type=symbolslist}
+
+\newacronym{acro:OLS}{OLS}{Ordinary Least Squares}%defines the acronym OLS
+\glsadd{acro:OLS} % add the acronym to the list of abbreviations, regardless of whether it has been used in the document
+
+\onehalfspacing
+
+% ________________ Set up the document ______________________%
+
+\pagestyle{plain}          % empty header, page number in the middle of the footer
+\setcounter{tocdepth}{3}   % The Table of contents is three levels deep, i.e. down to subsubsections.
+
+% ________________ Set up new commands for document ______________________%
+\newcommand{\nin}{\not\in}
+\newcommand{\bs}{\boldsymbol}  % shortcut to generate bold symbols in math environments
+\newcommand{\pt}{\propto}
+
+\newcommand{\given}{\lvert}
+\newcommand{\tc}[2]{\textcolor{#1}{#2}}
+\newcommand{\seqn}{{1:n}}
+\newcommand{\seqt}{{1:t}}
+\newcommand{\seqk}{{1:k}}
+\newcommand{\seqnN}{{1:N}}
+\newcommand{\seqtT}{{1:T}}
+\newcommand{\seqTN}{{0:T,1:N}}
+\newcommand{\seqtN}{{t,1:N}}
+\newcommand{\seqTn}{{0:T,n}}
+\newcommand{\seqkK}{{1:K}}
+\newcommand{\seqnm}{{1:n-1}}
+\newcommand{\seqtm}{{1:t-1}}
+\newcommand{\seqkm}{{1:k-1}}
+\newcommand{\nmin}{{n-1}}
+\newcommand{\kmin}{{k-1}}
+\newcommand{\seqN}{i=1,\ldots,N}
+\newcommand{\seqM}{i=1,\ldots,M}
+\newcommand{\limN}{\lim_{N\to\infty}}
+\newcommand{\limn}{\lim_{n\to\infty}}
+\newcommand{\limM}{\lim_{M\to\infty}}
+\newcommand{\asw}{\reallywidehat{w}^i_{n-1\given N}}
+\newcommand{\aswTrunc}{\reallywidehat{w}^{i,l}_{n-1\given N}}
+\newcommand{\asW}{\reallywidehat{W}^i_{n-1\given N}}
+\newcommand{\asWb}{\reallywidehat{\bs{W}}_{n-1\given N}}
+\newcommand{\rt}{\boldsymbol{\theta}}
+\newcommand{\p}{p_{\rt}}
+% BELOW PACKAGE AND NEWCOMMAND THAT LEADS A REALLY
+% WIDE HAT SYMBOL
+\usepackage{scalerel,stackengine}
+\stackMath
+\newcommand\reallywidehat[1]{%
+\savestack{\tmpbox}{\stretchto{%
+  \scaleto{%
+    \scalerel*[\widthof{\ensuremath{#1}}]{\kern-.6pt\bigwedge\kern-.6pt}%
+    {\rule[-\textheight/2]{1ex}{\textheight}}%WIDTH-LIMITED BIG WEDGE
+  }{\textheight}% 
+}{0.5ex}}%
+\stackon[1pt]{#1}{\tmpbox}%
+}
+% Use it with\reallywidehat
+
+\newcommand{\ad}[1]{\alpha_{#1}}
+\newcommand{\Ant}{\bs{\alpha}_{nt}}
+\newcommand{\ant}[1]{\alpha_{nt}^{#1}}
+\newcommand{\antd}{\alpha_{nt,d}}
+\newcommand{\atd}{\bs{\alpha}_{t,d}}
+\newcommand{\annd}{\bs{\alpha}_{n,d}}
+
+%\newcommand{\ad}{\alpha_d}
+%\newcommand{\Ant}{\bs{\alpha}_{n,t}}
+%\newcommand{\ant}[1]{\alpha_{n,t}^{#1}}
+%\newcommand{\antd}{\alpha_{n,t}^{d}}
+%\newcommand{\atd}{\bs{\alpha}_{t}^{d}}
+%\newcommand{\annd}{\bs{\alpha}_{n}^{d}}
+
+\newcommand{\bjd}{\bs{\beta}_{j,d}}
+\newcommand{\bjdlag}{\bs{\beta}_{p,d}^{lag}}
+\newcommand{\bjntd}{\bs{\beta}_{j,d}}
+\newcommand{\bjnd}{\bs{\beta}_{j,d}}
+\newcommand{\bjtd}{\bs{\beta}_{j,d}}
+
+\newcommand{\bb}{\bs{\beta}}
+\newcommand{\bz}{\bs{\beta}_{\bs{Z}}}
+
+\newcommand{\bzad}[1]{\bs{\beta}_{\bs{Z_{\alpha_{#1}}}}}
+\newcommand{\bad}[1]{\bs{\beta}_{\bs{\alpha_{#1}}}^*}
+\newcommand{\bza}{\bs{\beta}_{\bs{Z_a}}}
+\newcommand{\bzb}{\bs{\beta}_{\bs{Z_b}}}
+\newcommand{\bzp}{\bs{\beta}_{\bs{Z_p}}}
+\newcommand{\bzq}{\bs{\beta}_{\bs{Z_q}}}
+%\newcommand{\bjd}{\bs{\beta}_j^{d}}
+%\newcommand{\bjntd}{\bs{\beta}_j^{d}}
+%\newcommand{\bjnd}{\bs{\beta}_j^{d}}
+%\newcommand{\bjtd}{\bs{\beta}_j^{d}}
+
+\newcommand{\ts}{\bs{\theta}}
+\newcommand{\tsa}{\bs{\theta}_a}
+\newcommand{\tsb}{\bs{\theta}_b}
+\newcommand{\tsp}{\bs{\theta}_p}
+\newcommand{\tsq}{\bs{\theta}_q}
+
+\newcommand{\tjd}{\tau_{j,d}}
+
+\newcommand{\Zjd}{\bs{Z}_{j,d}}
+\newcommand{\Zjtd}{\bs{Z}_{j,d}^{t}}
+\newcommand{\Zjnd}{\bs{Z}_{j,d}^{n}}
+
+\newcommand{\Znt}{\bs{Z}_{n,t}}
+\newcommand{\ZJD}[1]{\bs{Z}_{j,d}^{#1}}
+\newcommand{\Z}{\bs{Z}}
+
+\newcommand{\znjdt}{\bs{z}_{n,j,d}^{t}}
+
+\newcommand{\Kjd}{\bs{K}_{j,d}}
+\newcommand{\fjd}{f_{j,d}(\bs{\nu})}
+
+\newcommand{\etad}{\eta_{d}}
+\newcommand{\etantd}{\eta_{nt,d}}
+%
+%\newcommand{\Kjd}{\bs{K}_j^{d}}
+%\newcommand{\fjd}{f_j^{d}(\bs{\nu})}
+%
+%\newcommand{\etad}{\eta^{\ad}}
+%\newcommand{\etantd}{\eta_{n,t}^{\antd}}
+
+
+\newcommand{\xad}[1]{x_{\alpha_{#1},t,i}}
+\newcommand{\xadt}[1]{x_{\alpha_{#1},t-1,i}}
+\newcommand{\xt}{x_{t}}
+\newcommand{\xtt}{x_{t-1}}
+\newcommand{\xat}{x_{a,t,i}}
+\newcommand{\xatt}{x_{a,t-1,i}}
+\newcommand{\xbt}{x_{b,t,i}}
+\newcommand{\xbtt}{x_{b,t-1,i}}
+\newcommand{\xpt}{x_{p,t,i}}
+\newcommand{\xptt}{x_{p,t-1,i}}
+\newcommand{\xqt}{x_{q,t,i}}
+\newcommand{\xqtt}{x_{q,t-1,i}}
+
+\newcommand{\xtn}{x_{t, 1:N}}
+\newcommand{\xttn}{x_{t-1,1:N}}
+\newcommand{\xatn}{x_{a,t,1:N}}
+\newcommand{\xattn}{x_{a,t-1,1:N}}
+\newcommand{\xbtn}{x_{b,t,1:N}}
+\newcommand{\xbttn}{x_{b,t-1,1:N}}
+\newcommand{\xptn}{x_{p,t,1:N}}
+\newcommand{\xpttn}{x_{p,t-1,1:N}}
+\newcommand{\xqtn}{x_{q,t,1:N}}
+\newcommand{\xqttn}{x_{q,t-1,1:N}}
+
+\newcommand{\Xt}{x_{2:T}}
+\newcommand{\Xtt}{x_{1:T-1}}
+\newcommand{\Xat}{\bs{x}_{a,2:T,i}}
+\newcommand{\Xatt}{\bs{x}_{a,1:T-1,i}}
+\newcommand{\Xbt}{\bs{x}_{b,2:T,i}}
+\newcommand{\Xbtt}{\bs{x}_{b,1:T-1,i}}
+\newcommand{\Xpt}{\bs{x}_{p,2:T,i}}
+\newcommand{\Xptt}{\bs{x}_{p,1:T-1,i}}
+\newcommand{\Xqt}{\bs{x}_{q,2:T,i}}
+\newcommand{\Xqtt}{\bs{x}_{q,1:T-1,i}}
+
+\newcommand{\Xtn}{x_{t,1:N}}
+\newcommand{\Xttn}{x_{t-1,1:N}}
+\newcommand{\Xatn}{\bs{x}_{a,2:T,,1:N}}
+\newcommand{\Xattn}{\bs{x}_{a,1:T-1,,1:N}}
+\newcommand{\Xbtn}{\bs{x}_{b,2:T,,1:N}}
+\newcommand{\Xbttn}{\bs{x}_{b,1:T-1,,1:N}}
+\newcommand{\Xptn}{\bs{x}_{p,2:T,,1:N}}
+\newcommand{\Xpttn}{\bs{x}_{p,1:T-1,,1:N}}
+\newcommand{\Xqtn}{\bs{x}_{q,2:T,,1:N}}
+\newcommand{\Xqttn}{\bs{x}_{q,1:T-1,,1:N}}
+
+\newcommand{\zad}[1]{\bs{z}^{\prime}_{\alpha_{#1},t,i}}
+\newcommand{\zt}{\bs{z}^{\prime}_{t}}
+\newcommand{\ztt}{\bs{z}^{\prime}_{t-1}}
+\newcommand{\zat}{\bs{z}^{\prime}_{a,t,i}}
+\newcommand{\zatt}{\bs{z}^{\prime}_{a,t-1,i}}
+\newcommand{\zbt}{\bs{z}^{\prime}_{b,t,i}}
+\newcommand{\zbtt}{\bs{z}^{\prime}_{b,t-1,i}}
+\newcommand{\zpt}{\bs{z}^{\prime}_{p,t,i}}
+\newcommand{\zptt}{\bs{z}^{\prime}_{p,t-1,i}}
+\newcommand{\zqt}{\bs{z}^{\prime}_{q,t,i}}
+\newcommand{\zqtt}{\bs{z}^{\prime}_{q,t-1,i}}
+
+\newcommand{\ztn}{\bs{z}_{t,1:N}}
+\newcommand{\zttn}{\bs{z}_{t-1,1:N}}
+\newcommand{\zatn}{\bs{z}_{a,t,1:N}}
+\newcommand{\zattn}{\bs{z}_{a,t-1,1:N}}
+\newcommand{\zbtn}{\bs{z}_{b,t,1:N}}
+\newcommand{\zbttn}{\bs{z}_{b,t-1,1:N}}
+\newcommand{\zptn}{\bs{z}_{p,t,1:N}}
+\newcommand{\zpttn}{\bs{z}_{p,t-1,1:N}}
+\newcommand{\zqtn}{\bs{z}_{q,t,1:N}}
+\newcommand{\zqttn}{\bs{z}_{q,t-1,1:N}}
+\newcommand{\Ztn}{\bs{Z}_{t,1:N}}
+\newcommand{\Zttn}{\bs{Z}_{1:T-1,1:N}}
+
+\newcommand{\Zt}{\bs{Z}_{2:T}}
+\newcommand{\Ztt}{\bs{Z}_{1:T-1}}
+\newcommand{\Zat}{\bs{Z}_{a,2:T,i}}
+\newcommand{\Zatt}{\bs{Z}_{a,1:T-1,i}}
+\newcommand{\Zbt}{\bs{Z}_{b,2:T,i}}
+\newcommand{\Zbtt}{\bs{Z}_{b,1:T-1,i}}
+\newcommand{\Zpt}{\bs{Z}_{p,2:T,i}}
+\newcommand{\Zptt}{\bs{Z}_{p,1:T-1,i}}
+\newcommand{\Zqt}{\bs{Z}_{q,2:T,i}}
+\newcommand{\Zqtt}{\bs{Z}_{q,1:T-1,i}}
+
+\newcommand{\Ozprior}{\underline{\bs{\Omega}_{Z}}}
+\newcommand{\Ozpost}{\overline{\bs{\Omega}_{Z}}}
+\newcommand{\VCMt}{\bs{\Omega}_{\ErrX}}
+\newcommand{\VCMn}{\bs{\Omega}_{\ErrXn}}
+
+\newcommand{\yt}{y_{t}}
+\newcommand{\ytt}{y_{t-1}}
+\newcommand{\ytn}{\bs{y}_{t,1:N}}
+\newcommand{\yttn}{\bs{y}_{t-1,1;N}}
+\newcommand{\Ytn}{\bs{y}_{1:T,1:N}}
+
+\newcommand{\nt}{\bs{y}_{t,i}}
+\newcommand{\ntt}{\bs{y}_{t-1,i}}
+
+\newcommand{\errXad}[1]{\varepsilon_{x_{\alpha_{#1}}}}
+\newcommand{\errX}{\varepsilon_{x}}
+\newcommand{\errXa}{\varepsilon_{x_a}}
+\newcommand{\errXb}{\varepsilon_{x_b}}
+\newcommand{\errXp}{\varepsilon_{x_p}}
+\newcommand{\errXq}{\varepsilon_{x_q}}
+\newcommand{\errY}{\varepsilon_{Y}}
+
+\newcommand{\ErrX}{\bs{\varepsilon}_{x,2:T}}
+\newcommand{\ErrXa}{\bs{\varepsilon}_{x_{a,2:T}}}
+\newcommand{\ErrXb}{\bs{\varepsilon}_{x_{b,2:T}}}
+\newcommand{\ErrXp}{\bs{\varepsilon}_{x_{p,2:T}}}
+\newcommand{\ErrXq}{\bs{\varepsilon}_{x_{q,2:T}}}
+\newcommand{\ErrY}{\bs{\varepsilon}_{Y,2:T}}
+
+\newcommand{\ErrXn}{\bs{\varepsilon}_{x_{t,1:N}}}
+\newcommand{\ErrXan}{\bs{\varepsilon}_{x_{a,2:T,1:N}}}
+\newcommand{\ErrXbn}{\bs{\varepsilon}_{x_{b,2:T,1:N}}}
+\newcommand{\ErrXpn}{\bs{\varepsilon}_{x_{p,2:T,1:N}}}
+\newcommand{\ErrXqn}{\bs{\varepsilon}_{x_q,2:T,1:N}}
+\newcommand{\ErrYn}{\bs{\varepsilon}_{Y,2:T}}
+
+\newcommand{\sigXad}[1]{\sigma_{x_{\alpha_{#1}}}}
+\newcommand{\sigX}{\sigma_{x}}
+\newcommand{\sigXa}{\sigma_{x_a}}
+\newcommand{\sigXb}{\sigma_{x_b}}
+\newcommand{\sigXp}{\sigma_{x_p}}
+\newcommand{\sigXq}{\sigma_{x_q}}
+
+\newcommand{\phiad}[1]{\phi_{\alpha_{#1}}}
+\newcommand{\phia}{\phi_{a}}
+\newcommand{\phib}{\phi_{b}}
+\newcommand{\phip}{\phi_{p}}
+\newcommand{\phiq}{\phi_{q}}
+
+\newcommand{\mux}{\bs{\mu}_{x,t}}
+
+\newcommand{\NID}[2]{\mathcal{N}\left(#1,#2\right)}
+\newcommand{\IG}[2]{\mathcal{IG}\left(#1,#2\right)}
+\newcommand{\Dir}{\textbf{Dir}}
+
+\newcommand{\wt}{w_t^i}
+\newcommand{\wtun}{\tilde{w}_t^i}
+\newcommand{\wtt}{w_{t-1}^i}
+\newcommand{\wttun}{\tilde{w}_t^i}
+
+\newcommand{\yd}{y_d}
+\newcommand{\ynt}{\bs{y}_{nt}}
+\newcommand{\yntlag}{\bs{y}_{n(t-p)}}
+\newcommand{\yntd}{y_{nt,d}}
+\newcommand{\Y}{\bs{Y}}
+\newcommand{\vY}{\text{vec}(\bs{Y}_{\text{mat}})}
+
+\newcommand{\Jd}{J_d}
+\newcommand{\I}[1]{\bs{I}_{#1}}
+
+\newcommand{\sumd}{\sum_{d=1}^D}
+\newcommand{\sumt}{\sum_{t=1}^T}
+\newcommand{\sumJd}{\sum_{j=1}^{J_d}}
+\newcommand{\sumPd}{\sum_{p=1}^{P_d}}
+
+\newcommand{\prodd}{\prod_{d=1}^D}
+\newcommand{\prodt}{\prod_{t=1}^T}
+\newcommand{\prodn}{\prod_{n=1}^{N}}
+\newcommand{\prodJ}[1]{\prod_{j=1}^{J_{#1}}}
+
+
+% ________________ Defines command \ScaleIfNeeded that scales Figures to width of the page if they are larger ______________________%
+
+\makeatletter
+\def\ScaleIfNeeded{%
+\ifdim\Gin@nat@width>\linewidth
+\linewidth
+\else
+\Gin@nat@width
+\fi
+}
+\makeatother
