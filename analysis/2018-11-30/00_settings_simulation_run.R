@@ -51,10 +51,10 @@ xa4_t <- dataSim[[3]][[4]]
 # xa2_t2 <- dataSim[[3]][[2]]
 # xa3_t2 <- dataSim[[3]][[3]]
 # xa4_t2 <- dataSim[[3]][[4]]
-za_t <- dataSim[[4]][[1]]
-zb_t <- dataSim[[4]][[2]]
-zp_t <- dataSim[[4]][[3]]
-zq_t <- dataSim[[4]][[4]]
+za1_t <- dataSim[[4]][[1]]
+za2_t <- dataSim[[4]][[2]]
+za3_t <- dataSim[[4]][[3]]
+za4_t <- dataSim[[4]][[4]]
 # Hyperparameters for the inverse gamma priors (uninformative)
 prior_a <- 0.01
 prior_b <- 0.01

@@ -23,7 +23,7 @@ if (simulate_data) {
 if (pgas_run) {
   out_pgas <- pgas(N = num_particles, MM = num_mcmc, KK = KK, TT = TT,
                    y = y_t, yz = yz_t,
-                   Za = za_t, Zb = zb_t, Zp = zp_t, Zq = zq_t,
+                   Za1 = za1_t, Za2 = za2_t, Za4 = za4_t, Za3 = za3_t,
                    priors = c(prior_a, prior_b),
                    par_init = par_init,
                    par_true = true_vals,
@@ -33,7 +33,7 @@ if (pgas_run) {
 } else {
   out_gibbs <- pgas(N = num_particles, MM = num_mcmc, KK = KK, TT = TT,
                     y = y_t, yz = yz_t,
-                    Za = za_t, Zb = zb_t, Zp = zp_t, Zq = zq_t,
+                    Za1 = za1_t, Za2 = za2_t, Za4 = za4_t, Za3 = za3_t,
                     priors = c(prior_a, prior_b),
                     par_init = par_init,
                     par_true = true_vals,
