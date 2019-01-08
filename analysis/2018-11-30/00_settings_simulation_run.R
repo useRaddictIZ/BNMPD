@@ -1,25 +1,25 @@
 # 1. Set up parameter values ----------------------------------------------
-# I. xa_t process parameters:
-true_sig_sq_xa <- 0.2      # True latent state process noise variance
-true_phi_xa    <- 0.8      # True autoregressive parameter for states
-true_bet_xa    <- c(-2.5, 3) # c(-2.5, 3, -1, 0.5) # c(2) #   True regressor coefficients for states
-# II. xb_t process parameters:
-true_sig_sq_xb <- 0.1
-true_phi_xb    <- 0.5
-true_bet_xb    <- c(2, -1)
-# III. xp_t process parameters:
-true_sig_sq_xp <- 0.2
-true_phi_xp    <- 0.5
-true_bet_xp    <- c(-3, 4)
-# IV. xq_t process parameters:
-true_sig_sq_xq <- 0.2
-true_phi_xq    <- 0.5
-true_bet_xq    <- c(4, -5)
+# I. xa1_t process parameters:
+true_sig_sq_xa1 <- 0.2      # True latent state process noise variance
+true_phi_xa1    <- 0.8      # True autoregressive parameter for states
+true_bet_xa1    <- c(-2.5, 3) # c(-2.5, 3, -1, 0.5) # c(2) #   True regressor coefficients for states
+# II. xa2_t process parameters:
+true_sig_sq_xa2 <- 0.1
+true_phi_xa2    <- 0.5
+true_bet_xa2    <- c(2, -1)
+# III. xa3_t process parameters:
+true_sig_sq_xa3 <- 0.2
+true_phi_xa3    <- 0.5
+true_bet_xa3    <- c(-3, 4)
+# IV. xa4_t process parameters:
+true_sig_sq_xa4 <- 0.2
+true_phi_xa4    <- 0.5
+true_bet_xa4    <- c(4, -5)
 # V. Merging true parameters
-par_true <- list(list(true_sig_sq_xa, true_phi_xa, true_bet_xa),
-                 list(true_sig_sq_xb, true_phi_xb, true_bet_xb),
-                 list(true_sig_sq_xp, true_phi_xp, true_bet_xp),
-                 list(true_sig_sq_xq, true_phi_xq, true_bet_xq))
+par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
+                 list(true_sig_sq_xa2, true_phi_xa2, true_bet_xa2),
+                 list(true_sig_sq_xa3, true_phi_xa3, true_bet_xa3),
+                 list(true_sig_sq_xa4, true_phi_xa4, true_bet_xa4))
 # 2. Data settings --------------------------------------------------------
 TT <- 100         # Length of data record
 KK       <- 10     # Number of income classes - 1
@@ -43,14 +43,14 @@ for (t in 1:TT) {
   y_t[t, ] <- as.vector(table(ncut))
 }
 yz_t <- yz_t[, -(KK + 1)]
-xa_t <- dataSim[[3]][[1]]
-xb_t <- dataSim[[3]][[2]]
-xp_t <- dataSim[[3]][[3]]
-xq_t <- dataSim[[3]][[4]]
-# xa_t2 <- dataSim[[3]][[1]]
-# xb_t2 <- dataSim[[3]][[2]]
-# xp_t2 <- dataSim[[3]][[3]]
-# xq_t2 <- dataSim[[3]][[4]]
+xa1_t <- dataSim[[3]][[1]]
+xa2_t <- dataSim[[3]][[2]]
+xa3_t <- dataSim[[3]][[3]]
+xa4_t <- dataSim[[3]][[4]]
+# xa1_t2 <- dataSim[[3]][[1]]
+# xa2_t2 <- dataSim[[3]][[2]]
+# xa3_t2 <- dataSim[[3]][[3]]
+# xa4_t2 <- dataSim[[3]][[4]]
 za_t <- dataSim[[4]][[1]]
 zb_t <- dataSim[[4]][[2]]
 zp_t <- dataSim[[4]][[3]]

@@ -1,17 +1,17 @@
 # pgas_run <- F
 res <- out_pgas
-par_mcmc  <- rbind(res$sigma_sq_xa, res$phi_xa, res$bet_xa,
-                   res$sigma_sq_xb, res$phi_xb, res$bet_xb,
-                   res$sigma_sq_xp, res$phi_xp, res$bet_xp,
-                   res$sigma_sq_xq, res$phi_xq, res$bet_xq)
-par_names <- c("sigma_sq_xa", "phi_xa",
-               paste("bet_xa", 1:length(true_bet_xa), sep = "_"),
-               "sigma_sq_xb", "phi_xb",
-               paste("bet_xb", 1:length(true_bet_xb), sep = "_"),
-               "sigma_sq_xp", "phi_xp",
-               paste("bet_xp", 1:length(true_bet_xp), sep = "_"),
-               "sigma_sq_xq", "phi_xq",
-               paste("bet_xq", 1:length(true_bet_xq), sep = "_"))
+par_mcmc  <- rbind(res$sigma_sq_xa1, res$phi_xa1, res$bet_xa1,
+                   res$sigma_sq_xa2, res$phi_xa2, res$bet_xa2,
+                   res$sigma_sq_xa3, res$phi_xa3, res$bet_xa3,
+                   res$sigma_sq_xa4, res$phi_xa4, res$bet_xa4)
+par_names <- c("sigma_sq_xa1", "phi_xa1",
+               paste("bet_xa1", 1:length(true_bet_xa1), sep = "_"),
+               "sigma_sq_xa2", "phi_xa2",
+               paste("bet_xa2", 1:length(true_bet_xa2), sep = "_"),
+               "sigma_sq_xa3", "phi_xa3",
+               paste("bet_xa3", 1:length(true_bet_xa3), sep = "_"),
+               "sigma_sq_xa4", "phi_xa4",
+               paste("bet_xa4", 1:length(true_bet_xa4), sep = "_"))
 
 path_t <- "/home/chief/Dropbox/research/GZ/analysis/2018-11-30/testing"
 # path_c <- file.path(path_t, "test_correct")

@@ -9,49 +9,49 @@ deviate_states_init <- log(par_levels) # + c(1, 2, 1, 2)  # c(2, 3, 2, 3)
 deviate_par_rate    <- 400
 # 2. Initialization for the parameters ------------------------------------
 if (init_at_true) {
-  # I. xa_t process parameters:
-  init_sig_sq_xa <- true_sig_sq_xa
-  init_phi_xa    <- true_phi_xa
-  init_bet_xa    <- true_bet_xa
-  # II. xb_t process parameters:
-  init_sig_sq_xb <- true_sig_sq_xb
-  init_phi_xb    <- true_phi_xb
-  init_bet_xb    <- true_bet_xb
-  # III. xp_t process parameters:
-  init_sig_sq_xp <- true_sig_sq_xp
-  init_phi_xp    <- true_phi_xp
-  init_bet_xp    <- true_bet_xp
-  # IV. xq_t process parameters:
-  init_sig_sq_xq <- true_sig_sq_xq
-  init_phi_xq    <- true_phi_xq
-  init_bet_xq    <- true_bet_xq
+  # I. xa1_t process parameters:
+  init_sig_sq_xa1 <- true_sig_sq_xa1
+  init_phi_xa1    <- true_phi_xa1
+  init_bet_xa1    <- true_bet_xa1
+  # II. xa2_t process parameters:
+  init_sig_sq_xa2 <- true_sig_sq_xa2
+  init_phi_xa2    <- true_phi_xa2
+  init_bet_xa2    <- true_bet_xa2
+  # III. xa3_t process parameters:
+  init_sig_sq_xa3 <- true_sig_sq_xa3
+  init_phi_xa3    <- true_phi_xa3
+  init_bet_xa3    <- true_bet_xa3
+  # IV. xa4_t process parameters:
+  init_sig_sq_xa4 <- true_sig_sq_xa4
+  init_phi_xa4    <- true_phi_xa4
+  init_bet_xa4    <- true_bet_xa4
 } else {
-  # I. xa_t process parameters:
-  init_sig_sq_xa <- 1
-  init_phi_xa    <- -0.9
-  init_bet_xa    <- true_bet_xa + true_bet_xa * (deviate_par_rate/100)
-  # II. xb_t process parameters:
-  init_sig_sq_xb <- 1
-  init_phi_xb    <- 0.1
-  init_bet_xb    <- true_bet_xb + true_bet_xb * (deviate_par_rate/100)
-  # III. xp_t process parameters:
-  init_sig_sq_xp <- 1
-  init_phi_xp    <- 0.1
-  init_bet_xp    <- true_bet_xp + true_bet_xp * (deviate_par_rate/100)
-  # IV. xq_t process parameters:
-  init_sig_sq_xq <- true_sig_sq_xq
-  init_phi_xq    <- true_phi_xq
-  init_bet_xq    <- true_bet_xq
-  # init_sig_sq_xq <- 1
-  # init_phi_xq    <- -0.9
-  # init_bet_xq    <- -sign(true_bet_xq)*0.5
+  # I. xa1_t process parameters:
+  init_sig_sq_xa1 <- 1
+  init_phi_xa1    <- -0.9
+  init_bet_xa1    <- true_bet_xa1 + true_bet_xa1 * (deviate_par_rate/100)
+  # II. xa2_t process parameters:
+  init_sig_sq_xa2 <- 1
+  init_phi_xa2    <- 0.1
+  init_bet_xa2    <- true_bet_xa2 + true_bet_xa2 * (deviate_par_rate/100)
+  # III. xa3_t process parameters:
+  init_sig_sq_xa3 <- 1
+  init_phi_xa3    <- 0.1
+  init_bet_xa3    <- true_bet_xa3 + true_bet_xa3 * (deviate_par_rate/100)
+  # IV. xa4_t process parameters:
+  init_sig_sq_xa4 <- true_sig_sq_xa4
+  init_phi_xa4    <- true_phi_xa4
+  init_bet_xa4    <- true_bet_xa4
+  # init_sig_sq_xa4 <- 1
+  # init_phi_xa4    <- -0.9
+  # init_bet_xa4    <- -sign(true_bet_xa4)*0.5
 }
 # V. Merging initialization parameters:
-par_init <- list(list(init_sig_sq_xa, init_phi_xa, init_bet_xa),
-                 list(init_sig_sq_xb, init_phi_xb, init_bet_xb),
-                 list(init_sig_sq_xp, init_phi_xp, init_bet_xp),
-                 list(init_sig_sq_xq, init_phi_xq, init_bet_xq))
-true_vals <- c(true_sig_sq_xa, true_phi_xa, true_bet_xa,
-               true_sig_sq_xb, true_phi_xb, true_bet_xb,
-               true_sig_sq_xp, true_phi_xp, true_bet_xp,
-               true_sig_sq_xq, true_phi_xq, true_bet_xq)
+par_init <- list(list(init_sig_sq_xa1, init_phi_xa1, init_bet_xa1),
+                 list(init_sig_sq_xa2, init_phi_xa2, init_bet_xa2),
+                 list(init_sig_sq_xa3, init_phi_xa3, init_bet_xa3),
+                 list(init_sig_sq_xa4, init_phi_xa4, init_bet_xa4))
+true_vals <- c(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1,
+               true_sig_sq_xa2, true_phi_xa2, true_bet_xa2,
+               true_sig_sq_xa3, true_phi_xa3, true_bet_xa3,
+               true_sig_sq_xa4, true_phi_xa4, true_bet_xa4)
