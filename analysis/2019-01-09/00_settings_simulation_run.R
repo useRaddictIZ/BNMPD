@@ -1,18 +1,18 @@
 # 1. Set up parameter values ----------------------------------------------
 # I. xa1_t process parameters:
-true_sig_sq_xa1 <- 0.1        # True latent state process noise variance
+true_sig_sq_xa1 <- 0.01        # True latent state process noise variance
 true_phi_xa1    <- 0.8        # True autoregressive parameter for states
 true_bet_xa1    <- c(-2.5, 3) # c(-2.5, 3, -1, 0.5) # c(2) #   True regressor coefficients for states
 # II. xa2_t process parameters:
-true_sig_sq_xa2 <- 0.1
+true_sig_sq_xa2 <- 0.01
 true_phi_xa2    <- 0.5
 true_bet_xa2    <- c(2, -1)
 # III. xa3_t process parameters:
-true_sig_sq_xa3 <- 0.1
+true_sig_sq_xa3 <- 0.01
 true_phi_xa3    <- 0.5
 true_bet_xa3    <- c(-3, 4)
 # IV. xa4_t process parameters:
-true_sig_sq_xa4 <- 0.1
+true_sig_sq_xa4 <- 0.01
 true_phi_xa4    <- 0.5
 true_bet_xa4    <- c(4, -5)
 # V. Merging true parameters
@@ -23,18 +23,18 @@ par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
 # 2. Data settings --------------------------------------------------------
 TT         <- 50     # Length of data record
 D          <- 4      # Number of fractions (dimension of Dirichelet distr.)
-par_levels <- 10*c(log(2:5))
+par_levels <- (10*1:4)*c(log(2:5))
 # 3. Generate data --------------------------------------------------------
 dataSim <- generate_data(par_true = par_true,
                          T = TT,
                          D = D,
                          x_levels = par_levels,
-                         seq_logs = c(T, T, T, T),
-                         # seq_logs = c(F, F, F, F),
+                         # seq_logs = c(T, T, T, T),
+                         seq_logs = c(F, F, F, F),
                          seq_cept = c(F, F, F, F),
                          old_regs = FALSE,
-                         plot_states = FALSE,
-                         plot_measurements = FALSE)
+                         plot_states = TRUE,
+                         plot_measurements = TRUE)
 y_raw <- dataSim[[1]]
 y_t   <- matrix(0, nrow = TT, ncol = D)
 for (t in 1:TT) {

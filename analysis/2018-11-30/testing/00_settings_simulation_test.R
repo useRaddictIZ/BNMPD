@@ -21,36 +21,37 @@ par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
                  list(true_sig_sq_xa3, true_phi_xa3, true_bet_xa3),
                  list(true_sig_sq_xa4, true_phi_xa4, true_bet_xa4))
 # 2. Data settings --------------------------------------------------------
-TT       <- 10     # Length of data record
-KK       <- 10     # Number of income classes - 1
-num_obs  <- 10e4   # Number of total individual incomes
-par_levels <- c(1.5, 150, 2.5, 3.5)
+TT         <- 10     # Length of data record
+D          <- 4      # Number of fractions (dimension of Dirichelet distr.)
+par_levels <- 10*c(log(2:5))
 # 3. Generate data --------------------------------------------------------
 dataSim <- generate_data(par_true = par_true,
+                         D = D,
                          T = TT,
-                         K = KK,
-                         num_incs = num_obs,
                          x_levels = par_levels,
                          seq_logs = c(T, F, T, F),
                          seq_cept = c(F, F, F, F),
                          old_regs = FALSE,
-                         plot_states = FALSE)
+                         plot_states = FALSE,
+                         plot_measurements = FALSE)
 y_raw <- dataSim[[1]]
-yz_t  <- dataSim[[2]]
-y_t   <- matrix(0, nrow = TT, ncol = KK)
+y_t   <- matrix(0, nrow = TT, ncol = D)
 for (t in 1:TT) {
-  ncut <- cut(y_raw[t, ], breaks = yz_t[t, ])
-  y_t[t, ] <- as.vector(table(ncut))
+  y_t[t, ] <- y_raw[t, ]
 }
-yz_t <- yz_t[, -(KK + 1)]
-xa1_t <- dataSim[[3]][[1]]
-xa2_t <- dataSim[[3]][[2]]
-xa3_t <- dataSim[[3]][[3]]
-xa4_t <- dataSim[[3]][[4]]
-za1_t <- dataSim[[4]][[1]]
-za2_t <- dataSim[[4]][[2]]
-za3_t <- dataSim[[4]][[3]]
-za4_t <- dataSim[[4]][[4]]
+if (sum(rowSums(y_t)) != TT) {
+  stop("Something is wrong with the Dirichelet: y-fractions don't sum up to 1!")
+}
+
+xa1_t <- dataSim[[2]][[1]]
+xa2_t <- dataSim[[2]][[2]]
+xa3_t <- dataSim[[2]][[3]]
+xa4_t <- dataSim[[2]][[4]]
+
+za1_t <- dataSim[[3]][[1]]
+za2_t <- dataSim[[3]][[2]]
+za3_t <- dataSim[[3]][[3]]
+za4_t <- dataSim[[3]][[4]]
 # Hyperparameters for the inverse gamma priors (uninformative)
 prior_a <- 0.01
 prior_b <- 0.01

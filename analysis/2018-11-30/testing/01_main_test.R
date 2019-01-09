@@ -1,4 +1,4 @@
-############################## PGAS for GZ model ###############################
+############################## PGAS for KZ model ###############################
 rm(list = ls())
 source("./R/helper/00_helper_lib_load.R")
 source("./R/helper/00_helper_model_fcts.R")
@@ -15,9 +15,10 @@ pgas_run      <- TRUE
 set.seed(123)
 source("./analysis/2018-11-30/testing/00_settings_simulation_test.R")
 source("./analysis/2018-11-30/testing/00_settings_simulation_test_init.R")
-out_pgas <- pgas(N = num_particles, MM = num_mcmc, KK = KK, TT = TT,
-                 y = y_t, yz = yz_t,
-                 Za1 = za1_t, Za2 = za2_t, Za3 = za3_t, Za4 = za4_t,
+out_pgas <- pgas(N = num_particles, MM = num_mcmc, TT = TT,
+                 y = y_t,
+                 Za1 = za1_t, Za2 = za2_t,
+                 Za3 = za3_t, Za4 = za4_t,
                  priors = c(prior_a, prior_b),
                  par_init = par_init,
                  par_true = true_vals,
