@@ -139,9 +139,12 @@ acronym,      %creates List of Abbreviations
 \newcommand{\nin}{\not\in}
 \newcommand{\bs}{\boldsymbol}  % shortcut to generate bold symbols in math environments
 \newcommand{\pt}{\propto}
+\newcommand{\ext}{\mathcal{E}}
+\newcommand{\var}{\mathbb{V}}
 
 \newcommand{\given}{\lvert}
 \newcommand{\tc}[2]{\textcolor{#1}{#2}}
+
 \newcommand{\seqn}{{1:n}}
 \newcommand{\seqt}{{1:t}}
 \newcommand{\seqk}{{1:k}}
@@ -154,17 +157,40 @@ acronym,      %creates List of Abbreviations
 \newcommand{\seqnm}{{1:n-1}}
 \newcommand{\seqtm}{{1:t-1}}
 \newcommand{\seqkm}{{1:k-1}}
-\newcommand{\nmin}{{n-1}}
-\newcommand{\kmin}{{k-1}}
 \newcommand{\seqN}{i=1,\ldots,N}
 \newcommand{\seqM}{i=1,\ldots,M}
+
+
+\newcommand{\sumd}{\sum_{d=1}^D}
+\newcommand{\sumt}{\sum_{t=1}^T}
+\newcommand{\sumJd}{\sum_{j=1}^{J_d}}
+\newcommand{\sumk}{\sum_{k=1}^{K}}
+\newcommand{\sumPd}{\sum_{p=1}^{P_d}}
+
+\newcommand{\prodd}{\prod_{d=1}^D}
+\newcommand{\prodt}{\prod_{t=1}^T}
+\newcommand{\prodn}{\prod_{n=1}^{N}}
+\newcommand{\prodi}{\prod_{i=1}^{N}}
+\newcommand{\prodk}{\prod_{k=1}^{K}}
+\newcommand{\prodkM}{\prod_{k=2}^{M_{it}-1}}
+\newcommand{\prodJ}[1]{\prod_{j=1}^{J_{#1}}}
+
+\newcommand{\nmin}{{n-1}}
+\newcommand{\kmin}{{k-1}}
+
 \newcommand{\limN}{\lim_{N\to\infty}}
 \newcommand{\limn}{\lim_{n\to\infty}}
 \newcommand{\limM}{\lim_{M\to\infty}}
-\newcommand{\asw}{\reallywidehat{w}^i_{n-1\given N}}
-\newcommand{\aswTrunc}{\reallywidehat{w}^{i,l}_{n-1\given N}}
-\newcommand{\asW}{\reallywidehat{W}^i_{n-1\given N}}
-\newcommand{\asWb}{\reallywidehat{\bs{W}}_{n-1\given N}}
+
+\newcommand{\wt}{w_t^i}
+\newcommand{\wtun}{\tilde{w}_t^i}
+\newcommand{\wtt}{w_{t-1}^i}
+\newcommand{\wttun}{\tilde{w}_t^i}
+\newcommand{\asw}{\reallywidehat{w}^i_{t-1\given T}}
+\newcommand{\aswTrunc}{\reallywidehat{w}^{i,l}_{t-1\given T}}
+\newcommand{\asW}{\reallywidehat{W}^i_{t-1\given T}}
+\newcommand{\asWb}{\reallywidehat{\bs{W}}_{t-1\given T}}
+
 \newcommand{\rt}{\boldsymbol{\theta}}
 \newcommand{\p}{p_{\rt}}
 % BELOW PACKAGE AND NEWCOMMAND THAT LEADS A REALLY
@@ -189,13 +215,6 @@ acronym,      %creates List of Abbreviations
 \newcommand{\atd}{\bs{\alpha}_{t,d}}
 \newcommand{\annd}{\bs{\alpha}_{n,d}}
 
-%\newcommand{\ad}{\alpha_d}
-%\newcommand{\Ant}{\bs{\alpha}_{n,t}}
-%\newcommand{\ant}[1]{\alpha_{n,t}^{#1}}
-%\newcommand{\antd}{\alpha_{n,t}^{d}}
-%\newcommand{\atd}{\bs{\alpha}_{t}^{d}}
-%\newcommand{\annd}{\bs{\alpha}_{n}^{d}}
-
 \newcommand{\bjd}{\bs{\beta}_{j,d}}
 \newcommand{\bjdlag}{\bs{\beta}_{p,d}^{lag}}
 \newcommand{\bjntd}{\bs{\beta}_{j,d}}
@@ -203,20 +222,22 @@ acronym,      %creates List of Abbreviations
 \newcommand{\bjtd}{\bs{\beta}_{j,d}}
 
 \newcommand{\bb}{\bs{\beta}}
+\newcommand{\gam}{\bs{\gamma}}
 \newcommand{\bz}{\bs{\beta}_{\bs{Z}}}
+\newcommand{\gz}{\bs{\gamma}_{\bs{Z}}}
 
-\newcommand{\bzad}[1]{\bs{\beta}_{\bs{Z_{\alpha_{#1}}}}}
-\newcommand{\bad}[1]{\bs{\beta}_{\bs{\alpha_{#1}}}^*}
+\newcommand{\bzad}[1]{\bs{\beta}_{\bs{Z_{#1}}}}
+\newcommand{\gzad}[1]{\bs{\gamma}_{\bs{Z_{#1}}}}
+\newcommand{\bad}[1]{\bs{\beta}_{#1}}
+\newcommand{\gad}[1]{\bs{\gamma}_{#1}}
+
 \newcommand{\bza}{\bs{\beta}_{\bs{Z_a}}}
 \newcommand{\bzb}{\bs{\beta}_{\bs{Z_b}}}
 \newcommand{\bzp}{\bs{\beta}_{\bs{Z_p}}}
 \newcommand{\bzq}{\bs{\beta}_{\bs{Z_q}}}
-%\newcommand{\bjd}{\bs{\beta}_j^{d}}
-%\newcommand{\bjntd}{\bs{\beta}_j^{d}}
-%\newcommand{\bjnd}{\bs{\beta}_j^{d}}
-%\newcommand{\bjtd}{\bs{\beta}_j^{d}}
 
 \newcommand{\ts}{\bs{\theta}}
+\newcommand{\muxa}[1]{\mu_{it#1}}
 \newcommand{\tsa}{\bs{\theta}_a}
 \newcommand{\tsb}{\bs{\theta}_b}
 \newcommand{\tsp}{\bs{\theta}_p}
@@ -239,26 +260,19 @@ acronym,      %creates List of Abbreviations
 
 \newcommand{\etad}{\eta_{d}}
 \newcommand{\etantd}{\eta_{nt,d}}
-%
-%\newcommand{\Kjd}{\bs{K}_j^{d}}
-%\newcommand{\fjd}{f_j^{d}(\bs{\nu})}
-%
-%\newcommand{\etad}{\eta^{\ad}}
-%\newcommand{\etantd}{\eta_{n,t}^{\antd}}
 
-
-\newcommand{\xad}[1]{x_{\alpha_{#1},t,i}}
-\newcommand{\xadt}[1]{x_{\alpha_{#1},t-1,i}}
+\newcommand{\xad}[1]{x_{it#1}}
+\newcommand{\xadt}[1]{x_{i(t-1)#1}}
 \newcommand{\xt}{x_{t}}
 \newcommand{\xtt}{x_{t-1}}
-\newcommand{\xat}{x_{a,t,i}}
-\newcommand{\xatt}{x_{a,t-1,i}}
-\newcommand{\xbt}{x_{b,t,i}}
-\newcommand{\xbtt}{x_{b,t-1,i}}
-\newcommand{\xpt}{x_{p,t,i}}
-\newcommand{\xptt}{x_{p,t-1,i}}
-\newcommand{\xqt}{x_{q,t,i}}
-\newcommand{\xqtt}{x_{q,t-1,i}}
+\newcommand{\xat}{x_{i,t,a}}
+\newcommand{\xatt}{x_{i,t,a}}
+\newcommand{\xbt}{x_{i,t,b}}
+\newcommand{\xbtt}{x_{i,t-1,b}}
+\newcommand{\xpt}{x_{i,t,p}}
+\newcommand{\xptt}{x_{i,t-1,p}}
+\newcommand{\xqt}{x_{i,t,q}}
+\newcommand{\xqtt}{x_{i,t-1,q}}
 
 \newcommand{\xtn}{x_{t, 1:N}}
 \newcommand{\xttn}{x_{t-1,1:N}}
@@ -293,7 +307,14 @@ acronym,      %creates List of Abbreviations
 \newcommand{\Xqtn}{\bs{x}_{q,2:T,,1:N}}
 \newcommand{\Xqttn}{\bs{x}_{q,1:T-1,,1:N}}
 
-\newcommand{\zad}[1]{\bs{z}^{\prime}_{\alpha_{#1},t,i}}
+\newcommand{\zad}[1]{\bs{z}^{\prime}_{it\alpha_{#1}}}
+\newcommand{\zadlin}[1]{\bs{z}^{lin}_{it#1}}
+\newcommand{\zadspl}[1]{\bs{z}^{spl}_{it#1}}
+\newcommand{\zdlin}{\bs{z}^{lin}_{t}}
+\newcommand{\zdspl}{\bs{z}^{spl}_{t}}
+\newcommand{\Zdlin}{\bs{Z}^{lin}_{2:T}}
+\newcommand{\Zdspl}{\bs{Z}^{spl}_{2:T}}
+
 \newcommand{\zt}{\bs{z}^{\prime}_{t}}
 \newcommand{\ztt}{\bs{z}^{\prime}_{t-1}}
 \newcommand{\zat}{\bs{z}^{\prime}_{a,t,i}}
@@ -329,65 +350,47 @@ acronym,      %creates List of Abbreviations
 \newcommand{\Zqt}{\bs{Z}_{q,2:T,i}}
 \newcommand{\Zqtt}{\bs{Z}_{q,1:T-1,i}}
 
-\newcommand{\Ozprior}{\underline{\bs{\Omega}_{Z}}}
-\newcommand{\Ozpost}{\overline{\bs{\Omega}_{Z}}}
-\newcommand{\VCMt}{\bs{\Omega}_{\ErrX}}
+\newcommand{\Ozprior}{\underline{\bs{\Omega}_{\beta}}}
+\newcommand{\OzpriorB}{\underline{\bs{\Omega}_{lin}}}
+\newcommand{\OzpriorG}{\underline{\bs{\Omega}_{spl}}}
+\newcommand{\Ozpost}{\overline{\bs{\Omega}_{\beta}}}
+\newcommand{\VCMt}{\bs{\Omega}_{\varepsilon}}
 \newcommand{\VCMn}{\bs{\Omega}_{\ErrXn}}
 
-\newcommand{\yt}{y_{t}}
+%\newcommand{\yt}{y_{t}}
 \newcommand{\ytt}{y_{t-1}}
 \newcommand{\ytn}{\bs{y}_{t,1:N}}
 \newcommand{\yttn}{\bs{y}_{t-1,1;N}}
 \newcommand{\Ytn}{\bs{y}_{1:T,1:N}}
 
-\newcommand{\nt}{\bs{y}_{t,i}}
-\newcommand{\ntt}{\bs{y}_{t-1,i}}
+\newcommand{\yt}{\bs{y}_{it}}
+\newcommand{\ntt}{\bs{y}_{i(t-1)}}
 
-\newcommand{\errXad}[1]{\varepsilon_{x_{\alpha_{#1}}}}
+\newcommand{\errad}[1]{\varepsilon_{#1}}
 \newcommand{\errX}{\varepsilon_{x}}
-\newcommand{\errXa}{\varepsilon_{x_a}}
-\newcommand{\errXb}{\varepsilon_{x_b}}
-\newcommand{\errXp}{\varepsilon_{x_p}}
-\newcommand{\errXq}{\varepsilon_{x_q}}
-\newcommand{\errY}{\varepsilon_{Y}}
+\newcommand{\errY}{\varepsilon_{y}}
+\newcommand{\ErrX}{\varepsilon_{2:T}}
+\newcommand{\ErrXn}{\varepsilon_{x_{t,1:N}}}
 
-\newcommand{\ErrX}{\bs{\varepsilon}_{x,2:T}}
-\newcommand{\ErrXa}{\bs{\varepsilon}_{x_{a,2:T}}}
-\newcommand{\ErrXb}{\bs{\varepsilon}_{x_{b,2:T}}}
-\newcommand{\ErrXp}{\bs{\varepsilon}_{x_{p,2:T}}}
-\newcommand{\ErrXq}{\bs{\varepsilon}_{x_{q,2:T}}}
-\newcommand{\ErrY}{\bs{\varepsilon}_{Y,2:T}}
-
-\newcommand{\ErrXn}{\bs{\varepsilon}_{x_{t,1:N}}}
-\newcommand{\ErrXan}{\bs{\varepsilon}_{x_{a,2:T,1:N}}}
-\newcommand{\ErrXbn}{\bs{\varepsilon}_{x_{b,2:T,1:N}}}
-\newcommand{\ErrXpn}{\bs{\varepsilon}_{x_{p,2:T,1:N}}}
-\newcommand{\ErrXqn}{\bs{\varepsilon}_{x_q,2:T,1:N}}
-\newcommand{\ErrYn}{\bs{\varepsilon}_{Y,2:T}}
-
-\newcommand{\sigXad}[1]{\sigma_{x_{\alpha_{#1}}}}
-\newcommand{\sigX}{\sigma_{x}}
+%\newcommand{\sigXad}[1]{\sigma_{x_{\alpha_{#1}}}}
+\newcommand{\sigad}[1]{\sigma_{\varepsilon_{#1}}}
+\newcommand{\sigE}{\sigma_{\varepsilon}}
 \newcommand{\sigXa}{\sigma_{x_a}}
 \newcommand{\sigXb}{\sigma_{x_b}}
 \newcommand{\sigXp}{\sigma_{x_p}}
 \newcommand{\sigXq}{\sigma_{x_q}}
 
-\newcommand{\phiad}[1]{\phi_{\alpha_{#1}}}
+\newcommand{\phiad}[1]{\phi_{#1}}
 \newcommand{\phia}{\phi_{a}}
 \newcommand{\phib}{\phi_{b}}
 \newcommand{\phip}{\phi_{p}}
 \newcommand{\phiq}{\phi_{q}}
 
-\newcommand{\mux}{\bs{\mu}_{x,t}}
+\newcommand{\mux}{\bs{\mu}_{x}}
 
 \newcommand{\NID}[2]{\mathcal{N}\left(#1,#2\right)}
 \newcommand{\IG}[2]{\mathcal{IG}\left(#1,#2\right)}
 \newcommand{\Dir}{\textbf{Dir}}
-
-\newcommand{\wt}{w_t^i}
-\newcommand{\wtun}{\tilde{w}_t^i}
-\newcommand{\wtt}{w_{t-1}^i}
-\newcommand{\wttun}{\tilde{w}_t^i}
 
 \newcommand{\yd}{y_d}
 \newcommand{\ynt}{\bs{y}_{nt}}
@@ -399,18 +402,8 @@ acronym,      %creates List of Abbreviations
 \newcommand{\Jd}{J_d}
 \newcommand{\I}[1]{\bs{I}_{#1}}
 
-\newcommand{\sumd}{\sum_{d=1}^D}
-\newcommand{\sumt}{\sum_{t=1}^T}
-\newcommand{\sumJd}{\sum_{j=1}^{J_d}}
-\newcommand{\sumPd}{\sum_{p=1}^{P_d}}
-
-\newcommand{\prodd}{\prod_{d=1}^D}
-\newcommand{\prodt}{\prod_{t=1}^T}
-\newcommand{\prodn}{\prod_{n=1}^{N}}
-\newcommand{\prodJ}[1]{\prod_{j=1}^{J_{#1}}}
-
-
-% ________________ Defines command \ScaleIfNeeded that scales Figures to width of the page if they are larger ______________________%
+% ________________ Defines command \ScaleIfNeeded ______________________%
+% (-> that scales Figures to width of the page if they are larger)
 
 \makeatletter
 \def\ScaleIfNeeded{%
