@@ -1,12 +1,12 @@
 # 1. Set up MCMC settings -------------------------------------------------
-num_particles <- 100   # Number of particles used in the conditional BPF
+num_particles <- 1000  # Number of particles used in the conditional BPF
 num_mcmc <- 1380       # Number of iterations in the MCMC samplers
 burnin   <- 100        # Number of interations to burn
 # Initialize states at particular deviated values from true state values
 deviate_par_rate    <- 10  # in %
 deviate_states_init <- c(log(par_levels[2:5])) + c(1, 2, 1, 2) #
 # Initialize pars at percentage deviation from true par values
-deviate_par_rate    <- 400
+# deviate_par_rate    <- 400
 # 2. Initialization for the parameters ------------------------------------
 if (init_at_true) {
   # I. xa1_t process parameters:
