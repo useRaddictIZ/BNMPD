@@ -12,3 +12,12 @@
 #   - include regressors subsequently: with spline effects
 #   - run logarithmic and non-logarithmic versions to see what performs better
 #     (finish testing non-logarithmic version in projec 2018-11-31 first!)
+# II. Code refactoring:
+#   - within c_BPAF-function: WORK WITH LOOPS for d=1,...,D and
+#     - think about container structure for xa1, xa2, etc.
+#     - think about container structure for za1, za2, etc.
+#     - think about container structure for parameters
+#   - within pgas-function: WORK WITH LOOPS for d=1,...,D and
+#     - think about container structure for xa1, xa2, etc.
+#     - think about container structure for za1, za2, etc.
+#     - think about container structure for parameters
