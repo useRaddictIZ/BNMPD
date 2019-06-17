@@ -13,7 +13,7 @@ par_names <- c("sigma_sq_xa1", "phi_xa1",
                "sigma_sq_xa4", "phi_xa4",
                paste("bet_xa4", 1:length(true_bet_xa4), sep = "_"))
 
-path_t <- "/home/chief/Dropbox/research/GZ/analysis/2018-11-30/testing"
+path_t <- "/home/chief/Dropbox/research/KZ/analysis/2018-11-30/testing"
 # path_c <- file.path(path_t, "test_correct")
 path_n <- file.path(path_t, "test_new")
 

@@ -33,4 +33,6 @@ true_vals <- c(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1,
                true_sig_sq_xa2, true_phi_xa2, true_bet_xa2,
                true_sig_sq_xa3, true_phi_xa3, true_bet_xa3,
                true_sig_sq_xa4, true_phi_xa4, true_bet_xa4)
-
+# Hyperparameters for the inverse gamma priors (uninformative)
+prior_a <- 0.01
+prior_b <- 0.01

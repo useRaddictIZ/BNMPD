@@ -35,23 +35,12 @@ dataSim <- generate_data(par_true = par_true,
                          old_regs = FALSE,
                          plot_states = FALSE,
                          plot_measurements = FALSE)
-y_raw <- dataSim[[1]]
-y_t   <- matrix(0, nrow = TT, ncol = D)
-for (t in 1:TT) {
-  y_t[t, ] <- y_raw[t, ]
-}
-if (sum(rowSums(y_t)) != TT) {
-  stop("Something is wrong with the Dirichelet: y-fractions don't sum up to 1!")
-}
+y_t <- dataSim[[1]]
 xa1_t <- dataSim[[2]][[1]]
 xa2_t <- dataSim[[2]][[2]]
 xa3_t <- dataSim[[2]][[3]]
 xa4_t <- dataSim[[2]][[4]]
-
 za1_t <- dataSim[[3]][[1]]
 za2_t <- dataSim[[3]][[2]]
 za3_t <- dataSim[[3]][[3]]
 za4_t <- dataSim[[3]][[4]]
-# Hyperparameters for the inverse gamma priors (uninformative)
-prior_a <- 0.01
-prior_b <- 0.01

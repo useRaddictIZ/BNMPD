@@ -15,10 +15,10 @@ init_at_true  <- F
 pgas_run      <- T
 if (simulate_data) {
   set.seed(139423) # set.seed(3) #
-  source("./analysis/2019-01-09/00_settings_simulation_run.R")
-  source("./analysis/2019-01-09/00_settings_simulation_run_init.R")
+  source("./analysis/2019-01-09/00_settings_simulation_data.R")
+  source("./analysis/2019-01-09/00_settings_simulation_init.R")
 } else {
-  source("./analysis/2019-01-09/00_settings_simulation_run_init.R")
+  source("./analysis/2019-01-09/00_settings_simulation_init.R")
 }
 if (pgas_run) {
   out_pgas <- pgas(N = num_particles, MM = num_mcmc, TT = TT,
@@ -43,4 +43,4 @@ if (pgas_run) {
                     filtering = FALSE,
                     num_plots_states = 1)
 }
-source("./analysis/2018-11-30/99_analyse_convergence_run.R")
+source("./analysis/2019-01-09/99_analyse_convergence_run.R")
