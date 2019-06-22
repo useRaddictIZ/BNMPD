@@ -1,4 +1,5 @@
 \BOOKMARK [1][]{section.1}{Model}{}% 1
 \BOOKMARK [1][]{section.2}{KZ model}{}% 2
 \BOOKMARK [2][]{subsection.2.1}{Mathematical model}{section.2}% 3
-\BOOKMARK [2][]{subsection.2.2}{Gibbs-Part: univariate \(for one i=1,\203,N\)}{section.2}% 4
+\BOOKMARK [2][]{subsection.2.2}{Gibbs-Part: univariate \(for a single i=1,\203,N\)}{section.2}% 4
+\BOOKMARK [2][]{subsection.2.3}{Gibbs-Part: multivariate \(full cross section i=1,\203,N\)}{section.2}% 5
