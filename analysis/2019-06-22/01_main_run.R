@@ -1,14 +1,7 @@
 ############################## PGAS for KZ model ###############################
 rm(list = ls())
-source("./R/helper/00_helper_lib_load.R")
-source("./R/helper/00_helper_model_fcts.R")
-source("./R/helper/00_helper_simulation_data.R")
-source("./R/helper/99_helper_diagnostics_simul_data.R")
-
-source("./R/helper/01_helper_cBPF_as.R")
-source("./R/helper/02_helper_pgas.R")
-source("./R/01_cBPF_as.R")
-source("./R/02_pgas.R")
+# R.utils::sourceDirectory(path = paste0(getwd(),"/R/"))
+sapply(paste0(getwd(),"/R/", list.files(paste0(getwd(),"/R/"), recursive = TRUE)), source)
 # PGAS run ----------------------------------------------------------------
 simulate_data <- T
 init_at_true  <- F
