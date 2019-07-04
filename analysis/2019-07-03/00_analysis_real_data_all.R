@@ -1,4 +1,6 @@
 ########## DESCRIPTIVE DATA ANALYSIS of CALIFORNIA ENERGY TIME SERIES ##########
+source("R/helper/00_helper_data_analyze_plots.R")
+source("R/helper/00_helper_lib_load.R.R")
 data_all_states <- readxl::read_xlsx("data/raw/TS_EIA_Consumption_renamed.xlsx")
 data_mwatts <- data_all_states %>%
   select(State, Year_t, everything()) %>%
