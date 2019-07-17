@@ -3,7 +3,7 @@ num_particles <- 5             # Number of particles used in the conditional BPF
 num_mcmc <- 10                 # Number of iterations in the MCMC samplers
 burnin   <- 0                  # Number of interations to burn
 # Initialize states at particular deviated values from true state values
-deviate_states_init <- c(log(par_levels[1:4]))
+deviate_states_init <- c(log(dirichlet_levels[1:4]))
 # Initialize pars at percentage deviation from true par values
 # HERE: no deviation: test are initialized always at true par values values
 # deviate_par_init    <- 400 # in %

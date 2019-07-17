@@ -23,15 +23,15 @@ par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
 # 2. Data settings --------------------------------------------------------
 TT         <- 50     # Length of data record
 D          <- 4      # Number of fractions (dimension of Dirichelet distr.)
-par_levels <- 10*c(log(2:5))
+dirichlet_levels <- 10*c(log(2:5))
 # 3. Generate data --------------------------------------------------------
 dataSim <- generate_data(par_true = par_true,
                          T = TT,
                          D = D,
-                         x_levels = par_levels,
-                         seq_logs = c(T, T, T, T),
-                         # seq_logs = c(F, F, F, F),
-                         seq_cept = c(F, F, F, F),
+                         x_levels = dirichlet_levels,
+                         x_log_scale = c(T, T, T, T),
+                         # x_log_scale = c(F, F, F, F),
+                         intercept_include = c(F, F, F, F),
                          old_regs = FALSE,
                          plot_states = FALSE,
                          plot_measurements = FALSE)
