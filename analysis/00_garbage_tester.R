@@ -1,3 +1,22 @@
+zmean_test <- 1
+last_zmean <- x_level * (1 - phi_x) - sum(zmean_test * bet_x[-dim_reg])
+last_zmean <- last_zmean/bet_x[dim_reg]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 c_log_par <- cbind(xa1[, 1], xa2[, 1], xa3[, 1], xa4[, 1], xa5[, 1])
 analyse_weightfunction(log_particles = c_log_par,
                        true_states = c(xa1_t[1], xa2_t[1], xa3_t[1], xa4_t[1], xa5_t[1]),
