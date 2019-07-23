@@ -1,7 +1,7 @@
 # 1. Set up parameter values ----------------------------------------------
 # I. xa1_t process parameters:
 true_sig_sq_xa1 <- 0.01       # True latent state process noise variance
-true_phi_xa1    <- 0.8        # True autoregressive parameter for states
+true_phi_xa1    <- 0.5        # True autoregressive parameter for states
 true_bet_xa1    <- c(-2.5, 3) # True regressor coefficients for states
 # II. xa2_t process parameters:
 true_sig_sq_xa2 <- 0.01

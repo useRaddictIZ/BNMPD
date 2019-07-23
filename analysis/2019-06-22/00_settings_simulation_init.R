@@ -54,12 +54,12 @@ if (init_at_true) {
 # V. Merging initialization parameters:
 par_init <- list(list(init_sig_sq_xa1, init_phi_xa1, init_bet_xa1),
                  list(init_sig_sq_xa2, init_phi_xa2, init_bet_xa2),
-                 list(init_sig_sq_xa3, init_phi_xa3, init_bet_xa3),
+                 list(init_sig_sq_xa3, init_phi_xa3, c(-2, init_bet_xa3)),
                  list(init_sig_sq_xa4, init_phi_xa4, init_bet_xa4),
                  list(init_sig_sq_xa5, init_phi_xa5, init_bet_xa5))
 true_vals <- c(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1,
                true_sig_sq_xa2, true_phi_xa2, true_bet_xa2,
-               true_sig_sq_xa3, true_phi_xa3, true_bet_xa3,
+               true_sig_sq_xa3, true_phi_xa3,  c(-2, true_bet_xa3),
                true_sig_sq_xa4, true_phi_xa4, true_bet_xa4,
                true_sig_sq_xa5, true_phi_xa5, true_bet_xa5)
 # Hyperparameters for the inverse gamma priors (uninformative)

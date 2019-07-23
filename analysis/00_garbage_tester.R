@@ -1,15 +1,118 @@
+col_seq <- RColorBrewer::brewer.pal(5, "Dark2")
+single_plots <- rep(list(list()), times = 5)
+test_mat <- y_t/rowSums(y_t)
+# test_mat <- y_t
+test_mat <- cbind(1:TT, test_mat)
+test_mat <- as.data.frame(test_mat)
+energy_types <- paste0("a", 1:5)
+names(test_mat) <- c("t", energy_types)
+all_plots <- ggplot(test_mat, aes(x = t))
+for (i in 1:5) {
+  all_plots <- all_plots + geom_line(aes_string(x = "t",
+                                                y = energy_types[i]),
+                                     col = col_seq[i]) +
+    labs(x = "years", y = "share")
+  single_plots[[i]] <- ggplot(test_mat, aes(x = Year_t)) +
+    geom_line(aes_string(x = "t",
+                         y = energy_types[i]),
+              col = col_seq[i]) +
+    ggtitle(energy_types[i]) +
+    labs(x = "t", y = "share")
+
+}
+final_layout <- matrix(c(1, 1, 2:7), ncol = 2, byrow = TRUE)
+
+gridExtra::grid.arrange(grobs = single_plots,
+                        layout_matrix = matrix(1:6, ncol = 2))
+
+plot_final <- gridExtra::grid.arrange(grobs = c(list(all_plots),
+                                                single_plots),
+                                      layout_matrix = final_layout,
+                                      top = "Shares jointly and individually")
+
+
+
+
+
+
+
+
+
+names_title <- paste("True states for ",
+                     "xa1_t (black),", " xa2_t (red),",
+                     " xa3_t (green),",  "xa4_t (blue)", " and", " xa5_t (blue)")
+names_ylab  <- paste(" xa1_t,", " xa2_t,", " xa3_t,", " xa4_t",
+                     " and", " xa5_t", " states")
+
+par(mfrow = c(1,2))
+test_mat <- cbind(xa1_t, xa2_t, xa3_t, xa4_t, xa5_t)
+matplot(test_mat,
+        type = "l",
+        main = names_title,
+        ylab = names_ylab)
+matplot(test_mat/rowSums(test_mat),
+        type = "l",
+        main = names_title,
+        ylab = names_ylab)
+
+
+names_title <- paste("True states for ",
+                     "y1_t (black),", " y2_t (red),",
+                     " y3_t (green),",  "y4_t (blue)", " and", " y5_t (blue)")
+names_ylab  <- paste(" y1_t,", " y2_t,", " y3_t,", " y4_t",
+                     " and", " y5_t", " states")
+test_mat <- y_t
+matplot(test_mat,
+        type = "l",
+        main = names_title,
+        ylab = names_ylab)
+matplot(test_mat/rowSums(test_mat),
+        type = "l",
+        main = names_title,
+        ylab = names_ylab)
+for (i in 1:5) {
+  plot((test_mat/rowSums(test_mat))[, i], type = "l")
+}
+
+
+
+
+
+
+
+
+
+set.seed(123)
+z2 <- cbind(rep(c(0, 1), each = T/2), z)
+bet2 <- c(20, bet_x)
+
+x[1] <- f(x_tt = xinit, z = z2[1, ], phi_x = phi_x, bet_x = bet2)
+x[1] <- x[1] + sqrt(sig_sq_x)*rnorm(n = 1)
+
+for (t in 1:T) {
+  if (t < T) {
+    x[t + 1] <- f(x_tt = x[t], z = z2[t + 1, ],
+                  phi_x = phi_x, bet_x = bet2)
+    x[t + 1] <- x[t + 1] + sqrt(sig_sq_x)*rnorm(n = 1)
+  }
+}
+if (process_log_scale) {
+  x <- exp(x)
+}
+
+plot(x, type = "l")
+
+
 zmean_test <- 1
 last_zmean <- x_level * (1 - phi_x) - sum(zmean_test * bet_x[-dim_reg])
 last_zmean <- last_zmean/bet_x[dim_reg]
 
-
-
-
-
-
-
-
-
+x_all <- cbind(xa1, xa2, xa3, xa4, xa5)
+matplot(x_all/rowSums(x_all),
+        type = "l",
+        main = names_title,
+        ylab = names_ylab
+)
 
 
 

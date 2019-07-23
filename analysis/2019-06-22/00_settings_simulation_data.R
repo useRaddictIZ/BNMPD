@@ -1,7 +1,7 @@
 # 1. Set up parameter values ----------------------------------------------
 # I. xa1_t process parameters:
 true_sig_sq_xa1 <- 0.1       # True latent state process noise variance
-true_phi_xa1    <- 0.8        # True autoregressive parameter for states
+true_phi_xa1    <- 0.5        # True autoregressive parameter for states
 true_bet_xa1    <- c(-2.5, 3)# True regressor coefficients for states
 # II. xa2_t process parameters:
 true_sig_sq_xa2 <- 0.1
@@ -36,9 +36,7 @@ dataSim <- generate_data(data_type = "mult-diri",
                          D = D,
                          x_levels = dirichlet_levels,
                          x_log_scale = c(T, T, T, T, T),
-                         # x_log_scale = c(F, F, F, F),
-                         # intercept_include = c(F, F, F, F, F),
-                         intercept_include = c(T, T, T, T, T),
+                         intercept_include = c(T, T, F, T, T),
                          plot_states = TRUE,
                          plot_measurements = TRUE)
 y_t   <- dataSim[[1]]
@@ -53,3 +51,10 @@ za3_t <- dataSim[[3]][[3]]
 za4_t <- dataSim[[3]][[4]]
 za5_t <- dataSim[[3]][[5]]
 num_counts <- dataSim[[4]]
+
+true_bet_xa3 <- c(-2, true_bet_xa3)
+par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
+                 list(true_sig_sq_xa2, true_phi_xa2, true_bet_xa2),
+                 list(true_sig_sq_xa3, true_phi_xa3, true_bet_xa3),
+                 list(true_sig_sq_xa4, true_phi_xa4, true_bet_xa4),
+                 list(true_sig_sq_xa5, true_phi_xa5, true_bet_xa5))
