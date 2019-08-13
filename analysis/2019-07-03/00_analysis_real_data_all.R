@@ -73,7 +73,6 @@ reg_names_all_states_model_01 <- data.frame(price_NUEGB = reg_vals_all_na,
                                             dummy_1978 = reg_vals_all_na,
                                             dummy_tech_util = reg_vals_all_na,
                                             LCOE = reg_vals_all_na,
-                                            ROI = reg_vals_all_na,
                                             DSIRE = reg_vals_all_na)
 reg_names_ca_tx_model_01 <- data.frame(price_NUEGB = reg_vals_ca_tx_na,
                                        price_renewables = reg_vals_ca_tx_na,
@@ -85,12 +84,14 @@ reg_names_ca_tx_model_01 <- data.frame(price_NUEGB = reg_vals_ca_tx_na,
                                        dummy_1978 = reg_vals_ca_tx_na,
                                        dummy_tech_util = reg_vals_ca_tx_na,
                                        LCOE = reg_vals_ca_tx_na,
-                                       ROI = reg_vals_ca_tx_na,
                                        DSIRE = reg_vals_ca_tx_na)
 
 data_energy_ts <- cbind(data_energy_ts, reg_names_all_states_model_01)
 data_energy_ts_ca_tx <- cbind(data_energy_ts_ca_tx, reg_names_ca_tx_model_01)
 
-write_csv(data_energy_ts, path = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_all_states.xlsx")
-write_csv(data_energy_ts_ca_tx, path = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_ca_tx.xlsx")
+write_csv(data_energy_ts, path = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_all_states.csv")
+write_csv(data_energy_ts_ca_tx, path = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_ca_tx.csv")
+
+openxlsx::write.xlsx(data_energy_ts, file = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_all_states.xlsx")
+openxlsx::write.xlsx(data_energy_ts_ca_tx, file = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_ca_tx.xlsx")
 
