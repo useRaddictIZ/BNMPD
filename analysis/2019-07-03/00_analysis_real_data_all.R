@@ -1,6 +1,15 @@
-########## DESCRIPTIVE DATA ANALYSIS of CALIFORNIA ENERGY TIME SERIES ##########
+# Data transformations ----------------------------------------------------
+# This file manipulates the raw energy consumption data from the file
+# "TS_EIA_Consumption_renamed.xlsx".
+#   1. It merges the different types of energy renewables into one variable
+#   termed renewable.
+#   2. It prepares the dataset containing all states of the US as well as
+#   the subset of California and Texas to have regressor variable columns
+#   filled with NA, so values for these variables can be copy pasted into
+#   the resulting *.xlsx-files.
 source("R/helper/00_helper_data_analyze_plots.R")
-source("R/helper/00_helper_lib_load.R.R")
+source("R/helper/00_helper_lib_load.R")
+# @0: reading the raw data
 data_all_states <- readxl::read_xlsx("data/raw/TS_EIA_Consumption_renamed.xlsx")
 data_mwatts <- data_all_states %>%
   select(State, Year_t, everything()) %>%
@@ -9,7 +18,12 @@ data_mwatts <- data_all_states %>%
   drop_na(CLEIB) %>%
   mutate_at(vars(CLEIB, NGEIB, PAEIB, HYEGB, NUEGB, WWEIB, GEEGB, SOEGB, WYEGB),
             as.double)
-# grouping with renewables = WWEIB + GEEGB + SOEGB + WYEGB
+#
+#
+#
+#
+#
+# @1.: grouping with renewables = WWEIB + GEEGB + SOEGB + WYEGB
 data_mwatts_merged <- data_mwatts %>%
   mutate(renewables = WWEIB + GEEGB + SOEGB + WYEGB) %>%
   select(State, Year_t, CLEIB, NGEIB, PAEIB, HYEGB, NUEGB, renewables, Sum)
@@ -32,22 +46,51 @@ data_mwatts_merged_shares <- data_mwatts_merged %>%
 # IT'S NOT! Bugfix in dplyr!!! Ayway, for our purposes it's fine as we use the
 # true shares which indeed sum to 1. It's the Sum_share column that has the
 # overflow problem
+#
+#
+#
+#
+#
+# @2: defining data subsets (CA and TX only) and adding col-names for regressor
+# values
 data_energy_ts <- data_mwatts_merged_shares
-dim(data_energy_ts)
-# plot naming -------------------------------------------------------------
-energy_fractions <- names(data_energy_ts)[10:15]
-names_energy_fractions <- names(data_energy_ts)[3:8]
-names_states <- unique(data_energy_ts$State)
-num_states <- length(names_states)
-plot_list <- rep(list(list()), times = num_states)
-# all energy types jointly ------------------------------------------------
-for (i in 1:num_states) {
-  plot_list[[i]] <- generate_plot_ts_shares(data_energy_ts,
-                                            name_state = names_states[i],
-                                            energy_types = energy_fractions,
-                                            names_energy_types = names_energy_fractions)
-  name <- paste0("results/analysis_data_plots/TS_EIA_Consumption_renamed/",
-                 names_states[i], ".pdf")
-  ggsave(name, plot = plot_list[[i]])
-  print(paste0(round(i/num_states, digits = 4)*100,"%"))
-}
+len_data_energy_ts <- nrow(data_energy_ts)
+data_energy_ts_ca_tx <- data_energy_ts %>% filter(State %in% c("CA", "TX"))
+len_data_energy_ts_ca_tx <- nrow(data_energy_ts_ca_tx)
+
+reg_vals_all_na <-  rep("NA", times = len_data_energy_ts)
+reg_vals_ca_tx_na <- rep("NA", times = len_data_energy_ts_ca_tx)
+# dummy_wholesale_market_restructurin <-
+
+
+reg_names_all_states_model_01 <- data.frame(price_NUEGB = reg_vals_all_na,
+                                            price_renewables = reg_vals_all_na,
+                                            price_CLEIB = reg_vals_all_na,
+                                            price_NGEIB = reg_vals_all_na,
+                                            price_PAEIB = reg_vals_all_na,
+                                            price_HYEGB = reg_vals_all_na,
+                                            dummy_wholesale_market_restructuring = reg_vals_all_na,
+                                            dummy_1978 = reg_vals_all_na,
+                                            dummy_tech_util = reg_vals_all_na,
+                                            LCOE = reg_vals_all_na,
+                                            ROI = reg_vals_all_na,
+                                            DSIRE = reg_vals_all_na)
+reg_names_ca_tx_model_01 <- data.frame(price_NUEGB = reg_vals_ca_tx_na,
+                                       price_renewables = reg_vals_ca_tx_na,
+                                       price_CLEIB = reg_vals_ca_tx_na,
+                                       price_NGEIB = reg_vals_ca_tx_na,
+                                       price_PAEIB = reg_vals_ca_tx_na,
+                                       price_HYEGB = reg_vals_ca_tx_na,
+                                       dummy_wholesale_market_restructuring = reg_vals_ca_tx_na,
+                                       dummy_1978 = reg_vals_ca_tx_na,
+                                       dummy_tech_util = reg_vals_ca_tx_na,
+                                       LCOE = reg_vals_ca_tx_na,
+                                       ROI = reg_vals_ca_tx_na,
+                                       DSIRE = reg_vals_ca_tx_na)
+
+data_energy_ts <- cbind(data_energy_ts, reg_names_all_states_model_01)
+data_energy_ts_ca_tx <- cbind(data_energy_ts_ca_tx, reg_names_ca_tx_model_01)
+
+write_csv(data_energy_ts, path = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_all_states.xlsx")
+write_csv(data_energy_ts_ca_tx, path = "data/tidy/test_data_from_analysis_2019-07-03/data_energy_ca_tx.xlsx")
+
