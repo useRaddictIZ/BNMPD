@@ -1,13 +1,17 @@
 ############################## PGAS for KZ model ###############################
 rm(list = ls())
-# R.utils::sourceDirectory(path = paste0(getwd(),"/R/"))
-sapply(paste0(getwd(),"/R/", list.files(paste0(getwd(),"/R/"), recursive = TRUE)), source)
+source_all <- function() {
+  dir <- paste0(getwd(),"/R/")
+  file_names <- paste0(dir, list.files(dir, recursive = TRUE))
+  invisible(sapply(file_names, source))
+}
+source_all()
 # PGAS run ----------------------------------------------------------------
 simulate_data <- T
 init_at_true  <- F
-pgas_run      <- T
+pgas_run      <- F
 if (simulate_data) {
-  set.seed(139423) # set.seed(3) #
+  set.seed(2016)# set.seed(42) # set.seed(3) # set.seed(139423) # T=100,50,200 don't "really" work
   source("./analysis/2019-06-22/00_settings_simulation_data.R")
   source("./analysis/2019-06-22/00_settings_simulation_init.R")
 } else {
@@ -25,7 +29,7 @@ if (pgas_run) {
                    filtering = TRUE,
                    num_plots_states = 1)
 } else {
-  out_gibbs <- pgas(N = num_particles, MM = num_mcmc, TT = TT,
+  out_gibbs <- pgas(N = num_particles, MM = 5000, TT = TT,
                     y = y_t,
                     Za1 = za1_t, Za2 = za2_t,
                     Za4 = za4_t, Za3 = za3_t, Za5 = za5_t,

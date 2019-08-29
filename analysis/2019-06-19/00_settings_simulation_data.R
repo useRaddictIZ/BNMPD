@@ -1,22 +1,27 @@
 # 1. Set up parameter values ----------------------------------------------
 # I. xa1_t process parameters:
 true_sig_sq_xa1 <- 0.01       # True latent state process noise variance
+# true_sig_sq_xa1 <- 0.1
 true_phi_xa1    <- 0.5        # True autoregressive parameter for states
 true_bet_xa1    <- c(-2.5, 3) # True regressor coefficients for states
 # II. xa2_t process parameters:
 true_sig_sq_xa2 <- 0.01
+# true_sig_sq_xa2 <- 0.1
 true_phi_xa2    <- 0.5
 true_bet_xa2    <- c(2, -1)
 # III. xa3_t process parameters:
 true_sig_sq_xa3 <- 0.01
+# true_sig_sq_xa3 <- 0.1
 true_phi_xa3    <- 0.5
 true_bet_xa3    <- c(-3, 4)
 # IV. xa4_t process parameters:
 true_sig_sq_xa4 <- 0.01
+# true_sig_sq_xa4 <- 0.1
 true_phi_xa4    <- 0.5
 true_bet_xa4    <- c(4, -5)
 # IV. xa5_t process parameters:
 true_sig_sq_xa5 <- 0.01
+# true_sig_sq_xa5 <- 0.1
 true_phi_xa5    <- 0.5
 true_bet_xa5    <- c(-1, 1.5)
 # V. Merging true parameters
@@ -28,9 +33,10 @@ par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
 # 2. Data settings --------------------------------------------------------
 TT         <- 50     # Length of data record
 D          <- 5      # Number of fractions (dimension of Dirichelet distr.)
-dirichlet_levels <- (10*1:5)*c(log(2:6))
+dirichlet_levels <- (10*1:5)*c(log(2:6)) # dirichlet_levels <- (10*c(5,2:5))*c(log(2:6))
 # 3. Generate data --------------------------------------------------------
-dataSim <- generate_data(par_true = par_true,
+dataSim <- generate_data(data_type = "mult-diri",
+                         par_true = par_true,
                          T = TT,
                          D = D,
                          x_levels = dirichlet_levels,
@@ -49,3 +55,12 @@ za2_t <- dataSim[[3]][[2]]
 za3_t <- dataSim[[3]][[3]]
 za4_t <- dataSim[[3]][[4]]
 za5_t <- dataSim[[3]][[5]]
+num_counts <- dataSim[[4]]
+
+# In case of a policy dummy, we have some adjustement here
+# # true_bet_xa3 <- c(-2, true_bet_xa3)
+# par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
+#                  list(true_sig_sq_xa2, true_phi_xa2, true_bet_xa2),
+#                  list(true_sig_sq_xa3, true_phi_xa3, true_bet_xa3),
+#                  list(true_sig_sq_xa4, true_phi_xa4, true_bet_xa4),
+#                  list(true_sig_sq_xa5, true_phi_xa5, true_bet_xa5))

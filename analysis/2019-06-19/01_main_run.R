@@ -1,21 +1,17 @@
 ############################## PGAS for KZ model ###############################
 rm(list = ls())
-source("./R/helper/00_helper_lib_load.R")
-source("./R/helper/00_helper_model_fcts.R")
-source("./R/helper/00_helper_simulation_data.R")
-source("./R/helper/99_helper_diagnostics_general.R")
-source("./R/helper/99_helper_diagnostics_simul_data.R")
-
-source("./R/helper/01_helper_cBPF_as.R")
-source("./R/helper/02_helper_pgas.R")
-source("./R/01_cBPF_as.R")
-source("./R/02_pgas.R")
+source_all <- function() {
+  dir <- paste0(getwd(),"/R/")
+  file_names <- paste0(dir, list.files(dir, recursive = TRUE))
+  invisible(sapply(file_names, source))
+}
+source_all()
 # PGAS run ----------------------------------------------------------------
 simulate_data <- T
 init_at_true  <- F
-pgas_run      <- T
+pgas_run      <- F
 if (simulate_data) {
-  set.seed(139423) # set.seed(3) #
+  set.seed(2016)# set.seed(42) # set.seed(3) # set.seed(139423) # T=100,50,200 don't "really" work
   source("./analysis/2019-06-19/00_settings_simulation_data.R")
   source("./analysis/2019-06-19/00_settings_simulation_init.R")
 } else {
