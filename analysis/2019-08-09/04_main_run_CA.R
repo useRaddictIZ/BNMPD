@@ -6,7 +6,7 @@ source_all <- function() {
   invisible(sapply(file_names, source))
 }
 source_all()
-set.seed(123)
+# set.seed(123)
 # PGAS run ----------------------------------------------------------------
 simulate_data <- F
 init_at_true  <- F
@@ -14,18 +14,17 @@ pgas_run      <- T
 state_run     <- "CA"
 if (simulate_data) {
   set.seed(2016)# set.seed(42) # set.seed(3) # set.seed(139423) # T=100,50,200 don't "really" work
-  source("./analysis/2019-08-09/00_settings_simulation_data.R")
-  source("./analysis/2019-08-09/00_settings_simulation_init.R")
+  source("./analysis/2019-08-09/02_simulation_data.R")
+  source("./analysis/2019-08-09/02_simulation_init.R")
 } else {
   # dep_scale <- 1e2
-  source("./analysis/2019-08-09/00_preparation_real_data.R")
-  data_CA <- read_xlsx("data/tidy/shares_mwatts_prices/data_test_01_CA.xlsx")
-  data_TX <- read_xlsx("data/tidy/shares_mwatts_prices/data_test_01_TX.xlsx")
+  # source("./analysis/2019-08-09/00_preparation_real_data.R")
+  # data_CA <- read_xlsx("data/tidy/shares_mwatts_prices/data_test_01_CA.xlsx")
+  # data_TX <- read_xlsx("data/tidy/shares_mwatts_prices/data_test_01_TX.xlsx")
+  data_current <- data_current <- haven::read_dta("./data/uspp_aggregated_final.dta")
+  data_current <- data_current %>% filter(state == state_run)
 }
-if (state_run == "CA") {
-  data_current <- data_CA
-}
-source("./analysis/2019-08-09/00_settings_real_data_init.R")
+source("./analysis/2019-08-09/03_real_data_init.R")
 out_pgas_CA <- pgas(N = num_particles, MM = num_mcmc, TT = TT,
                     y = y_t,
                     Za1 = za1_t, Za2 = za2_t,
@@ -36,4 +35,4 @@ out_pgas_CA <- pgas(N = num_particles, MM = num_mcmc, TT = TT,
                     traj_init = states_init,
                     filtering = TRUE,
                     num_plots_states = 20)
-source("./analysis/2019-08-09/99_analysis_convergence_run.R")
+source("./analysis/2019-08-09/99_analyze_convergence.R")
