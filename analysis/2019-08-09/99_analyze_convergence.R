@@ -1,5 +1,3 @@
-library(tidyverse)
-library(gridExtra)
 if (simulate_data) {
   path_sim_res <- "~/Dropbox/research/KZ/results/simulations/2019-11-18/"
   res <- out_pgas_sim

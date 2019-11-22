@@ -1,25 +1,16 @@
-# Rcpp::sourceCpp("./src/cbpf_as_c.cpp")
-# set.seed(42)
-############################## PGAS for KZ model ###############################
+############################## Various tests for KZ model ###############################
 # library(colorout)
 rm(list = ls())
-# R.utils::sourceDirectory(path = paste0(getwd(),"/R/"))
 sapply(paste0(getwd(),"/R/", list.files(paste0(getwd(),"/R/"), recursive = TRUE)), source)
 sapply(paste0(getwd(),"/src/", list.files(paste0(getwd(),"/src/"), recursive = TRUE)), Rcpp::sourceCpp)
-# Analyse California data -------------------------------------------------
-simulate_data <- T
-init_at_true  <- F
-if (simulate_data) {
-  set.seed(139423) # set.seed(3) #
-  source("./tests/02_settings_simulation_data.R")
-  source("./tests/02_settings_simulation_init.R")
-} else {
-  source("./analysis/2019-06-22/00_settings_simulation_init.R")
-}
+set.seed(139423) # set.seed(3) #
+source("./tests/02_settings_simulation_data.R")
+source("./tests/02_settings_simulation_init.R")
+
 num_particles <- 200
 seed_nr <- 234
 set.seed(seed_nr)
-test_cpp <- cbpf_as_c(N = num_particles, TT = TT, num_counts = num_counts,
+test_cpp <- cbpf_as_c2(N = num_particles, TT = TT, num_counts = num_counts,
                       y = y_t,
                       Za1 = za1_t,
                       Za2 = za2_t,
@@ -88,8 +79,8 @@ print(all.equal(test_cpp, test_r))
 test_cpp[[1]][, 1] == test_r[[1]][, 1]
 n_particles_testing <- 1e6
 microbenchmark::microbenchmark(
-  cpp1 =
-cbpf_as_c(N = n_particles_testing, TT = TT, num_counts,
+rcpp =
+cbpf_as_c2(N = n_particles_testing, TT = TT, num_counts,
                 y = y_t,
                 Za1 = za1_t,
                 Za2 = za2_t,
@@ -121,8 +112,8 @@ cbpf_as_c(N = n_particles_testing, TT = TT, num_counts,
                 xa4_r = 1:TT,
                 xa5_r = 1:TT,
                 xa6_r = 1:TT),
-  cpp2 =
-cbpf_as_c2(N = n_particles_testing, TT = TT, num_counts,
+arma =
+cbpf_as_c3(N = n_particles_testing, TT = TT, num_counts,
                 y = y_t,
                 Za1 = za1_t,
                 Za2 = za2_t,
@@ -263,28 +254,28 @@ cBPF_as_test(N = n_particles_testing, TT = TT, num_counts = num_counts,
 #         x_tt_5,
 #         x_tt_6,
 #         num_counts[1]))
-w_BPF2 <- function(y, N, xa1, xa2, xa3, xa4, xa5, xa6, num_counts, D = 6) {
-   alphas <- matrix(c(exp(xa1), exp(xa2), exp(xa3),
-                      exp(xa4), exp(xa5), exp(xa6)),
-                    nrow = N,
-                    ncol = D)
-   # log_Balpha <- rowSums(lgamma(alphas)) - lgamma(rowSums(alphas))
-   # log_denom  <- (alphas - 1) %*% t(log(y))
-   # w <- log_denom - log_Balpha
-   # browser()
-   ys <- matrix(rep(as.vector(y), times = N), ncol = D, nrow = N, byrow = TRUE)
-   log_lhs <- (lgamma(.rowSums(x = alphas, m = N, n = D)) -
-                  lgamma(.rowSums(x = alphas, m = N, n = D) + num_counts))
-   log_rhs <- .rowSums(lgamma(alphas + ys) - lgamma(alphas),
-                         m = N, n = D)
-   w_log <- log_lhs + log_rhs
-   # if (sum(is.nan(w) | is.na(w))) {
-   #   stop("NAN or NA values in weight computation!")
-   # }
-   w_max   <- max(w_log)
-   w_tilde <- exp(w_log - w_max)
-   w_tilde/sum(w_tilde)
- }
+# w_BPF2 <- function(y, N, xa1, xa2, xa3, xa4, xa5, xa6, num_counts, D = 6) {
+#    alphas <- matrix(c(exp(xa1), exp(xa2), exp(xa3),
+#                       exp(xa4), exp(xa5), exp(xa6)),
+#                     nrow = N,
+#                     ncol = D)
+#    # log_Balpha <- rowSums(lgamma(alphas)) - lgamma(rowSums(alphas))
+#    # log_denom  <- (alphas - 1) %*% t(log(y))
+#    # w <- log_denom - log_Balpha
+#    # browser()
+#    ys <- matrix(rep(as.vector(y), times = N), ncol = D, nrow = N, byrow = TRUE)
+#    log_lhs <- (lgamma(.rowSums(x = alphas, m = N, n = D)) -
+#                   lgamma(.rowSums(x = alphas, m = N, n = D) + num_counts))
+#    log_rhs <- .rowSums(lgamma(alphas + ys) - lgamma(alphas),
+#                          m = N, n = D)
+#    w_log <- log_lhs + log_rhs
+#    # if (sum(is.nan(w) | is.na(w))) {
+#    #   stop("NAN or NA values in weight computation!")
+#    # }
+#    w_max   <- max(w_log)
+#    w_tilde <- exp(w_log - w_max)
+#    w_tilde/sum(w_tilde)
+#  }
 # states_init <- 1:NN
 # set.seed(42)
 # x_tt_test <- rnorm(TT)
@@ -398,7 +389,7 @@ w_BPF2 <- function(y, N, xa1, xa2, xa3, xa4, xa5, xa6, num_counts, D = 6) {
 #                  test_cpp[[5]][, zahl],
 #                  test_cpp[[6]][, zahl],
 #                  test_cpp[[7]][, zahl],
-                 num_counts[zahl])[5])
+                 # num_counts[zahl])[5])
 
 # print(all.equal(test_cpp[[1]], test_r[[1]]))
 # print(all.equal(test_cpp[[2]], test_r[[2]]))

@@ -29,7 +29,7 @@ for (i in 1:num_states) {
                                      name_state = names_states[i],
                                      ts = prices_to_plot,
                                      names_ts = names_prices)
-  name <- paste0("results/analysis_data_plots/uspp_aggregated_final/",
+  name <- paste0("results/descriptive/uspp_aggregated_final_plots/",
                  names_states[i], "_03_prices.pdf")
   ggsave(name, plot = plot_list[[i]],  width = 8.27, height = 11.69, units = "in")
   print(paste0(round(i/num_states, digits = 4)*100, "%", "for price plots!"))
@@ -50,7 +50,7 @@ for (i in 1:num_states) {
                                      name_state = names_states[i],
                                      ts = energy_fractions,
                                      names_ts = names_energy_fractions)
-  name <- paste0("results/analysis_data_plots/uspp_aggregated_final/",
+  name <- paste0("results/descriptive/uspp_aggregated_final_plots/",
                  names_states[i], "_02_shares.pdf")
   ggsave(name, plot = plot_list[[i]],  width = 8.27, height = 11.69, units = "in")
   print(paste0(round(i/num_states, digits = 4)*100, "%", "for share plots!"))
@@ -64,7 +64,7 @@ for (i in 1:num_states) {
                                           ts_1 = energy_fractions,
                                           ts_2 = prices_to_plot,
                                           names_ts = names_energy_fractions)
-  name <- paste0("results/analysis_data_plots/uspp_aggregated_final/",
+  name <- paste0("results/descriptive/uspp_aggregated_final_plots/",
                  names_states[i], "_01_both.pdf")
   ggsave(name, plot = plot_list[[i]],  width = 8.27, height = 11.69, units = "in")
   print(paste0(round(i/num_states, digits = 4)*100, "%", "for both plots!"))

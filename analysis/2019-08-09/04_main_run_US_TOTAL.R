@@ -14,7 +14,7 @@ source_all()
 # set.seed(123)
 # PGAS run ----------------------------------------------------------------
 pgas_run      <- T
-state_run     <- "CA"
+state_run     <- "US"
 data_current <- data_current <- haven::read_dta("./data/uspp_aggregated_final.dta")
 data_current <- data_current %>% filter(state == state_run)
 source("./analysis/2019-08-09/03_real_data_init.R")
