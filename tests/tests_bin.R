@@ -1,3 +1,30 @@
+Sigma <- matrix(rep(3, times = 25), 5, 5)
+
+microbenchmark::microbenchmark(mvrnorm(n = 10, rep(0, 5), Sigma), rmvnorm(n = 10, rep(0, 5), Sigma))
+
+
+set.seed(123)
+test_vec1 <- mvrnorm(n = 10000, c(1.5, 2.5), Sigma)
+colMeans(test_vec1)
+apply(test_vec1, 2, var)
+set.seed(123)
+test_vec2 <- rmvnorm(n = 10000, c(1.5, 2.5), Sigma)
+colMeans(test_vec2)
+apply(test_vec2, 2, var)
+
+set.seed(4)
+n <- 6
+A <- matrix(runif(n^2)*2 - 1, ncol = n)
+Sigma <- t(A) %*% A
+set.seed(123)
+test_a <- mvrnorm_c(mu = as.vector(pgas2c[[1]]), Sigma = pgas2c[[2]])
+set.seed(123)
+test_b <- mvrnorm(mu = as.vector(pgas2R[[1]]), Sigma = pgas2R[[2]])
+all.equal(as.vector(test_a), test_b)
+
+
+
+
 # microbenchmark::microbenchmark(colSums(x_test * (solve(A_test) %*% x_test)),
 #                                crossprod(crossprod(solve(A_test), x_test), x_test),
 #                                .colSums(x_test * (solve(A_test) %*% x_test), 5000, 1))

@@ -37,7 +37,7 @@ par_true <- list(list(true_sig_sq_xa1, true_phi_xa1, true_bet_xa1),
                  list(true_sig_sq_xa5, true_phi_xa5, true_bet_xa5),
                  list(true_sig_sq_xa6, true_phi_xa6, true_bet_xa6))
 # 2. Data settings --------------------------------------------------------
-TT         <- 5     # Length of data record
+TT         <- 20     # Length of data record
 D          <- 6      # Number of fractions (dimension of Dirichelet distr.)
 dirichlet_levels <- (10*1:6)*c(log(2:7)) # dirichlet_levels <- (10*c(5,2:6))*c(log(2:7))
 # 3. Generate data --------------------------------------------------------

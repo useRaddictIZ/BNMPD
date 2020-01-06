@@ -3,68 +3,81 @@
 #include <RcppArmadilloExtensions/sample.h>
 // [[Rcpp::depends(RcppArmadillo)]]
 using namespace Rcpp;
+using namespace arma;
 
 // [[Rcpp::export]]
-arma::vec w_as_c(const arma::mat& mean_diff,
-                 const arma::rowvec& vcm_diag,
-                 const arma::vec& log_weights) {
-  int len = mean_diff.n_rows;
-  int len2 = mean_diff.n_cols;
-  double w_as_max;
-  arma::vec w_as(len);
-  arma::mat w_as2(len, len2);
-  // w_as2 = arma::as_scalar(dot(mean_diff.row(0), vcm_diag % mean_diff.row(0)));
-  for(int i = 0;  i<len; i++) {
-    // w_as2.row(i) =  -0.5*(vcm_diag % mean_diff.row(i));
-    w_as(i) =  -0.5*arma::as_scalar(dot(mean_diff.row(i), vcm_diag % mean_diff.row(i)));
-  }
-  w_as = w_as + log_weights;
-  w_as_max = w_as.max();
-  w_as =  arma::exp(w_as - w_as_max);
-  return w_as/sum(w_as);
+// C++11 only example
+
+arma::mat testf(arma::mat A){
+  // A.transform( [](double val) { return (val + 123.0); } );
+  A.transform( [](double val) {return(round(val*1000)/1000);});
+  return(A);
 }
 
-//[[Rcpp::export]]
-List test_list(arma::vec x, arma::vec y){
-  List my_list = List::create(2);
-  return  List::create(x, y);
-}
+// add 123 to every element
 
 
-// [[Rcpp::export]]
-NumericVector sample_cpp(const int num) {
-  NumericVector out(num);
-  IntegerVector frame = seq_len(num);
-  NumericVector weights_current(num, 1.0/num);
-  // weights_current = single_weights_current;
-  // out = sample(num, num, true, weights_current);
-  out = RcppArmadillo::sample(frame, num, false, weights_current);
-  return(out);
-}
-
-// [[Rcpp::export]]
-NumericVector sample_cpp2(const int num) {
-  NumericVector out(num);
-  IntegerVector frame = seq_len(num);
-  NumericVector weights_current(num, 1.0/num);
-  // weights_current = single_weights_current;
-  out = sample(num, num, true, weights_current);
-  // out = RcppArmadillo::sample(frame, num, false, weights_current);
-  return(out);
-}
-
-//[[Rcpp::export]]
-double sample_one_cpp2(const int num) {
-  NumericVector out(num);
-  double out2;
-  IntegerVector frame = seq_len(num);
-  NumericVector weights_current(num, 1.0/num);
-  // weights_current = single_weights_current;
-  out = sample(num, 1, true, weights_current);
-  out2 = out(0);
-  // out = RcppArmadillo::sample(frame, num, false, weights_current);
-  return(out2);
-}
+// // [[Rcpp::export]]
+// arma::vec w_as_c(const arma::mat& mean_diff,
+//                  const arma::rowvec& vcm_diag,
+//                  const arma::vec& log_weights) {
+//   int len = mean_diff.n_rows;
+//   int len2 = mean_diff.n_cols;
+//   double w_as_max;
+//   arma::vec w_as(len);
+//   arma::mat w_as2(len, len2);
+//   // w_as2 = arma::as_scalar(dot(mean_diff.row(0), vcm_diag % mean_diff.row(0)));
+//   for(int i = 0;  i<len; i++) {
+//     // w_as2.row(i) =  -0.5*(vcm_diag % mean_diff.row(i));
+//     w_as(i) =  -0.5*arma::as_scalar(dot(mean_diff.row(i), vcm_diag % mean_diff.row(i)));
+//   }
+//   w_as = w_as + log_weights;
+//   w_as_max = w_as.max();
+//   w_as =  arma::exp(w_as - w_as_max);
+//   return w_as/sum(w_as);
+// }
+//
+// //[[Rcpp::export]]
+// List test_list(arma::vec x, arma::vec y){
+//   List my_list = List::create(2);
+//   return  List::create(x, y);
+// }
+//
+//
+// // [[Rcpp::export]]
+// NumericVector sample_cpp(const int num) {
+//   NumericVector out(num);
+//   IntegerVector frame = seq_len(num);
+//   NumericVector weights_current(num, 1.0/num);
+//   // weights_current = single_weights_current;
+//   // out = sample(num, num, true, weights_current);
+//   out = RcppArmadillo::sample(frame, num, false, weights_current);
+//   return(out);
+// }
+//
+// // [[Rcpp::export]]
+// NumericVector sample_cpp2(const int num) {
+//   NumericVector out(num);
+//   IntegerVector frame = seq_len(num);
+//   NumericVector weights_current(num, 1.0/num);
+//   // weights_current = single_weights_current;
+//   out = sample(num, num, true, weights_current);
+//   // out = RcppArmadillo::sample(frame, num, false, weights_current);
+//   return(out);
+// }
+//
+// //[[Rcpp::export]]
+// double sample_one_cpp2(const int num) {
+//   NumericVector out(num);
+//   double out2;
+//   IntegerVector frame = seq_len(num);
+//   NumericVector weights_current(num, 1.0/num);
+//   // weights_current = single_weights_current;
+//   out = sample(num, 1, true, weights_current);
+//   out2 = out(0);
+//   // out = RcppArmadillo::sample(frame, num, false, weights_current);
+//   return(out2);
+// }
 //
 // //[[Rcpp::export]]
 // List testf(int TT) {
