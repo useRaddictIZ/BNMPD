@@ -5,7 +5,8 @@ set.seed(139423) # set.seed(3) #
 init_at_true <- TRUE
 source("./tests/02_settings_simulation_data.R")
 source("./tests/02_settings_simulation_init.R")
-
+Rcpp::sourceCpp("tests/pgas_testing_rcpp_versions.cpp")
+sourceCpp("tests/pgas_testing_R_versions.R")
 seed_nr <- 234
 # set.seed(seed_nr)
 # out_pgas_sim1 <- pgas1(N = 10, MM = num_mcmc, TT = TT,
@@ -34,13 +35,14 @@ seed_nr <- 234
 par_init_cpp_version <- lapply(par_init, unlist)
 par_init_cpp_version2 <- par_init_cpp_version
 set.seed(seed_nr)
-pgas2c <- pgas2_full(10, TT, num_mcmc, y_t, num_counts,
+system.time(
+pgas2c <- pgas2_full(10000, TT, num_mcmc, y_t, num_counts,
                      za1_t, za2_t, za3_t, za4_t, za5_t, za6_t,
                      c(prior_a, prior_b),
                      par_init_cpp_version2,
-                     deviate_states_init)
+                     deviate_states_init))
 # all.equal(pgas2c2, pgas2c[1:6])
-print(pgas2c)
+# print(pgas2c)
 set.seed(seed_nr)
 pgas2R <- pgas2(N = 10, MM = num_mcmc, TT = TT,
                 y = y_t, num_counts = num_counts,
@@ -52,11 +54,11 @@ pgas2R <- pgas2(N = 10, MM = num_mcmc, TT = TT,
                 traj_init = deviate_states_init,
                 filtering = TRUE,
                 num_plots_states = 20)
-print(pgas2R)
-all.equal(unlist(pgas2c), unlist(pgas2R))
-all.equal(unlist(pgas2c[1:18]), unlist(pgas2R[1:18]))
-max_print <- length(pgas2c)
-for (i in 1:1) {
+# print(pgas2R)
+all.equal(unname(unlist(pgas2c)), unlist(pgas2R))
+# all.equal(unlist(pgas2c[1:18]), unlist(pgas2R[1:18]))
+# max_print <- length(pgas2c)
+for (i in 7:8) {
   print(pgas2c[[i]])
   print(pgas2R[[i]])
 }
