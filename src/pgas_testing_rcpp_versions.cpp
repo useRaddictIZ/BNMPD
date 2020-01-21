@@ -780,7 +780,7 @@ List pgas2_full(const int& N,
                 const mat& Za6,
                 const vec& priors,
                 const List& par_init,
-                const vec& traj_init) {
+                const List& traj_init) {
   // par_true = NULL,
   // filtering = TRUE,
   // num_plots_states
@@ -873,8 +873,8 @@ List pgas2_full(const int& N,
   // Xa6.row(0) = temp_vec_row;
   temp_vec_col.set_size(TT);
   for (int d = 1; d < D+1; ++d) {
-    temp_vec_col.fill(traj_init(d-1));
-    // temp_vec_col = as<vec>(traj_init(d-1));
+    // temp_vec_col.fill(traj_init(d-1));
+    temp_vec_col = as<vec>(traj_init(d-1));
     Xa.submat(TT*(d -1), 0, TT*d - 1, 0) = temp_vec_col;
   }
   // Initialize helper/garbage II
@@ -961,20 +961,20 @@ List pgas2_full(const int& N,
       sig_sq_x(d, m)  = 1/randg<double>(distr_param(prior_a, 1.0/(prior_b + err_siq_sq_x)));;
       Omega_xa(d, 0)  = inv((trans(Z.cols(id_zet(d), id_zet(d + 1) - 1)) * Z.cols(id_zet(d), id_zet(d + 1) - 1))/sig_sq_x(d, m) + prior_V_xa1);
       mu_xa(d, 0) = Omega_xa(d, 0) * (trans(Z.cols(id_zet(d), id_zet(d + 1) - 1)) * temp_vec_col)/sig_sq_x(d, m);
-      // // mu_xa(d, 0) = mvrnorm_c(mu_xa(d, 0), Omega_xa(d, 0));
+      // mu_xa(d, 0) = mvrnorm_c(mu_xa(d, 0), Omega_xa(d, 0));
       mu_xa(d, 0) = mvnrnd(mu_xa(d, 0), Omega_xa(d, 0));
       phi_x(d, m) =  (mu_xa(d, 0))(0);
-      bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m) =  (mu_xa(d, 0)).subvec(1, (D - 1));
+      bet.submat(id_bet(d),  m, id_bet(d + 1) - 1,  m) =  (mu_xa(d, 0)).subvec(1, (D - 1));
     }
-  //   // double digits = 1000;
-  //   // sig_sq_x(2, m) = round(sig_sq_x(2, m)*digits)/digits;
-  //   // phi_x(2, m) = round(phi_x(2, m)*digits)/digits;
-  //   // bet.submat(id_bet(2), m, id_bet(2 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
-  //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //   // bet.submat(id_bet(0), m, id_bet(0 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
-  //   // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
-  //   // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
-  //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // double digits = 1000;
+    // sig_sq_x(2, m) = round(sig_sq_x(2, m)*digits)/digits;
+    // phi_x(2, m) = round(phi_x(2, m)*digits)/digits;
+    // bet.submat(id_bet(2), m, id_bet(2 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
+    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // bet.submat(id_bet(0), m, id_bet(0 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
+    // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
+    // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
+    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     out_cPF = cbpf_as_c3_full(N, TT,
                               num_counts, y,
                               Za1, Za2, Za3, Za4, Za5, Za6,
@@ -1008,34 +1008,33 @@ List pgas2_full(const int& N,
     Xa.submat(TT*3, m, TT*4 - 1, m)= out_cPF.col(3);
     Xa.submat(TT*4, m, TT*5 - 1, m)= out_cPF.col(4);
     Xa.submat(TT*5, m, TT*6 - 1, m)= out_cPF.col(5);
-  //
+
     Rprintf("Iteration number: %u \n", m);
   }
-  // List all_traj(D);
-  // for (int d = 0; d<D; ++d){
-  //   all_traj(d) = Xa.submat(TT*d, 0, TT*(d + 1) - 1, MM - 1);
-  // }
-  // return(List::create(
-  // Rcpp::Named("sigma_sq_xa1") = sig_sq_x.row(0),
-  // Rcpp::Named("phi_xa1") = phi_x.row(0),
-  // Rcpp::Named("bet_xa1") = bet.submat(id_bet(0), 0, id_bet(0 + 1) - 1, MM - 1),
-  // Rcpp::Named("sigma_sq_xa2") = sig_sq_x.row(1),
-  // Rcpp::Named("phi_xa2") = phi_x.row(1),
-  // Rcpp::Named("bet_xa2") = bet.submat(id_bet(1), 0, id_bet(1 + 1) - 1, MM - 1),
-  // Rcpp::Named("sigma_sq_xa3") = sig_sq_x.row(2),
-  // Rcpp::Named("phi_xa3") = phi_x.row(2),
-  // Rcpp::Named("bet_xa3") = bet.submat(id_bet(2), 0, id_bet(2 + 1) - 1, MM - 1),
-  // Rcpp::Named("sigma_sq_xa4") = sig_sq_x.row(3),
-  // Rcpp::Named("phi_xa4") = phi_x.row(3),
-  // Rcpp::Named("bet_xa4") = bet.submat(id_bet(3), 0, id_bet(3 + 1) - 1, MM - 1),
-  // Rcpp::Named("sigma_sq_xa5") = sig_sq_x.row(4),
-  // Rcpp::Named("phi_xa5") = phi_x.row(4),
-  // Rcpp::Named("bet_xa5") = bet.submat(id_bet(4), 0, id_bet(4 + 1) - 1, MM - 1),
-  // Rcpp::Named("sigma_sq_xa6") = sig_sq_x.row(5),
-  // Rcpp::Named("phi_xa6") = phi_x.row(5),
-  // Rcpp::Named("bet_xa6") = bet.submat(id_bet(5), 0, id_bet(5 + 1) - 1, MM - 1),
-  // Rcpp::Named("xtraj")  = all_traj));
-  return(List::create(1));
+  List all_traj(D);
+  for (int d = 0; d<D; ++d){
+    all_traj(d) = Xa.submat(TT*d, 0, TT*(d + 1) - 1, MM - 1);
+  }
+  return(List::create(
+  Rcpp::Named("sigma_sq_xa1") = sig_sq_x.row(0),
+  Rcpp::Named("phi_xa1") = phi_x.row(0),
+  Rcpp::Named("bet_xa1") = bet.submat(id_bet(0), 0, id_bet(0 + 1) - 1, MM - 1),
+  Rcpp::Named("sigma_sq_xa2") = sig_sq_x.row(1),
+  Rcpp::Named("phi_xa2") = phi_x.row(1),
+  Rcpp::Named("bet_xa2") = bet.submat(id_bet(1), 0, id_bet(1 + 1) - 1, MM - 1),
+  Rcpp::Named("sigma_sq_xa3") = sig_sq_x.row(2),
+  Rcpp::Named("phi_xa3") = phi_x.row(2),
+  Rcpp::Named("bet_xa3") = bet.submat(id_bet(2), 0, id_bet(2 + 1) - 1, MM - 1),
+  Rcpp::Named("sigma_sq_xa4") = sig_sq_x.row(3),
+  Rcpp::Named("phi_xa4") = phi_x.row(3),
+  Rcpp::Named("bet_xa4") = bet.submat(id_bet(3), 0, id_bet(3 + 1) - 1, MM - 1),
+  Rcpp::Named("sigma_sq_xa5") = sig_sq_x.row(4),
+  Rcpp::Named("phi_xa5") = phi_x.row(4),
+  Rcpp::Named("bet_xa5") = bet.submat(id_bet(4), 0, id_bet(4 + 1) - 1, MM - 1),
+  Rcpp::Named("sigma_sq_xa6") = sig_sq_x.row(5),
+  Rcpp::Named("phi_xa6") = phi_x.row(5),
+  Rcpp::Named("bet_xa6") = bet.submat(id_bet(5), 0, id_bet(5 + 1) - 1, MM - 1),
+  Rcpp::Named("xtraj")  = all_traj));
 }
 // double m1 = 0;
 // double m2 = 1;
