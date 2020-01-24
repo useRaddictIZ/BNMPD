@@ -131,16 +131,12 @@ arma::vec mvrnorm_c(const arma::vec& mu, const arma::mat& Sigma){
 }
 
 // [[Rcpp::export]]
-arma::mat cbpf_as_c2_full(const int& N,
+arma::mat cbpf_as_c4_full(const int& N,
                           const int& TT,
                           const arma::vec& num_counts,
                           const arma::mat& y,
-                          const arma::mat& Za1,
-                          const arma::mat& Za2,
-                          const arma::mat& Za3,
-                          const arma::mat& Za4,
-                          const arma::mat& Za5,
-                          const arma::mat& Za6,
+                          const arma::mat& Z,
+                          const arma::uvec& id_bet,
                           const double& sig_sq_xa1,
                           const double& sig_sq_xa2,
                           const double& sig_sq_xa3,
@@ -174,17 +170,30 @@ arma::mat cbpf_as_c2_full(const int& N,
   NumericVector mmu2(N);
 
   arma::vec Za1_beta1(TT);
-  Za1_beta1 = Za1 * bet_xa1;
+  Za1_beta1 = Z.submat(0, id_bet(0), TT - 1, id_bet(0 + 1) - 1) * bet_xa1;
   arma::vec Za2_beta2(TT);
-  Za2_beta2 = Za2 * bet_xa2;
+  Za2_beta2 = Z.submat(0, id_bet(1), TT - 1, id_bet(1 + 1) - 1) * bet_xa2;
   arma::vec Za3_beta3(TT);
-  Za3_beta3 = Za3 * bet_xa3;
+  Za3_beta3 = Z.submat(0, id_bet(2), TT - 1, id_bet(2 + 1) - 1) * bet_xa3;
   arma::vec Za4_beta4(TT);
-  Za4_beta4 = Za4 * bet_xa4;
+  Za4_beta4 = Z.submat(0, id_bet(3), TT - 1, id_bet(3 + 1) - 1) * bet_xa4;
   arma::vec Za5_beta5(TT);
-  Za5_beta5 = Za5 * bet_xa5;
+  Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_xa5;
   arma::vec Za6_beta6(TT);
-  Za6_beta6 = Za6 * bet_xa6;
+  Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_xa6;
+
+  // arma::vec Za1_beta1(TT);
+  // Za1_beta1 = Za1 * bet_xa1;
+  // arma::vec Za2_beta2(TT);
+  // Za2_beta2 = Za2 * bet_xa2;
+  // arma::vec Za3_beta3(TT);
+  // Za3_beta3 = Za3 * bet_xa3;
+  // arma::vec Za4_beta4(TT);
+  // Za4_beta4 = Za4 * bet_xa4;
+  // arma::vec Za5_beta5(TT);
+  // Za5_beta5 = Za5 * bet_xa5;
+  // arma::vec Za6_beta6(TT);
+  // Za6_beta6 = Za6 * bet_xa6;
 
   double sdd = 0;
   double mmu = 0;
@@ -477,32 +486,16 @@ arma::mat cbpf_as_c2_full(const int& N,
   x_out.col(4) = xa5.row(b_draw).t();
   x_out.col(5) = xa6.row(b_draw).t();
   return (x_out);
-  // return (List::create(xa1.row(b_draw),
-  //                     xa2.row(b_draw),
-  //                     xa3.row(b_draw),
-  //                     xa4.row(b_draw),
-  //                     xa5.row(b_draw),
-  //                     xa6.row(b_draw)));
-  // return(List::create(w, xa1, xa2, xa3, xa4, xa5, xa6));
 }
 
 // [[Rcpp::export]]
-arma::mat cbpf_as_c3_full(const int& N,
+arma::mat cbpf_as_c5_full(const int& N,
                           const int& TT,
                           const arma::vec& num_counts,
                           const arma::mat& y,
-                          const arma::mat& Za1,
-                          const arma::mat& Za2,
-                          const arma::mat& Za3,
-                          const arma::mat& Za4,
-                          const arma::mat& Za5,
-                          const arma::mat& Za6,
-                          const double& sig_sq_xa1,
-                          const double& sig_sq_xa2,
-                          const double& sig_sq_xa3,
-                          const double& sig_sq_xa4,
-                          const double& sig_sq_xa5,
-                          const double& sig_sq_xa6,
+                          const arma::mat& Z,
+                          const arma::uvec& id_bet,
+                          const arma::vec&  sig_sq_x,
                           const double& phi_xa1,
                           const double& phi_xa2,
                           const double& phi_xa3,
@@ -521,31 +514,33 @@ arma::mat cbpf_as_c3_full(const int& N,
                           const arma::rowvec& xa4_r,
                           const arma::rowvec& xa5_r,
                           const arma::rowvec& xa6_r) {
+  const double& sig_sq_xa1 = sig_sq_x(0);
+  const double& sig_sq_xa2 = sig_sq_x(1);
+  const double& sig_sq_xa3 = sig_sq_x(2);
+  const double& sig_sq_xa4 = sig_sq_x(3);
+  const double& sig_sq_xa5 = sig_sq_x(4);
+  const double& sig_sq_xa6 = sig_sq_x(5);
   // bool filtering
   int D = y.n_cols;
   arma::uvec ind(N);
-  // NumericVector test_vec(N);
-  // arma::vec test_vec2(N);
-  // arma::uvec test_vec3(N);
   NumericVector mmu2(N);
 
   arma::vec Za1_beta1(TT);
-  Za1_beta1 = Za1 * bet_xa1;
+  Za1_beta1 = Z.submat(0, id_bet(0), TT - 1, id_bet(0 + 1) - 1) * bet_xa1;
   arma::vec Za2_beta2(TT);
-  Za2_beta2 = Za2 * bet_xa2;
+  Za2_beta2 = Z.submat(0, id_bet(1), TT - 1, id_bet(1 + 1) - 1) * bet_xa2;
   arma::vec Za3_beta3(TT);
-  Za3_beta3 = Za3 * bet_xa3;
+  Za3_beta3 = Z.submat(0, id_bet(2), TT - 1, id_bet(2 + 1) - 1) * bet_xa3;
   arma::vec Za4_beta4(TT);
-  Za4_beta4 = Za4 * bet_xa4;
+  Za4_beta4 = Z.submat(0, id_bet(3), TT - 1, id_bet(3 + 1) - 1) * bet_xa4;
   arma::vec Za5_beta5(TT);
-  Za5_beta5 = Za5 * bet_xa5;
+  Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_xa5;
   arma::vec Za6_beta6(TT);
-  Za6_beta6 = Za6 * bet_xa6;
+  Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_xa6;
 
   double sdd = 0;
   double mmu = 0;
   arma::vec eval_f(N);
-  // arma::vec eval_f2(N);
   // DATA CONTAINERS
   // particle containers for state processes:
   arma::mat xa1(N, TT);
@@ -562,7 +557,6 @@ arma::mat cbpf_as_c3_full(const int& N,
   double w_max;
   arma::vec w_norm(N);
   arma::vec w_log(N);
-  // NumericVector w_norm2(N);
   w_norm.fill(1.0/N);
   arma::mat w(N, TT);
   // ancestor weights
@@ -580,9 +574,7 @@ arma::mat cbpf_as_c3_full(const int& N,
   NumericVector b_draw_vec(1);
   int b_draw;
   // output containter
-  // mat x_out(D, TT);
   mat x_out(TT, D);
-  //
   // I. INITIALIZATION (t = 0)
   // Sampling initial condition from prior
   mmu = Za1_beta1[0]/(1.0 - phi_xa1);
@@ -757,43 +749,22 @@ arma::mat cbpf_as_c3_full(const int& N,
   x_out.col(4) = xa5.row(b_draw).t();
   x_out.col(5) = xa6.row(b_draw).t();
   return (x_out);
-  // return (List::create(xa1.row(b_draw),
-  //                     xa2.row(b_draw),
-  //                     xa3.row(b_draw),
-  //                     xa4.row(b_draw),
-  //                     xa5.row(b_draw),
-  //                     xa6.row(b_draw)));
-  // return(List::create(w, xa1, xa2, xa3, xa4, xa5, xa6));
 }
 
 //[[Rcpp::export]]
-List pgas2_full(const int& N,
-                const int& TT,
-                const int& MM,
-                const mat& y,
-                const vec& num_counts,
-                const mat& Za1,
-                const mat& Za2,
-                const mat& Za3,
-                const mat& Za4,
-                const mat& Za5,
-                const mat& Za6,
-                const vec& priors,
-                const List& par_init,
-                const List& traj_init) {
-  // par_true = NULL,
-  // filtering = TRUE,
-  // num_plots_states
+List pgas2_full_short(const int& N,
+                      const int& TT,
+                      const int& MM,
+                      const mat& y,
+                      const vec& num_counts,
+                      const mat& Z,
+                      const vec& priors,
+                      const List& par_init,
+                      const vec& traj_init) {
   int D = par_init.size();
   // Initialize result containers:
   vec w(N, fill::zeros);
   mat Xa(TT*D, MM, fill::zeros);
-  // mat Xa1(MM, TT, fill::zeros);
-  // mat Xa2(MM, TT, fill::zeros);
-  // mat Xa3(MM, TT, fill::zeros);
-  // mat Xa4(MM, TT, fill::zeros);
-  // mat Xa5(MM, TT, fill::zeros);
-  // mat Xa6(MM, TT, fill::zeros);
 
   mat phi_x(D, MM, fill::zeros);
   mat sig_sq_x(D, MM, fill::zeros);
@@ -819,7 +790,7 @@ List pgas2_full(const int& N,
   id_zet(0) = 0;
   id_zet.subvec(1, D) = cumsum(dim_pars - 1);
   // minus 2 because of minus phi and minus sigma
-  mat bet(sum(dim_pars) - 2*D, MM, fill::zeros);
+  mat bet(num_pars - 2*D, MM, fill::zeros);
   for(int d = 0; d < D; ++d) {
     temp_vec_col = as<vec>(par_init(d));
     int testval = temp_vec_col.n_rows - 1;
@@ -828,20 +799,20 @@ List pgas2_full(const int& N,
   // Initialize regressor containers:
   temp_vec_col.set_size(TT - 1);
   temp_vec_col.zeros();
-  mat Z;
-  Z = join_rows(temp_vec_col,
-                Za1.submat(1, 0, TT - 1, dim_pars(0) - 3),
-                temp_vec_col,
-                Za2.submat(1, 0, TT - 1, dim_pars(1) - 3));
-  Z = join_rows(Z, temp_vec_col,
-                Za3.submat(1, 0, TT - 1, dim_pars(2) - 3),
-                temp_vec_col);
-  Z = join_rows(Z,
-                Za4.submat(1, 0, TT - 1, dim_pars(3) - 3),
-                temp_vec_col,
-                Za5.submat(1, 0, TT - 1, dim_pars(4) - 3));
-  Z = join_rows(Z, temp_vec_col,
-                Za6.submat(1, 0, TT - 1, dim_pars(5) - 3));
+  mat Z_mcmc(TT - 1, num_pars -D*3);
+  Z_mcmc = join_rows(temp_vec_col,
+                     Z.submat(1, id_bet(0), TT - 1, id_bet(0 + 1) - 1),
+                     temp_vec_col,
+                     Z.submat(1, id_bet(1), TT - 1, id_bet(1 + 1) - 1));
+  Z_mcmc = join_rows(Z_mcmc, temp_vec_col,
+                     Z.submat(1, id_bet(2), TT - 1, id_bet(2 + 1) - 1),
+                     temp_vec_col);
+  Z_mcmc = join_rows(Z_mcmc,
+                     Z.submat(1, id_bet(3), TT - 1, id_bet(3 + 1) - 1),
+                     temp_vec_col,
+                     Z.submat(1, id_bet(4), TT - 1, id_bet(4 + 1) - 1));
+  Z_mcmc = join_rows(Z_mcmc, temp_vec_col,
+                     Z.submat(1, id_bet(5), TT - 1, id_bet(5 + 1) - 1));
   // Initialize priors:
   double prior_a = priors(0) + (TT - 1)/2.0;
   double prior_b = priors(1);
@@ -857,25 +828,21 @@ List pgas2_full(const int& N,
   mat prior_V_xa5 = diagmat(temp_vec_col);
   temp_vec_col = ones(dim_pars(5) - 1)/1000;
   mat prior_V_xa6 = diagmat(temp_vec_col);
-  // Initialize states
-  // I. Set states to deterministic starting values
-  // temp_vec_row.fill(traj_init(0));
-  // Xa1.row(0) = temp_vec_row;
-  // temp_vec_row.fill(traj_init(1));
-  // Xa2.row(0) = temp_vec_row;
-  // temp_vec_row.fill(traj_init(2));
-  // Xa3.row(0) = temp_vec_row;
-  // temp_vec_row.fill(traj_init(3));
-  // Xa4.row(0) = temp_vec_row;
-  // temp_vec_row.fill(traj_init(4));
-  // Xa5.row(0) = temp_vec_row;
-  // temp_vec_row.fill(traj_init(5));
-  // Xa6.row(0) = temp_vec_row;
-  temp_vec_col.set_size(TT);
-  for (int d = 1; d < D+1; ++d) {
-    // temp_vec_col.fill(traj_init(d-1));
-    temp_vec_col = as<vec>(traj_init(d-1));
-    Xa.submat(TT*(d -1), 0, TT*d - 1, 0) = temp_vec_col;
+  // Initialize states to deterministic starting values
+  double check_state_init_type;
+  check_state_init_type = traj_init.n_rows;
+  // I. If initialization of trajectory is one (consant) value for all t=1,...,TT per state d
+  if (check_state_init_type == D) {
+    temp_vec_col.set_size(TT);
+    for (int d = 1; d < D+1; ++d) {
+      temp_vec_col.fill(traj_init(d-1));
+      // temp_vec_col = as<vec>(traj_init(d-1));
+      Xa.submat(TT*(d -1), 0, TT*d - 1, 0) = temp_vec_col;
+    }
+  }
+  // II. If initialization of trajectory is one trajectory of length TT per state d
+  if (check_state_init_type == D*TT) {
+    Xa.col(0) = traj_init;
   }
   // Initialize helper/garbage II
   field<mat> Omega_xa(D, 1);
@@ -906,15 +873,10 @@ List pgas2_full(const int& N,
   vec mu_xa6(dim_pars(5) -1);
   mu_xa(5, 0) = mu_xa6;
   // II. run cBPF and use output as first conditioning trajectory
-  out_cPF = cbpf_as_c3_full(N, TT,
+  out_cPF = cbpf_as_c5_full(N, TT,
                             num_counts, y,
-                            Za1, Za2, Za3, Za4, Za5, Za6,
-                            sig_sq_x(0, 0),
-                            sig_sq_x(1, 0),
-                            sig_sq_x(2, 0),
-                            sig_sq_x(3, 0),
-                            sig_sq_x(4, 0),
-                            sig_sq_x(5, 0),
+                            Z, id_bet,
+                            sig_sq_x.col(0),
                             phi_x(0, 0),
                             phi_x(1, 0),
                             phi_x(2, 0),
@@ -939,51 +901,46 @@ List pgas2_full(const int& N,
   Xa.submat(TT*3, 0, TT*4 - 1, 0)= out_cPF.col(3);
   Xa.submat(TT*4, 0, TT*5 - 1, 0)= out_cPF.col(4);
   Xa.submat(TT*5, 0, TT*6 - 1, 0)= out_cPF.col(5);
-  // Run MCMC loop
+  // // Run MCMC loop
   temp_vec_col.set_size(TT - 1);
   vec temp_vec_col2(TT - 1, fill::zeros);
   for (int m = 1; m < MM; ++m) {
     // I. Run GIBBS part
-    Z.col(id_zet(0)) = (Xa.submat(0, m-1, TT - 2, m-1));
-    Z.col(id_zet(1)) = (Xa.submat(TT, m-1, TT*2 - 2, m-1));
-    Z.col(id_zet(2)) = (Xa.submat(TT*2, m-1, TT*3 - 2, m-1));
-    Z.col(id_zet(3)) = (Xa.submat(TT*3, m-1, TT*4 - 2, m-1));
-    Z.col(id_zet(4)) = (Xa.submat(TT*4, m-1, TT*5 - 2, m-1));
-    Z.col(id_zet(5)) = (Xa.submat(TT*5, m-1, TT*6 - 2, m-1));
+    Z_mcmc.col(id_zet(0)) = (Xa.submat(0, m-1, TT - 2, m-1));
+    Z_mcmc.col(id_zet(1)) = (Xa.submat(TT, m-1, TT*2 - 2, m-1));
+    Z_mcmc.col(id_zet(2)) = (Xa.submat(TT*2, m-1, TT*3 - 2, m-1));
+    Z_mcmc.col(id_zet(3)) = (Xa.submat(TT*3, m-1, TT*4 - 2, m-1));
+    Z_mcmc.col(id_zet(4)) = (Xa.submat(TT*4, m-1, TT*5 - 2, m-1));
+    Z_mcmc.col(id_zet(5)) = (Xa.submat(TT*5, m-1, TT*6 - 2, m-1));
     for(int d = 0; d<D; ++d) {
       temp_vec_col = Xa.submat(TT*d + 1, m - 1, TT*(d + 1) - 1, m - 1);
-      z_add =  Z.submat(0, id_zet(d) + 1, TT - 2, id_zet(d + 1) - 1) * bet.submat(id_bet(d),  m - 1, id_bet(d + 1) - 1,  m - 1);
+      z_add =  Z_mcmc.submat(0, id_zet(d) + 1, TT - 2, id_zet(d + 1) - 1) * bet.submat(id_bet(d),  m - 1, id_bet(d + 1) - 1,  m - 1);
       temp_vec_col2 = temp_vec_col - f_cpp_vech(Xa.submat(TT*d, m - 1, TT*(d + 1) - 2, m - 1),
                                                 phi_x(d, m - 1),
                                                 z_add);
       err_siq_sq_x = (dot(temp_vec_col2, temp_vec_col2)) * 0.5;
       // sig_sq_x(d, m)  = 1/(R::rgamma(prior_a, 1.0/(prior_b + err_siq_sq_x)));
       sig_sq_x(d, m)  = 1/randg<double>(distr_param(prior_a, 1.0/(prior_b + err_siq_sq_x)));;
-      Omega_xa(d, 0)  = inv((trans(Z.cols(id_zet(d), id_zet(d + 1) - 1)) * Z.cols(id_zet(d), id_zet(d + 1) - 1))/sig_sq_x(d, m) + prior_V_xa1);
-      mu_xa(d, 0) = Omega_xa(d, 0) * (trans(Z.cols(id_zet(d), id_zet(d + 1) - 1)) * temp_vec_col)/sig_sq_x(d, m);
-      // mu_xa(d, 0) = mvrnorm_c(mu_xa(d, 0), Omega_xa(d, 0));
+      Omega_xa(d, 0)  = inv((trans(Z_mcmc.cols(id_zet(d), id_zet(d + 1) - 1)) * Z_mcmc.cols(id_zet(d), id_zet(d + 1) - 1))/sig_sq_x(d, m) + prior_V_xa1);
+      mu_xa(d, 0) = Omega_xa(d, 0) * (trans(Z_mcmc.cols(id_zet(d), id_zet(d + 1) - 1)) * temp_vec_col)/sig_sq_x(d, m);
+      // // mu_xa(d, 0) = mvrnorm_c(mu_xa(d, 0), Omega_xa(d, 0));
       mu_xa(d, 0) = mvnrnd(mu_xa(d, 0), Omega_xa(d, 0));
-      phi_x(d, m) =  (mu_xa(d, 0))(0);
-      bet.submat(id_bet(d),  m, id_bet(d + 1) - 1,  m) =  (mu_xa(d, 0)).subvec(1, (D - 1));
+      phi_x(d, m) = (mu_xa(d, 0))(0);
+      bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m) =  (mu_xa(d, 0)).subvec(1, (dim_pars(d) - 2));
     }
-    // double digits = 1000;
-    // sig_sq_x(2, m) = round(sig_sq_x(2, m)*digits)/digits;
-    // phi_x(2, m) = round(phi_x(2, m)*digits)/digits;
-    // bet.submat(id_bet(2), m, id_bet(2 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
-    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // bet.submat(id_bet(0), m, id_bet(0 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
-    // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
-    // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
-    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    out_cPF = cbpf_as_c3_full(N, TT,
+  // //   // double digits = 1000;
+  // //   // sig_sq_x(2, m) = round(sig_sq_x(2, m)*digits)/digits;
+  // //   // phi_x(2, m) = round(phi_x(2, m)*digits)/digits;
+  // //   // bet.submat(id_bet(2), m, id_bet(2 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
+  // //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // //   // bet.submat(id_bet(0), m, id_bet(0 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
+  // //   // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
+  // //   // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
+  // //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    out_cPF = cbpf_as_c5_full(N, TT,
                               num_counts, y,
-                              Za1, Za2, Za3, Za4, Za5, Za6,
-                              sig_sq_x(0, m),
-                              sig_sq_x(1, m),
-                              sig_sq_x(2, m),
-                              sig_sq_x(3, m),
-                              sig_sq_x(4, m),
-                              sig_sq_x(5, m),
+                              Z, id_bet,
+                              sig_sq_x.col(m),
                               phi_x(0, m),
                               phi_x(1, m),
                               phi_x(2, m),
@@ -1008,7 +965,7 @@ List pgas2_full(const int& N,
     Xa.submat(TT*3, m, TT*4 - 1, m)= out_cPF.col(3);
     Xa.submat(TT*4, m, TT*5 - 1, m)= out_cPF.col(4);
     Xa.submat(TT*5, m, TT*6 - 1, m)= out_cPF.col(5);
-
+  //
     Rprintf("Iteration number: %u \n", m);
   }
   List all_traj(D);
@@ -1035,69 +992,10 @@ List pgas2_full(const int& N,
   Rcpp::Named("phi_xa6") = phi_x.row(5),
   Rcpp::Named("bet_xa6") = bet.submat(id_bet(5), 0, id_bet(5 + 1) - 1, MM - 1),
   Rcpp::Named("xtraj")  = all_traj));
+  // double d = 0;
+  // double m = 1;
+  // return(List::create(mu_xa(d, 0), (mu_xa(d, 0))(0), bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m), mu_xa, dim_pars, id_bet));
+  // (mu_xa(d, 0)).subvec(1, (D - 1)),
+  // bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m),
+  // return(List::create(Za1, Za2, Za3, Za4, Za5, Za6));
 }
-// double m1 = 0;
-// double m2 = 1;
-// return(List::create(Xa.submat(0, m1, TT - 1, m1).t(),
-//                     Xa.submat(TT, m1, TT*2 - 1, m1).t(),
-//                     Xa.submat(TT*2, m1, TT*3 - 1, m1).t(),
-//                     Xa.submat(TT*3, m1, TT*4 - 1, m1).t(),
-//                     Xa.submat(TT*4, m1, TT*5 - 1, m1).t(),
-//                     Xa.submat(TT*5, m1, TT*6 - 1, m1).t(),
-//                     // sig_sq_x.row(0).subvec(0, 3),
-//                     // sig_sq_x.row(1).subvec(0, 3),
-//                     // sig_sq_x.row(2).subvec(0, 3),
-//                     // sig_sq_x.row(3).subvec(0, 3),
-//                     // sig_sq_x.row(4).subvec(0, 3),
-//                     // sig_sq_x.row(5).subvec(0, 3),
-//                     // Omega_xa(0, 0),
-//                     phi_x(0, m2), bet.submat(id_bet(0), m2, id_bet(0 + 1) - 1, m2), //mu_xa(0, 0),
-//                     // Omega_xa(1, 0),
-//                     phi_x(1, m2), bet.submat(id_bet(1), m2, id_bet(1 + 1) - 1, m2), //mu_xa(1, 0),
-//                     // Omega_xa(2, 0),
-//                     phi_x(2, m2), bet.submat(id_bet(2), m2, id_bet(2 + 1) - 1, m2), //mu_xa(2, 0),
-//                     // Omega_xa(3, 0),
-//                     phi_x(3, m2), bet.submat(id_bet(3), m2, id_bet(3 + 1) - 1, m2), //mu_xa(3, 0),
-//                     // Omega_xa(4, 0),
-//                     phi_x(4, m2), bet.submat(id_bet(4), m2, id_bet(4 + 1) - 1, m2), //mu_xa(4, 0),
-//                     // Omega_xa(5, 0),
-//                     phi_x(5, m2), bet.submat(id_bet(5), m2, id_bet(5 + 1) - 1, m2)));
-// double m =0;
-// return(List::create(Xa.submat(0, m, TT - 1, m).t()(Xa.submat(0, m, TT - 1, m).t(), 2), 4));
-// return(List::create(sig_sq_x.row(0).subvec(0, 3),
-//                     Omega_xa(0, 0), mu_xa(0, 0),
-//                     sig_sq_x.row(1).subvec(0, 3),
-//                     Omega_xa(1, 0), mu_xa(1, 0),
-//                     sig_sq_x.row(2).subvec(0, 3),
-//                     Omega_xa(2, 0), mu_xa(2, 0),
-//                     sig_sq_x.row(3).subvec(0, 3),
-//                     Omega_xa(3, 0), mu_xa(3, 0),
-//                     sig_sq_x.row(4).subvec(0, 3),
-//                     Omega_xa(4, 0), mu_xa(4, 0),
-//                     sig_sq_x.row(5).subvec(0, 3),
-//                     Omega_xa(5, 0), mu_xa(5, 0)));
-// double m = 1;
-// double d = 1;
-// return(List::create(Xa.submat(TT*0 + 1, m - 1, TT*(0 + 1) - 1, m - 1), Xa.submat(TT*d + 1, m - 1, TT*(d + 1) - 1, m - 1),
-//                     Z.submat(0, id_zet(0) + 1, TT - 2, id_zet(0 + 1) - 1),
-//                     Z.submat(0, id_zet(d) + 1, TT - 2, id_zet(d + 1) - 1),
-//                     Z,
-//                     phi_x(d, m - 1),
-//                     bet.submat(id_bet(d),  m - 1, id_bet(d + 1) - 1,  m - 1)));
-// return(List::create(Za1.submat(1, 0, TT - 1, dim_pars(0) - 3), Za1, Z));
-// return(List::create((Xa1.submat(0, 1, 0, TT - 1)).t(), Xa.submat( 1, 0, TT - 1, 0), temp_vec_col));
-// return(List::create(Z));
-// return(List::create(trans(Z.cols(id_zet(0), id_zet(1) - 1)),
-//                     temp_vec_col,
-//                     (trans(Z.cols(id_zet(0), id_zet(1) - 1)) * temp_vec_col)));
-// return(List::create((Z.col(id_bet(0)), (Xa1.submat(0, 0, 0, TT - 2)).t()),
-//        Z.col(id_bet(1)), (Xa2.submat(0, 0, 0, TT - 2)).t(),
-//        Z.col(id_bet(2)), (Xa3.submat(0, 0, 0, TT - 2)).t(),
-//        Z.col(id_bet(3)), (Xa4.submat(0, 0, 0, TT - 2)).t(),
-//        Z.col(id_bet(4)), (Xa5.submat(0, 0, 0, TT - 2)).t(),
-//        Z.col(id_bet(5)), (Xa6.submat(0, 0, 0, TT - 2)).t()
-//        ));
-// return(List::create(Z));
-// return(List::create(trans(Z.cols(id_bet(0), id_bet(1) - 1)) * Z.cols(id_bet(0), id_bet(1) - 1)/sig_sq_x(0, 1),
-//                     prior_V_xa1, Omega_xa1,
-//        sig_sq_x(0, 1)));

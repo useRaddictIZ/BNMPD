@@ -1,4 +1,4 @@
-// #define ARMA_NO_DEBUG
+#define ARMA_NO_DEBUG
 #include <RcppArmadillo.h>
 #include <RcppArmadilloExtensions/sample.h>
 //[[Rcpp::depends(RcppArmadillo)]]
@@ -912,7 +912,7 @@ List pgas2_full(const int& N,
   Xa.submat(TT*3, 0, TT*4 - 1, 0)= out_cPF.col(3);
   Xa.submat(TT*4, 0, TT*5 - 1, 0)= out_cPF.col(4);
   Xa.submat(TT*5, 0, TT*6 - 1, 0)= out_cPF.col(5);
-  // Run MCMC loop
+  // // Run MCMC loop
   temp_vec_col.set_size(TT - 1);
   vec temp_vec_col2(TT - 1, fill::zeros);
   for (int m = 1; m < MM; ++m) {
@@ -937,17 +937,17 @@ List pgas2_full(const int& N,
       // // mu_xa(d, 0) = mvrnorm_c(mu_xa(d, 0), Omega_xa(d, 0));
       mu_xa(d, 0) = mvnrnd(mu_xa(d, 0), Omega_xa(d, 0));
       phi_x(d, m) = (mu_xa(d, 0))(0);
-      bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m) =  (mu_xa(d, 0)).subvec(1, (D - 1));
+      bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m) =  (mu_xa(d, 0)).subvec(1, (dim_pars(d) - 2));
     }
-  //   // double digits = 1000;
-  //   // sig_sq_x(2, m) = round(sig_sq_x(2, m)*digits)/digits;
-  //   // phi_x(2, m) = round(phi_x(2, m)*digits)/digits;
-  //   // bet.submat(id_bet(2), m, id_bet(2 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
-  //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //   // bet.submat(id_bet(0), m, id_bet(0 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
-  //   // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
-  //   // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
-  //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // //   // double digits = 1000;
+  // //   // sig_sq_x(2, m) = round(sig_sq_x(2, m)*digits)/digits;
+  // //   // phi_x(2, m) = round(phi_x(2, m)*digits)/digits;
+  // //   // bet.submat(id_bet(2), m, id_bet(2 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
+  // //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  // //   // bet.submat(id_bet(0), m, id_bet(0 + 1) - 1, m).transform([](double val){return(round(val*1000)/1000);});
+  // //   // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
+  // //   // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
+  // //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     out_cPF = cbpf_as_c3_full(N, TT,
                               num_counts, y,
                               Za1, Za2, Za3, Za4, Za5, Za6,
@@ -1008,5 +1008,10 @@ List pgas2_full(const int& N,
   Rcpp::Named("phi_xa6") = phi_x.row(5),
   Rcpp::Named("bet_xa6") = bet.submat(id_bet(5), 0, id_bet(5 + 1) - 1, MM - 1),
   Rcpp::Named("xtraj")  = all_traj));
-  // return(List::create(Xa.col(0)));
+  // double d = 0;
+  // double m = 1;
+  // return(List::create(mu_xa(d, 0), (mu_xa(d, 0))(0), bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m), mu_xa, dim_pars, id_bet));
+  // (mu_xa(d, 0)).subvec(1, (D - 1)),
+  // bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m),
+  // return(List::create(mu_xa, bet, id_bet));
 }
