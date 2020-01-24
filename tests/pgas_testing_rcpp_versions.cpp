@@ -879,7 +879,7 @@ List pgas2_full(const int& N,
   vec mu_xa6(dim_pars(5) -1);
   mu_xa(5, 0) = mu_xa6;
   // II. run cBPF and use output as first conditioning trajectory
-  out_cPF = cbpf_as_c3_full(N, TT,
+  out_cPF = cbpf_as_c2_full(N, TT,
                             num_counts, y,
                             Za1, Za2, Za3, Za4, Za5, Za6,
                             sig_sq_x(0, 0),
@@ -948,7 +948,7 @@ List pgas2_full(const int& N,
   //   // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
   //   // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
   //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    out_cPF = cbpf_as_c3_full(N, TT,
+    out_cPF = cbpf_as_c2_full(N, TT,
                               num_counts, y,
                               Za1, Za2, Za3, Za4, Za5, Za6,
                               sig_sq_x(0, m),

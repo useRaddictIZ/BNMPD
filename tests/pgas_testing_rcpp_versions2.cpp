@@ -141,30 +141,6 @@ arma::mat cbpf_as_c4_full(const int& N,
                           const arma::vec& phi_x,
                           const arma::vec& bet_x,
                           const arma::vec& x_r) {
-  const double& sig_sq_xa1 = sig_sq_x(0);
-  const double& sig_sq_xa2 = sig_sq_x(1);
-  const double& sig_sq_xa3 = sig_sq_x(2);
-  const double& sig_sq_xa4 = sig_sq_x(3);
-  const double& sig_sq_xa5 = sig_sq_x(4);
-  const double& sig_sq_xa6 = sig_sq_x(5);
-  const double& phi_xa1 = phi_x(0);
-  const double& phi_xa2 = phi_x(1);
-  const double& phi_xa3 = phi_x(2);
-  const double& phi_xa4 = phi_x(3);
-  const double& phi_xa5 = phi_x(4);
-  const double& phi_xa6 = phi_x(5);
-  const arma::vec& bet_xa1 = bet_x.subvec(id_bet(0), id_bet(0 + 1) - 1);
-  const arma::vec& bet_xa2 = bet_x.subvec(id_bet(1), id_bet(1 + 1) - 1);
-  const arma::vec& bet_xa3 = bet_x.subvec(id_bet(2), id_bet(2 + 1) - 1);
-  const arma::vec& bet_xa4 = bet_x.subvec(id_bet(3), id_bet(3 + 1) - 1);
-  const arma::vec& bet_xa5 = bet_x.subvec(id_bet(4), id_bet(4 + 1) - 1);
-  const arma::vec& bet_xa6 = bet_x.subvec(id_bet(5), id_bet(5 + 1) - 1);
-  const arma::vec& xa1_r = x_r.subvec(0, TT - 1);
-  const arma::vec& xa2_r = x_r.subvec(TT, TT*2 - 1);
-  const arma::vec& xa3_r = x_r.subvec(TT*2, TT*3 - 1);
-  const arma::vec& xa4_r = x_r.subvec(TT*3, TT*4 - 1);
-  const arma::vec& xa5_r = x_r.subvec(TT*4, TT*5 - 1);
-  const arma::vec& xa6_r = x_r.subvec(TT*5, TT*6 - 1);
   // bool filtering
   int D = y.n_cols;
   arma::uvec ind(N);
@@ -174,17 +150,17 @@ arma::mat cbpf_as_c4_full(const int& N,
   NumericVector mmu2(N);
 
   arma::vec Za1_beta1(TT);
-  Za1_beta1 = Z.submat(0, id_bet(0), TT - 1, id_bet(0 + 1) - 1) * bet_xa1;
+  Za1_beta1 = Z.submat(0, id_bet(0), TT - 1, id_bet(0 + 1) - 1) * bet_x.subvec(id_bet(0), id_bet(0 + 1) - 1);
   arma::vec Za2_beta2(TT);
-  Za2_beta2 = Z.submat(0, id_bet(1), TT - 1, id_bet(1 + 1) - 1) * bet_xa2;
+  Za2_beta2 = Z.submat(0, id_bet(1), TT - 1, id_bet(1 + 1) - 1) * bet_x.subvec(id_bet(1), id_bet(1 + 1) - 1);
   arma::vec Za3_beta3(TT);
-  Za3_beta3 = Z.submat(0, id_bet(2), TT - 1, id_bet(2 + 1) - 1) * bet_xa3;
+  Za3_beta3 = Z.submat(0, id_bet(2), TT - 1, id_bet(2 + 1) - 1) * bet_x.subvec(id_bet(2), id_bet(2 + 1) - 1);
   arma::vec Za4_beta4(TT);
-  Za4_beta4 = Z.submat(0, id_bet(3), TT - 1, id_bet(3 + 1) - 1) * bet_xa4;
+  Za4_beta4 = Z.submat(0, id_bet(3), TT - 1, id_bet(3 + 1) - 1) * bet_x.subvec(id_bet(3), id_bet(3 + 1) - 1);
   arma::vec Za5_beta5(TT);
-  Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_xa5;
+  Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_x.subvec(id_bet(4), id_bet(4 + 1) - 1);
   arma::vec Za6_beta6(TT);
-  Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_xa6;
+  Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_x.subvec(id_bet(5), id_bet(5 + 1) - 1);
 
   double sdd = 0;
   double mmu = 0;
@@ -212,12 +188,12 @@ arma::mat cbpf_as_c4_full(const int& N,
   arma::vec as_weights(N);
   NumericVector as_draw_vec(1);
   double as_draw;
-  arma::rowvec vcm_diag = {pow(sig_sq_xa1, -1),
-                           pow(sig_sq_xa2, -1),
-                           pow(sig_sq_xa3, -1),
-                           pow(sig_sq_xa4, -1),
-                           pow(sig_sq_xa5, -1),
-                           pow(sig_sq_xa6, -1)};
+  arma::rowvec vcm_diag = {pow(sig_sq_x(0), -1),
+                           pow(sig_sq_x(1), -1),
+                           pow(sig_sq_x(2), -1),
+                           pow(sig_sq_x(3), -1),
+                           pow(sig_sq_x(4), -1),
+                           pow(sig_sq_x(5), -1)};
   arma::mat mean_diff(N, D);
   // draw trajectory
   NumericVector b_draw_vec(1);
@@ -228,48 +204,48 @@ arma::mat cbpf_as_c4_full(const int& N,
   //
   // I. INITIALIZATION (t = 0)
   // Sampling initial condition from prior
-  mmu = Za1_beta1[0]/(1.0 - phi_xa1);
-  sdd = sqrt(sig_sq_xa1/(1.0 - pow(phi_xa1, 2)));
+  mmu = Za1_beta1[0]/(1.0 - phi_x(0));
+  sdd = sqrt(sig_sq_x(0)/(1.0 - pow(phi_x(0), 2)));
   // xa1( _ , 0) = rnorm(N, mmu, sdd);
   // xa1.col(0) = mmu + sdd * arma::randn(N, 1);
   test_vec = rnorm(N, mmu, sdd);
   test_vec2 = as<arma::vec>(test_vec);
   xa1.col(0) = test_vec2;
 
-  mmu = Za2_beta2[0]/(1.0 - phi_xa2);
-  sdd = sqrt(sig_sq_xa2/(1.0 - pow(phi_xa2, 2)));
+  mmu = Za2_beta2[0]/(1.0 - phi_x(1));
+  sdd = sqrt(sig_sq_x(1)/(1.0 - pow(phi_x(1), 2)));
   // xa2( _ , 0) = rnorm(N, mmu, sdd);
   // xa2.col(0) = mmu + sdd * arma::randn(N, 1);
   test_vec = rnorm(N, mmu, sdd);
   test_vec2 = as<arma::vec>(test_vec);
   xa2.col(0) = test_vec2;
 
-  mmu = Za3_beta3[0]/(1.0 - phi_xa3);
-  sdd = sqrt(sig_sq_xa3/(1.0 - pow(phi_xa3, 2)));
+  mmu = Za3_beta3[0]/(1.0 - phi_x(2));
+  sdd = sqrt(sig_sq_x(2)/(1.0 - pow(phi_x(2), 2)));
   // xa3( _ , 0) = rnorm(N, mmu, sdd);
   // xa3.col(0) = mmu + sdd * arma::randn(N, 1);
   test_vec = rnorm(N, mmu, sdd);
   test_vec2 = as<arma::vec>(test_vec);
   xa3.col(0) = test_vec2;
 
-  mmu = Za4_beta4[0]/(1.0 - phi_xa4);
-  sdd = sqrt(sig_sq_xa4/(1.0 - pow(phi_xa4, 2)));
+  mmu = Za4_beta4[0]/(1.0 - phi_x(3));
+  sdd = sqrt(sig_sq_x(3)/(1.0 - pow(phi_x(3), 2)));
   // xa4( _ , 0) = rnorm(N, mmu, sdd);
   // xa4.col(0) = mmu + sdd * arma::randn(N, 1);
   test_vec = rnorm(N, mmu, sdd);
   test_vec2 = as<arma::vec>(test_vec);
   xa4.col(0) = test_vec2;
 
-  mmu = Za5_beta5[0]/(1.0 - phi_xa5);
-  sdd = sqrt(sig_sq_xa5/(1.0 - pow(phi_xa5, 2)));
+  mmu = Za5_beta5[0]/(1.0 - phi_x(4));
+  sdd = sqrt(sig_sq_x(4)/(1.0 - pow(phi_x(4), 2)));
   // xa5( _ , 0) = rnorm(N, mmu, sdd);
   // xa5.col(0) = mmu + sdd * arma::randn(N, 1);
   test_vec = rnorm(N, mmu, sdd);
   test_vec2 = as<arma::vec>(test_vec);
   xa5.col(0) = test_vec2;
 
-  mmu = Za6_beta6[0]/(1.0 - phi_xa6);
-  sdd = sqrt(sig_sq_xa6/(1.0 - pow(phi_xa6, 2)));
+  mmu = Za6_beta6[0]/(1.0 - phi_x(5));
+  sdd = sqrt(sig_sq_x(5)/(1.0 - pow(phi_x(5), 2)));
   // xa6( _ , 0) = rnorm(N, mmu, sdd);
   // xa6.col(0) = mmu + sdd * arma::randn(N, 1);
   test_vec = rnorm(N, mmu, sdd);
@@ -287,61 +263,61 @@ arma::mat cbpf_as_c4_full(const int& N,
   id_as = test_vec3;
   a.col(0) = id_as;
   // propagation
-  eval_f  = f_cpp(xa1.col(0), phi_xa1, Za1_beta1[0]);
+  eval_f  = f_cpp(xa1.col(0), phi_x(0), Za1_beta1[0]);
   eval_f2 = eval_f.elem(id_as);
   mmu2 = as<NumericVector>(wrap(eval_f2));
-  // xa1.col(0) = eval_f + sqrt(sig_sq_xa1)*arma::randn(N, 1);
-  test_vec = mmu2 + sqrt(sig_sq_xa1) * rnorm(N);
+  // xa1.col(0) = eval_f + sqrt(sig_sq_x(0))*arma::randn(N, 1);
+  test_vec = mmu2 + sqrt(sig_sq_x(0)) * rnorm(N);
   test_vec2 = as<arma::vec>(test_vec);
   xa1.col(0) = test_vec2;
 
-  eval_f = f_cpp(xa2.col(0), phi_xa2, Za2_beta2[0]);
+  eval_f = f_cpp(xa2.col(0), phi_x(1), Za2_beta2[0]);
   eval_f2 = eval_f.elem(id_as);
   mmu2 = as<NumericVector>(wrap(eval_f2));
-  // xa2.col(0) = eval_f + sqrt(sig_sq_xa2)*arma::randn(N, 1);
-  test_vec = mmu2 + sqrt(sig_sq_xa2) * rnorm(N);
+  // xa2.col(0) = eval_f + sqrt(sig_sq_x(1))*arma::randn(N, 1);
+  test_vec = mmu2 + sqrt(sig_sq_x(1)) * rnorm(N);
   test_vec2 = as<arma::vec>(test_vec);
   xa2.col(0) = test_vec2;
 
-  eval_f = f_cpp(xa3.col(0), phi_xa3, Za3_beta3[0]);
+  eval_f = f_cpp(xa3.col(0), phi_x(2), Za3_beta3[0]);
   eval_f2 = eval_f.elem(id_as);
   mmu2 = as<NumericVector>(wrap(eval_f2));
-  // xa3.col(0) = eval_f + sqrt(sig_sq_xa3)*arma::randn(N, 1);
-  test_vec = mmu2 + sqrt(sig_sq_xa3) * rnorm(N);
+  // xa3.col(0) = eval_f + sqrt(sig_sq_x(2))*arma::randn(N, 1);
+  test_vec = mmu2 + sqrt(sig_sq_x(2)) * rnorm(N);
   test_vec2 = as<arma::vec>(test_vec);
   xa3.col(0) = test_vec2;
 
-  eval_f = f_cpp(xa4.col(0), phi_xa4, Za4_beta4[0]);
+  eval_f = f_cpp(xa4.col(0), phi_x(3), Za4_beta4[0]);
   eval_f2 = eval_f.elem(id_as);
   mmu2 = as<NumericVector>(wrap(eval_f2));
-  // xa4.col(0) = eval_f + sqrt(sig_sq_xa4)*arma::randn(N, 1);
-  test_vec = mmu2 + sqrt(sig_sq_xa4) * rnorm(N);
+  // xa4.col(0) = eval_f + sqrt(sig_sq_x(3))*arma::randn(N, 1);
+  test_vec = mmu2 + sqrt(sig_sq_x(3)) * rnorm(N);
   test_vec2 = as<arma::vec>(test_vec);
   xa4.col(0) = test_vec2;
 
-  eval_f = f_cpp(xa5.col(0), phi_xa5, Za5_beta5[0]);
+  eval_f = f_cpp(xa5.col(0), phi_x(4), Za5_beta5[0]);
   eval_f2 = eval_f.elem(id_as);
   mmu2 = as<NumericVector>(wrap(eval_f2));
-  // xa5.col(0) = eval_f + sqrt(sig_sq_xa5)*arma::randn(N, 1);
-  test_vec = mmu2 + sqrt(sig_sq_xa5) * rnorm(N);
+  // xa5.col(0) = eval_f + sqrt(sig_sq_x(4))*arma::randn(N, 1);
+  test_vec = mmu2 + sqrt(sig_sq_x(4)) * rnorm(N);
   test_vec2 = as<arma::vec>(test_vec);
   xa5.col(0) = test_vec2;
 
-  eval_f = f_cpp(xa6.col(0), phi_xa6, Za6_beta6[0]);
+  eval_f = f_cpp(xa6.col(0), phi_x(5), Za6_beta6[0]);
   eval_f2 = eval_f.elem(id_as);
   mmu2 = as<NumericVector>(wrap(eval_f2));
-  // xa6.col(0) = eval_f + sqrt(sig_sq_xa6)*arma::randn(N, 1);
-  test_vec = mmu2 + sqrt(sig_sq_xa6) * rnorm(N);
+  // xa6.col(0) = eval_f + sqrt(sig_sq_x(5))*arma::randn(N, 1);
+  test_vec = mmu2 + sqrt(sig_sq_x(5)) * rnorm(N);
   test_vec2 = as<arma::vec>(test_vec);
   xa6.col(0) = test_vec2;
 
   // conditioning
-  xa1(N - 1, 0) = xa1_r(0);
-  xa2(N - 1, 0) = xa2_r(0);
-  xa3(N - 1, 0) = xa3_r(0);
-  xa4(N - 1, 0) = xa4_r(0);
-  xa5(N - 1, 0) = xa5_r(0);
-  xa6(N - 1, 0) = xa6_r(0);
+  xa1(N - 1, 0) = x_r(0);
+  xa2(N - 1, 0) = x_r(TT + 0);
+  xa3(N - 1, 0) = x_r(TT*2 + 0);
+  xa4(N - 1, 0) = x_r(TT*3 + 0);
+  xa5(N - 1, 0) = x_r(TT*4 + 0);
+  xa6(N - 1, 0) = x_r(TT*5 + 0);
   // weighting
   w_log = w_bpf_c(N, num_counts(0),
                   y.row(0),
@@ -364,66 +340,66 @@ arma::mat cbpf_as_c4_full(const int& N,
     id_as = test_vec3;
     a.col(t) = id_as;
     // propagation
-    eval_f = f_cpp(xa1.col(t - 1), phi_xa1, Za1_beta1[t]);
-    mean_diff.col(0) = eval_f - xa1_r[t];
+    eval_f = f_cpp(xa1.col(t - 1), phi_x(0), Za1_beta1[t]);
+    mean_diff.col(0) = eval_f - x_r(t);
     eval_f2 = eval_f.elem(id_as);
     mmu2 = as<NumericVector>(wrap(eval_f2));
-    // xa1.col(t) = eval_f + sqrt(sig_sq_xa1)*arma::randn(N, 1);
-    test_vec = mmu2 + sqrt(sig_sq_xa1) * rnorm(N);
+    // xa1.col(t) = eval_f + sqrt(sig_sq_x(0))*arma::randn(N, 1);
+    test_vec = mmu2 + sqrt(sig_sq_x(0)) * rnorm(N);
     test_vec2 = as<arma::vec>(test_vec);
     xa1.col(t) = test_vec2;
 
-    eval_f = f_cpp(xa2.col(t - 1), phi_xa2, Za2_beta2[t]);
-    mean_diff.col(1) = eval_f - xa2_r[t];
+    eval_f = f_cpp(xa2.col(t - 1), phi_x(1), Za2_beta2[t]);
+    mean_diff.col(1) = eval_f - x_r(TT + t);
     eval_f2 = eval_f.elem(id_as);
     mmu2 = as<NumericVector>(wrap(eval_f2));
-    // xa2.col(t) = eval_f + sqrt(sig_sq_xa2)*arma::randn(N, 1);
-    test_vec = mmu2 + sqrt(sig_sq_xa2) * rnorm(N);
+    // xa2.col(t) = eval_f + sqrt(sig_sq_x(1))*arma::randn(N, 1);
+    test_vec = mmu2 + sqrt(sig_sq_x(1)) * rnorm(N);
     test_vec2 = as<arma::vec>(test_vec);
     xa2.col(t) = test_vec2;
 
-    eval_f = f_cpp(xa3.col(t - 1), phi_xa3, Za3_beta3[t]);
-    mean_diff.col(2) = eval_f - xa3_r[t];
+    eval_f = f_cpp(xa3.col(t - 1), phi_x(2), Za3_beta3[t]);
+    mean_diff.col(2) = eval_f - x_r(TT*2 + t);
     eval_f2 = eval_f.elem(id_as);
     mmu2 = as<NumericVector>(wrap(eval_f2));
-    // xa3.col(t) = eval_f + sqrt(sig_sq_xa3)*arma::randn(N, 1);
-    test_vec = mmu2 + sqrt(sig_sq_xa3) * rnorm(N);
+    // xa3.col(t) = eval_f + sqrt(sig_sq_x(2))*arma::randn(N, 1);
+    test_vec = mmu2 + sqrt(sig_sq_x(2)) * rnorm(N);
     test_vec2 = as<arma::vec>(test_vec);
     xa3.col(t) = test_vec2;
 
-    eval_f = f_cpp(xa4.col(t - 1), phi_xa4, Za4_beta4[t]);
-    mean_diff.col(3) = eval_f - xa4_r[t];
+    eval_f = f_cpp(xa4.col(t - 1), phi_x(3), Za4_beta4[t]);
+    mean_diff.col(3) = eval_f - x_r(TT*3 + t);
     eval_f2 = eval_f.elem(id_as);
     mmu2 = as<NumericVector>(wrap(eval_f2));
-    // xa4.col(t) = eval_f + sqrt(sig_sq_xa4)*arma::randn(N, 1);
-    test_vec = mmu2 + sqrt(sig_sq_xa4) * rnorm(N);
+    // xa4.col(t) = eval_f + sqrt(sig_sq_x(3))*arma::randn(N, 1);
+    test_vec = mmu2 + sqrt(sig_sq_x(3)) * rnorm(N);
     test_vec2 = as<arma::vec>(test_vec);
     xa4.col(t) = test_vec2;
 
-    eval_f = f_cpp(xa5.col(t - 1), phi_xa5, Za5_beta5[t]);
-    mean_diff.col(4) = eval_f - xa5_r[t];
+    eval_f = f_cpp(xa5.col(t - 1), phi_x(4), Za5_beta5[t]);
+    mean_diff.col(4) = eval_f - x_r(TT*4 + t);
     eval_f2 = eval_f.elem(id_as);
     mmu2 = as<NumericVector>(wrap(eval_f2));
-    // xa5.col(t) = eval_f + sqrt(sig_sq_xa5)*arma::randn(N, 1);
-    test_vec = mmu2 + sqrt(sig_sq_xa5) * rnorm(N);
+    // xa5.col(t) = eval_f + sqrt(sig_sq_x(4))*arma::randn(N, 1);
+    test_vec = mmu2 + sqrt(sig_sq_x(4)) * rnorm(N);
     test_vec2 = as<arma::vec>(test_vec);
     xa5.col(t) = test_vec2;
 
-    eval_f = f_cpp(xa6.col(t - 1), phi_xa6, Za6_beta6[t]);
-    mean_diff.col(5) = eval_f - xa6_r[t];
+    eval_f = f_cpp(xa6.col(t - 1), phi_x(5), Za6_beta6[t]);
+    mean_diff.col(5) = eval_f - x_r(TT*5 + t);
     eval_f2 = eval_f.elem(id_as);
     mmu2 = as<NumericVector>(wrap(eval_f2));
-    // xa6.col(t) = eval_f + sqrt(sig_sq_xa6)*arma::randn(N, 1);
-    test_vec = mmu2 + sqrt(sig_sq_xa6) * rnorm(N);
+    // xa6.col(t) = eval_f + sqrt(sig_sq_x(5))*arma::randn(N, 1);
+    test_vec = mmu2 + sqrt(sig_sq_x(5)) * rnorm(N);
     test_vec2 = as<arma::vec>(test_vec);
     xa6.col(t) = test_vec2;
     // conditioning
-    xa1(N - 1, t) = xa1_r(t);
-    xa2(N - 1, t) = xa2_r(t);
-    xa3(N - 1, t) = xa3_r(t);
-    xa4(N - 1, t) = xa4_r(t);
-    xa5(N - 1, t) = xa5_r(t);
-    xa6(N - 1, t) = xa6_r(t);
+    xa1(N - 1, t) = x_r(t);
+    xa2(N - 1, t) = x_r(TT + t);
+    xa3(N - 1, t) = x_r(TT*2 + t);
+    xa4(N - 1, t) = x_r(TT*3 + t);
+    xa5(N - 1, t) = x_r(TT*4 + t);
+    xa6(N - 1, t) = x_r(TT*5 + t);
     // ancestor sampling
     as_weights = w_as_c(mean_diff, vcm_diag, w_log);
     w_norm2 = as<NumericVector>(wrap(as_weights));
@@ -490,47 +466,23 @@ arma::mat cbpf_as_c5_full(const int& N,
                           const arma::vec& phi_x,
                           const arma::vec& bet_x,
                           const arma::vec& x_r) {
-  const double& sig_sq_xa1 = sig_sq_x(0);
-  const double& sig_sq_xa2 = sig_sq_x(1);
-  const double& sig_sq_xa3 = sig_sq_x(2);
-  const double& sig_sq_xa4 = sig_sq_x(3);
-  const double& sig_sq_xa5 = sig_sq_x(4);
-  const double& sig_sq_xa6 = sig_sq_x(5);
-  const double& phi_xa1 = phi_x(0);
-  const double& phi_xa2 = phi_x(1);
-  const double& phi_xa3 = phi_x(2);
-  const double& phi_xa4 = phi_x(3);
-  const double& phi_xa5 = phi_x(4);
-  const double& phi_xa6 = phi_x(5);
-  const arma::vec& bet_xa1 = bet_x.subvec(id_bet(0), id_bet(0 + 1) - 1);
-  const arma::vec& bet_xa2 = bet_x.subvec(id_bet(1), id_bet(1 + 1) - 1);
-  const arma::vec& bet_xa3 = bet_x.subvec(id_bet(2), id_bet(2 + 1) - 1);
-  const arma::vec& bet_xa4 = bet_x.subvec(id_bet(3), id_bet(3 + 1) - 1);
-  const arma::vec& bet_xa5 = bet_x.subvec(id_bet(4), id_bet(4 + 1) - 1);
-  const arma::vec& bet_xa6 = bet_x.subvec(id_bet(5), id_bet(5 + 1) - 1);
-  const arma::vec& xa1_r = x_r.subvec(0, TT - 1);
-  const arma::vec& xa2_r = x_r.subvec(TT, TT*2 - 1);
-  const arma::vec& xa3_r = x_r.subvec(TT*2, TT*3 - 1);
-  const arma::vec& xa4_r = x_r.subvec(TT*3, TT*4 - 1);
-  const arma::vec& xa5_r = x_r.subvec(TT*4, TT*5 - 1);
-  const arma::vec& xa6_r = x_r.subvec(TT*5, TT*6 - 1);
   // bool filtering
   int D = y.n_cols;
   arma::uvec ind(N);
   NumericVector mmu2(N);
 
   arma::vec Za1_beta1(TT);
-  Za1_beta1 = Z.submat(0, id_bet(0), TT - 1, id_bet(0 + 1) - 1) * bet_xa1;
+  Za1_beta1 = Z.submat(0, id_bet(0), TT - 1, id_bet(0 + 1) - 1) * bet_x.subvec(id_bet(0), id_bet(0 + 1) - 1);
   arma::vec Za2_beta2(TT);
-  Za2_beta2 = Z.submat(0, id_bet(1), TT - 1, id_bet(1 + 1) - 1) * bet_xa2;
+  Za2_beta2 = Z.submat(0, id_bet(1), TT - 1, id_bet(1 + 1) - 1) * bet_x.subvec(id_bet(1), id_bet(1 + 1) - 1);
   arma::vec Za3_beta3(TT);
-  Za3_beta3 = Z.submat(0, id_bet(2), TT - 1, id_bet(2 + 1) - 1) * bet_xa3;
+  Za3_beta3 = Z.submat(0, id_bet(2), TT - 1, id_bet(2 + 1) - 1) * bet_x.subvec(id_bet(2), id_bet(2 + 1) - 1);
   arma::vec Za4_beta4(TT);
-  Za4_beta4 = Z.submat(0, id_bet(3), TT - 1, id_bet(3 + 1) - 1) * bet_xa4;
+  Za4_beta4 = Z.submat(0, id_bet(3), TT - 1, id_bet(3 + 1) - 1) * bet_x.subvec(id_bet(3), id_bet(3 + 1) - 1);
   arma::vec Za5_beta5(TT);
-  Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_xa5;
+  Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_x.subvec(id_bet(4), id_bet(4 + 1) - 1);
   arma::vec Za6_beta6(TT);
-  Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_xa6;
+  Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_x.subvec(id_bet(5), id_bet(5 + 1) - 1);
 
   double sdd = 0;
   double mmu = 0;
@@ -557,12 +509,12 @@ arma::mat cbpf_as_c5_full(const int& N,
   arma::vec as_weights(N);
   arma::uvec as_draw_vec(1);
   double as_draw;
-  arma::rowvec vcm_diag = {pow(sig_sq_xa1, -1),
-                           pow(sig_sq_xa2, -1),
-                           pow(sig_sq_xa3, -1),
-                           pow(sig_sq_xa4, -1),
-                           pow(sig_sq_xa5, -1),
-                           pow(sig_sq_xa6, -1)};
+  arma::rowvec vcm_diag = {pow(sig_sq_x(0), -1),
+                           pow(sig_sq_x(1), -1),
+                           pow(sig_sq_x(2), -1),
+                           pow(sig_sq_x(3), -1),
+                           pow(sig_sq_x(4), -1),
+                           pow(sig_sq_x(5), -1)};
   arma::mat mean_diff(N, D);
   // draw trajectory
   NumericVector b_draw_vec(1);
@@ -571,28 +523,28 @@ arma::mat cbpf_as_c5_full(const int& N,
   mat x_out(TT, D);
   // I. INITIALIZATION (t = 0)
   // Sampling initial condition from prior
-  mmu = Za1_beta1[0]/(1.0 - phi_xa1);
-  sdd = sqrt(sig_sq_xa1/(1.0 - pow(phi_xa1, 2)));
+  mmu = Za1_beta1[0]/(1.0 - phi_x(0));
+  sdd = sqrt(sig_sq_x(0)/(1.0 - pow(phi_x(0), 2)));
   xa1.col(0) = mmu + sdd * arma::randn(N, 1);
 
-  mmu = Za2_beta2[0]/(1.0 - phi_xa2);
-  sdd = sqrt(sig_sq_xa2/(1.0 - pow(phi_xa2, 2)));
+  mmu = Za2_beta2[0]/(1.0 - phi_x(1));
+  sdd = sqrt(sig_sq_x(1)/(1.0 - pow(phi_x(1), 2)));
   xa2.col(0) = mmu + sdd * arma::randn(N, 1);
 
-  mmu = Za3_beta3[0]/(1.0 - phi_xa3);
-  sdd = sqrt(sig_sq_xa3/(1.0 - pow(phi_xa3, 2)));
+  mmu = Za3_beta3[0]/(1.0 - phi_x(2));
+  sdd = sqrt(sig_sq_x(2)/(1.0 - pow(phi_x(2), 2)));
   xa3.col(0) = mmu + sdd * arma::randn(N, 1);
 
-  mmu = Za4_beta4[0]/(1.0 - phi_xa4);
-  sdd = sqrt(sig_sq_xa4/(1.0 - pow(phi_xa4, 2)));
+  mmu = Za4_beta4[0]/(1.0 - phi_x(3));
+  sdd = sqrt(sig_sq_x(3)/(1.0 - pow(phi_x(3), 2)));
   xa4.col(0) = mmu + sdd * arma::randn(N, 1);
 
-  mmu = Za5_beta5[0]/(1.0 - phi_xa5);
-  sdd = sqrt(sig_sq_xa5/(1.0 - pow(phi_xa5, 2)));
+  mmu = Za5_beta5[0]/(1.0 - phi_x(4));
+  sdd = sqrt(sig_sq_x(4)/(1.0 - pow(phi_x(4), 2)));
   xa5.col(0) = mmu + sdd * arma::randn(N, 1);
 
-  mmu = Za6_beta6[0]/(1.0 - phi_xa6);
-  sdd = sqrt(sig_sq_xa6/(1.0 - pow(phi_xa6, 2)));
+  mmu = Za6_beta6[0]/(1.0 - phi_x(5));
+  sdd = sqrt(sig_sq_x(5)/(1.0 - pow(phi_x(5), 2)));
   xa6.col(0) = mmu + sdd * arma::randn(N, 1);
 
   // weighting (set to 1/N since there is no measurement y_t=0 at t=0)
@@ -602,37 +554,37 @@ arma::mat cbpf_as_c5_full(const int& N,
   id_as = Rcpp::RcppArmadillo::sample(id_as_lnspc, N, true, w_norm);
   a.col(0) = id_as;
   // propagation
-  eval_f = f_cpp(xa1.col(0), phi_xa1, Za1_beta1[0]);
+  eval_f = f_cpp(xa1.col(0), phi_x(0), Za1_beta1[0]);
   eval_f = eval_f.elem(id_as);
-  xa1.col(0) = eval_f + sqrt(sig_sq_xa1)*arma::randn(N, 1);
+  xa1.col(0) = eval_f + sqrt(sig_sq_x(0))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa2.col(0), phi_xa2, Za2_beta2[0]);
+  eval_f = f_cpp(xa2.col(0), phi_x(1), Za2_beta2[0]);
   eval_f = eval_f.elem(id_as);
-  xa2.col(0) = eval_f + sqrt(sig_sq_xa2)*arma::randn(N, 1);
+  xa2.col(0) = eval_f + sqrt(sig_sq_x(1))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa3.col(0), phi_xa3, Za3_beta3[0]);
+  eval_f = f_cpp(xa3.col(0), phi_x(2), Za3_beta3[0]);
   eval_f = eval_f.elem(id_as);
-  xa3.col(0) = eval_f + sqrt(sig_sq_xa3)*arma::randn(N, 1);
+  xa3.col(0) = eval_f + sqrt(sig_sq_x(2))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa4.col(0), phi_xa4, Za4_beta4[0]);
+  eval_f = f_cpp(xa4.col(0), phi_x(3), Za4_beta4[0]);
   eval_f = eval_f.elem(id_as);
-  xa4.col(0) = eval_f + sqrt(sig_sq_xa4)*arma::randn(N, 1);
+  xa4.col(0) = eval_f + sqrt(sig_sq_x(3))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa5.col(0), phi_xa5, Za5_beta5[0]);
+  eval_f = f_cpp(xa5.col(0), phi_x(4), Za5_beta5[0]);
   eval_f = eval_f.elem(id_as);
-  xa5.col(0) = eval_f + sqrt(sig_sq_xa5)*arma::randn(N, 1);
+  xa5.col(0) = eval_f + sqrt(sig_sq_x(4))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa6.col(0), phi_xa6, Za6_beta6[0]);
+  eval_f = f_cpp(xa6.col(0), phi_x(5), Za6_beta6[0]);
   eval_f = eval_f.elem(id_as);
-  xa6.col(0) = eval_f + sqrt(sig_sq_xa6)*arma::randn(N, 1);
+  xa6.col(0) = eval_f + sqrt(sig_sq_x(5))*arma::randn(N, 1);
 
   // conditioning
-  xa1(N - 1, 0) = xa1_r(0);
-  xa2(N - 1, 0) = xa2_r(0);
-  xa3(N - 1, 0) = xa3_r(0);
-  xa4(N - 1, 0) = xa4_r(0);
-  xa5(N - 1, 0) = xa5_r(0);
-  xa6(N - 1, 0) = xa6_r(0);
+  xa1(N - 1, 0) = x_r(0);
+  xa2(N - 1, 0) = x_r(TT + 0);
+  xa3(N - 1, 0) = x_r(TT*2 + 0);
+  xa4(N - 1, 0) = x_r(TT*3 + 0);
+  xa5(N - 1, 0) = x_r(TT*4 + 0);
+  xa6(N - 1, 0) = x_r(TT*5 + 0);
   // weighting
   w_log = w_bpf_c(N, num_counts(0),
                   y.row(0),
@@ -654,43 +606,43 @@ arma::mat cbpf_as_c5_full(const int& N,
     a.col(t) = id_as;
 
     // propagation
-    eval_f = f_cpp(xa1.col(t - 1), phi_xa1, Za1_beta1[t]);
-    mean_diff.col(0) = eval_f - xa1_r[t];
+    eval_f = f_cpp(xa1.col(t - 1), phi_x(0), Za1_beta1[t]);
+    mean_diff.col(0) = eval_f - x_r(t);
     eval_f = eval_f.elem(id_as);
-    xa1.col(t) = eval_f + sqrt(sig_sq_xa1)*arma::randn(N, 1);
+    xa1.col(t) = eval_f + sqrt(sig_sq_x(0))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa2.col(t - 1), phi_xa2, Za2_beta2[t]);
-    mean_diff.col(1) = eval_f - xa2_r[t];
+    eval_f = f_cpp(xa2.col(t - 1), phi_x(1), Za2_beta2[t]);
+    mean_diff.col(1) = eval_f - x_r(TT + t);
     eval_f = eval_f.elem(id_as);
-    xa2.col(t) = eval_f + sqrt(sig_sq_xa2)*arma::randn(N, 1);
+    xa2.col(t) = eval_f + sqrt(sig_sq_x(1))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa3.col(t - 1), phi_xa3, Za3_beta3[t]);
-    mean_diff.col(2) = eval_f - xa3_r[t];
+    eval_f = f_cpp(xa3.col(t - 1), phi_x(2), Za3_beta3[t]);
+    mean_diff.col(2) = eval_f - x_r(TT*2 + t);
     eval_f = eval_f.elem(id_as);
-    xa3.col(t) = eval_f + sqrt(sig_sq_xa3)*arma::randn(N, 1);
+    xa3.col(t) = eval_f + sqrt(sig_sq_x(2))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa4.col(t - 1), phi_xa4, Za4_beta4[t]);
-    mean_diff.col(3) = eval_f - xa4_r[t];
+    eval_f = f_cpp(xa4.col(t - 1), phi_x(3), Za4_beta4[t]);
+    mean_diff.col(3) = eval_f - x_r(TT*3 + t);
     eval_f = eval_f.elem(id_as);
-    xa4.col(t) = eval_f + sqrt(sig_sq_xa4)*arma::randn(N, 1);
+    xa4.col(t) = eval_f + sqrt(sig_sq_x(3))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa5.col(t - 1), phi_xa5, Za5_beta5[t]);
-    mean_diff.col(4) = eval_f - xa5_r[t];
+    eval_f = f_cpp(xa5.col(t - 1), phi_x(4), Za5_beta5[t]);
+    mean_diff.col(4) = eval_f - x_r(TT*4 + t);
     eval_f = eval_f.elem(id_as);
-    xa5.col(t) = eval_f + sqrt(sig_sq_xa5)*arma::randn(N, 1);
+    xa5.col(t) = eval_f + sqrt(sig_sq_x(4))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa6.col(t - 1), phi_xa6, Za6_beta6[t]);
-    mean_diff.col(5) = eval_f - xa6_r[t];
+    eval_f = f_cpp(xa6.col(t - 1), phi_x(5), Za6_beta6[t]);
+    mean_diff.col(5) = eval_f - x_r(TT*5 + t);
     eval_f = eval_f.elem(id_as);
-    xa6.col(t) = eval_f + sqrt(sig_sq_xa6)*arma::randn(N, 1);
+    xa6.col(t) = eval_f + sqrt(sig_sq_x(5))*arma::randn(N, 1);
 
     // conditioning
-    xa1(N - 1, t) = xa1_r(t);
-    xa2(N - 1, t) = xa2_r(t);
-    xa3(N - 1, t) = xa3_r(t);
-    xa4(N - 1, t) = xa4_r(t);
-    xa5(N - 1, t) = xa5_r(t);
-    xa6(N - 1, t) = xa6_r(t);
+    xa1(N - 1, t) = x_r(t);
+    xa2(N - 1, t) = x_r(TT*1 + t);
+    xa3(N - 1, t) = x_r(TT*2 + t);
+    xa4(N - 1, t) = x_r(TT*3 + t);
+    xa5(N - 1, t) = x_r(TT*4 + t);
+    xa6(N - 1, t) = x_r(TT*5 + t);
     // ancestor sampling
     as_weights = w_as_c(mean_diff, vcm_diag, w_log);
     as_draw_vec = Rcpp::RcppArmadillo::sample(id_as_lnspc, 1, true, as_weights);
@@ -867,7 +819,7 @@ List pgas2_full_short(const int& N,
   vec mu_xa6(dim_pars(5) -1);
   mu_xa(5, 0) = mu_xa6;
   // II. run cBPF and use output as first conditioning trajectory
-  out_cPF = cbpf_as_c5_full(N, TT,
+  out_cPF = cbpf_as_c4_full(N, TT,
                             num_counts, y,
                             Z, id_bet,
                             sig_sq_x.col(0),
@@ -916,7 +868,7 @@ List pgas2_full_short(const int& N,
   // //   // Omega_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
   // //   // mu_xa(d, 0).transform([](double val){return(round(val*1000)/1000);});
   // //   // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    out_cPF = cbpf_as_c5_full(N, TT,
+    out_cPF = cbpf_as_c4_full(N, TT,
                               num_counts, y,
                               Z, id_bet,
                               sig_sq_x.col(m),
