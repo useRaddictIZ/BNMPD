@@ -137,30 +137,34 @@ arma::mat cbpf_as_c4_full(const int& N,
                           const arma::mat& y,
                           const arma::mat& Z,
                           const arma::uvec& id_bet,
-                          const double& sig_sq_xa1,
-                          const double& sig_sq_xa2,
-                          const double& sig_sq_xa3,
-                          const double& sig_sq_xa4,
-                          const double& sig_sq_xa5,
-                          const double& sig_sq_xa6,
-                          const double& phi_xa1,
-                          const double& phi_xa2,
-                          const double& phi_xa3,
-                          const double& phi_xa4,
-                          const double& phi_xa5,
-                          const double& phi_xa6,
-                          const arma::vec& bet_xa1,
-                          const arma::vec& bet_xa2,
-                          const arma::vec& bet_xa3,
-                          const arma::vec& bet_xa4,
-                          const arma::vec& bet_xa5,
-                          const arma::vec& bet_xa6,
-                          const arma::rowvec& xa1_r,
-                          const arma::rowvec& xa2_r,
-                          const arma::rowvec& xa3_r,
-                          const arma::rowvec& xa4_r,
-                          const arma::rowvec& xa5_r,
-                          const arma::rowvec& xa6_r) {
+                          const arma::vec& sig_sq_x,
+                          const arma::vec& phi_x,
+                          const arma::vec& bet_x,
+                          const arma::vec& x_r) {
+  const double& sig_sq_xa1 = sig_sq_x(0);
+  const double& sig_sq_xa2 = sig_sq_x(1);
+  const double& sig_sq_xa3 = sig_sq_x(2);
+  const double& sig_sq_xa4 = sig_sq_x(3);
+  const double& sig_sq_xa5 = sig_sq_x(4);
+  const double& sig_sq_xa6 = sig_sq_x(5);
+  const double& phi_xa1 = phi_x(0);
+  const double& phi_xa2 = phi_x(1);
+  const double& phi_xa3 = phi_x(2);
+  const double& phi_xa4 = phi_x(3);
+  const double& phi_xa5 = phi_x(4);
+  const double& phi_xa6 = phi_x(5);
+  const arma::vec& bet_xa1 = bet_x.subvec(id_bet(0), id_bet(0 + 1) - 1);
+  const arma::vec& bet_xa2 = bet_x.subvec(id_bet(1), id_bet(1 + 1) - 1);
+  const arma::vec& bet_xa3 = bet_x.subvec(id_bet(2), id_bet(2 + 1) - 1);
+  const arma::vec& bet_xa4 = bet_x.subvec(id_bet(3), id_bet(3 + 1) - 1);
+  const arma::vec& bet_xa5 = bet_x.subvec(id_bet(4), id_bet(4 + 1) - 1);
+  const arma::vec& bet_xa6 = bet_x.subvec(id_bet(5), id_bet(5 + 1) - 1);
+  const arma::vec& xa1_r = x_r.subvec(0, TT - 1);
+  const arma::vec& xa2_r = x_r.subvec(TT, TT*2 - 1);
+  const arma::vec& xa3_r = x_r.subvec(TT*2, TT*3 - 1);
+  const arma::vec& xa4_r = x_r.subvec(TT*3, TT*4 - 1);
+  const arma::vec& xa5_r = x_r.subvec(TT*4, TT*5 - 1);
+  const arma::vec& xa6_r = x_r.subvec(TT*5, TT*6 - 1);
   // bool filtering
   int D = y.n_cols;
   arma::uvec ind(N);
@@ -181,19 +185,6 @@ arma::mat cbpf_as_c4_full(const int& N,
   Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_xa5;
   arma::vec Za6_beta6(TT);
   Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_xa6;
-
-  // arma::vec Za1_beta1(TT);
-  // Za1_beta1 = Za1 * bet_xa1;
-  // arma::vec Za2_beta2(TT);
-  // Za2_beta2 = Za2 * bet_xa2;
-  // arma::vec Za3_beta3(TT);
-  // Za3_beta3 = Za3 * bet_xa3;
-  // arma::vec Za4_beta4(TT);
-  // Za4_beta4 = Za4 * bet_xa4;
-  // arma::vec Za5_beta5(TT);
-  // Za5_beta5 = Za5 * bet_xa5;
-  // arma::vec Za6_beta6(TT);
-  // Za6_beta6 = Za6 * bet_xa6;
 
   double sdd = 0;
   double mmu = 0;
@@ -495,31 +486,34 @@ arma::mat cbpf_as_c5_full(const int& N,
                           const arma::mat& y,
                           const arma::mat& Z,
                           const arma::uvec& id_bet,
-                          const arma::vec&  sig_sq_x,
-                          const double& phi_xa1,
-                          const double& phi_xa2,
-                          const double& phi_xa3,
-                          const double& phi_xa4,
-                          const double& phi_xa5,
-                          const double& phi_xa6,
-                          const arma::vec& bet_xa1,
-                          const arma::vec& bet_xa2,
-                          const arma::vec& bet_xa3,
-                          const arma::vec& bet_xa4,
-                          const arma::vec& bet_xa5,
-                          const arma::vec& bet_xa6,
-                          const arma::rowvec& xa1_r,
-                          const arma::rowvec& xa2_r,
-                          const arma::rowvec& xa3_r,
-                          const arma::rowvec& xa4_r,
-                          const arma::rowvec& xa5_r,
-                          const arma::rowvec& xa6_r) {
+                          const arma::vec& sig_sq_x,
+                          const arma::vec& phi_x,
+                          const arma::vec& bet_x,
+                          const arma::vec& x_r) {
   const double& sig_sq_xa1 = sig_sq_x(0);
   const double& sig_sq_xa2 = sig_sq_x(1);
   const double& sig_sq_xa3 = sig_sq_x(2);
   const double& sig_sq_xa4 = sig_sq_x(3);
   const double& sig_sq_xa5 = sig_sq_x(4);
   const double& sig_sq_xa6 = sig_sq_x(5);
+  const double& phi_xa1 = phi_x(0);
+  const double& phi_xa2 = phi_x(1);
+  const double& phi_xa3 = phi_x(2);
+  const double& phi_xa4 = phi_x(3);
+  const double& phi_xa5 = phi_x(4);
+  const double& phi_xa6 = phi_x(5);
+  const arma::vec& bet_xa1 = bet_x.subvec(id_bet(0), id_bet(0 + 1) - 1);
+  const arma::vec& bet_xa2 = bet_x.subvec(id_bet(1), id_bet(1 + 1) - 1);
+  const arma::vec& bet_xa3 = bet_x.subvec(id_bet(2), id_bet(2 + 1) - 1);
+  const arma::vec& bet_xa4 = bet_x.subvec(id_bet(3), id_bet(3 + 1) - 1);
+  const arma::vec& bet_xa5 = bet_x.subvec(id_bet(4), id_bet(4 + 1) - 1);
+  const arma::vec& bet_xa6 = bet_x.subvec(id_bet(5), id_bet(5 + 1) - 1);
+  const arma::vec& xa1_r = x_r.subvec(0, TT - 1);
+  const arma::vec& xa2_r = x_r.subvec(TT, TT*2 - 1);
+  const arma::vec& xa3_r = x_r.subvec(TT*2, TT*3 - 1);
+  const arma::vec& xa4_r = x_r.subvec(TT*3, TT*4 - 1);
+  const arma::vec& xa5_r = x_r.subvec(TT*4, TT*5 - 1);
+  const arma::vec& xa6_r = x_r.subvec(TT*5, TT*6 - 1);
   // bool filtering
   int D = y.n_cols;
   arma::uvec ind(N);
@@ -877,24 +871,9 @@ List pgas2_full_short(const int& N,
                             num_counts, y,
                             Z, id_bet,
                             sig_sq_x.col(0),
-                            phi_x(0, 0),
-                            phi_x(1, 0),
-                            phi_x(2, 0),
-                            phi_x(3, 0),
-                            phi_x(4, 0),
-                            phi_x(5, 0),
-                            bet.submat(id_bet(0), 0, id_bet(0 + 1) - 1, 0),
-                            bet.submat(id_bet(1), 0, id_bet(1 + 1) - 1, 0),
-                            bet.submat(id_bet(2), 0, id_bet(2 + 1) - 1, 0),
-                            bet.submat(id_bet(3), 0, id_bet(3 + 1) - 1, 0),
-                            bet.submat(id_bet(4), 0, id_bet(4 + 1) - 1, 0),
-                            bet.submat(id_bet(5), 0, id_bet(5 + 1) - 1, 0),
-                            Xa.submat(0, 0, TT - 1, 0).t(),
-                            Xa.submat(TT, 0, TT*2 - 1, 0).t(),
-                            Xa.submat(TT*2, 0, TT*3 - 1, 0).t(),
-                            Xa.submat(TT*3, 0, TT*4 - 1, 0).t(),
-                            Xa.submat(TT*4, 0, TT*5 - 1, 0).t(),
-                            Xa.submat(TT*5, 0, TT*6 - 1, 0).t());
+                            phi_x.col(0),
+                            bet.col(0),
+                            Xa.col(0));
   Xa.submat(0, 0, TT - 1, 0) = out_cPF.col(0);
   Xa.submat(TT, 0, TT*2 - 1, 0)= out_cPF.col(1);
   Xa.submat(TT*2, 0, TT*3 - 1, 0)= out_cPF.col(2);
@@ -941,24 +920,9 @@ List pgas2_full_short(const int& N,
                               num_counts, y,
                               Z, id_bet,
                               sig_sq_x.col(m),
-                              phi_x(0, m),
-                              phi_x(1, m),
-                              phi_x(2, m),
-                              phi_x(3, m),
-                              phi_x(4, m),
-                              phi_x(5, m),
-                              bet.submat(id_bet(0), m, id_bet(0 + 1) - 1, m),
-                              bet.submat(id_bet(1), m, id_bet(1 + 1) - 1, m),
-                              bet.submat(id_bet(2), m, id_bet(2 + 1) - 1, m),
-                              bet.submat(id_bet(3), m, id_bet(3 + 1) - 1, m),
-                              bet.submat(id_bet(4), m, id_bet(4 + 1) - 1, m),
-                              bet.submat(id_bet(5), m, id_bet(5 + 1) - 1, m),
-                              Xa.submat(0, m -1, TT - 1, m -1).t(),
-                              Xa.submat(TT, m -1, TT*2 - 1, m -1).t(),
-                              Xa.submat(TT*2, m -1, TT*3 - 1, m -1).t(),
-                              Xa.submat(TT*3, m -1, TT*4 - 1, m -1).t(),
-                              Xa.submat(TT*4, m -1, TT*5 - 1, m -1).t(),
-                              Xa.submat(TT*5, m -1, TT*6 - 1, m -1).t());
+                              phi_x.col(m),
+                              bet.col(m),
+                              Xa.col(m - 1));
     Xa.submat(0, m, TT - 1, m) = out_cPF.col(0);
     Xa.submat(TT, m, TT*2 - 1, m)= out_cPF.col(1);
     Xa.submat(TT*2, m, TT*3 - 1, m)= out_cPF.col(2);
