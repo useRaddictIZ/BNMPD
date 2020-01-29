@@ -5,30 +5,29 @@ set.seed(139423) # set.seed(3) #
 init_at_true <- TRUE
 source("./tests/02_settings_simulation_data.R")
 source("./tests/02_settings_simulation_init.R")
-Rcpp::sourceCpp("tests/pgas_testing_rcpp_versions_rng_R.cpp")
-Rcpp::sourceCpp("tests/pgas_testing_rcpp_versions2_rng_R.cpp")
+# Rcpp::sourceCpp("tests/pgas_testing_rcpp_versions_rng_R.cpp")
+# Rcpp::sourceCpp("tests/pgas_testing_rcpp_versions2_rng_R.cpp")
 Rcpp::sourceCpp("tests/pgas_testing_rcpp_versions_rng_arma.cpp")
 Rcpp::sourceCpp("tests/pgas_testing_rcpp_versions2_rng_arma.cpp")
 # source("tests/pgas_testing_R_versions.R")
-
-seed_nr <- 234
-set.seed(seed_nr)
 par_init_cpp_version <- lapply(par_init, unlist)
 deviate_states_init2 <- as.vector(sapply(as.list(deviate_states_init), rep, times = TT))
-set.seed(seed_nr)
-out1 <- pgas2_full_rng_R(10000, TT, 5, y_t, num_counts,
-                     za1_t, za2_t, za3_t, za4_t, za5_t, za6_t,
-                     c(prior_a, prior_b),
-                     par_init_cpp_version,
-                     deviate_states_init2)
-set.seed(seed_nr)
+seed_nr <- 234
 test_list_Z <- cbind(za1_t, za2_t, za3_t, za4_t, za5_t, za6_t)
-out2 <- pgas2_full_short_rng_R(10000, TT, 5, y_t, num_counts,
-                            test_list_Z,
-                            c(prior_a, prior_b),
-                            par_init_cpp_version,
-                            deviate_states_init)
-all.equal(out1, out2)
+# set.seed(seed_nr)
+# set.seed(seed_nr)
+# out1 <- pgas2_full_rng_R(10000, TT, 5, y_t, num_counts,
+#                      za1_t, za2_t, za3_t, za4_t, za5_t, za6_t,
+#                      c(prior_a, prior_b),
+#                      par_init_cpp_version,
+#                      deviate_states_init2)
+# set.seed(seed_nr)
+# out2 <- pgas2_full_short_rng_R(10000, TT, 5, y_t, num_counts,
+#                             test_list_Z,
+#                             c(prior_a, prior_b),
+#                             par_init_cpp_version,
+#                             deviate_states_init)
+# all.equal(out1, out2)
 #
 #
 #
@@ -41,13 +40,12 @@ out3 <- pgas2_full_rng_arma(10000, TT, 5, y_t, num_counts,
                             par_init_cpp_version,
                             deviate_states_init2)
 set.seed(seed_nr)
-test_list_Z <- cbind(za1_t, za2_t, za3_t, za4_t, za5_t, za6_t)
 out4 <- pgas2_full_short_rng_arma(10000, TT, 5, y_t, num_counts,
                                   test_list_Z,
                                   c(prior_a, prior_b),
                                   par_init_cpp_version,
                                   deviate_states_init)
-all.equal(out3, out4)
+print(all.equal(out3, out4))
 # all.equal(pgas2c2, pgas2c[1:6])
 # print(pgas2c)
 # set.seed(seed_nr)

@@ -146,24 +146,22 @@ arma::mat cbpf_as_c5_full(const int& N,
   arma::uvec ind(N);
   NumericVector mmu2(N);
 
-  arma::vec Za1_beta1(TT);
-  Za1_beta1 = Z.submat(0, id_bet(0), TT - 1, id_bet(0 + 1) - 1) * bet_x.subvec(id_bet(0), id_bet(0 + 1) - 1);
-  arma::vec Za2_beta2(TT);
-  Za2_beta2 = Z.submat(0, id_bet(1), TT - 1, id_bet(1 + 1) - 1) * bet_x.subvec(id_bet(1), id_bet(1 + 1) - 1);
-  arma::vec Za3_beta3(TT);
-  Za3_beta3 = Z.submat(0, id_bet(2), TT - 1, id_bet(2 + 1) - 1) * bet_x.subvec(id_bet(2), id_bet(2 + 1) - 1);
-  arma::vec Za4_beta4(TT);
-  Za4_beta4 = Z.submat(0, id_bet(3), TT - 1, id_bet(3 + 1) - 1) * bet_x.subvec(id_bet(3), id_bet(3 + 1) - 1);
-  arma::vec Za5_beta5(TT);
-  Za5_beta5 = Z.submat(0, id_bet(4), TT - 1, id_bet(4 + 1) - 1) * bet_x.subvec(id_bet(4), id_bet(4 + 1) - 1);
-  arma::vec Za6_beta6(TT);
-  Za6_beta6 = Z.submat(0, id_bet(5), TT - 1, id_bet(5 + 1) - 1) * bet_x.subvec(id_bet(5), id_bet(5 + 1) - 1);
+  arma::mat Za_beta(TT, D);
+  for (int d = 0; d<D; ++d) {
+    Za_beta.col(d) = Z.submat(0, id_bet(d), TT - 1, id_bet(d + 1) - 1) * bet_x.subvec(id_bet(d), id_bet(d + 1) - 1);
+  }
 
   double sdd = 0;
   double mmu = 0;
   arma::vec eval_f(N);
   // DATA CONTAINERS
   // particle containers for state processes:
+  arma::mat xa(D*N, TT);
+  uvec id_x(D + 1);
+  for (int d = 0; d<D+1; ++d) {
+    id_x(d) = d*N;
+  }
+
   arma::mat xa1(N, TT);
   arma::mat xa2(N, TT);
   arma::mat xa3(N, TT);
@@ -184,12 +182,8 @@ arma::mat cbpf_as_c5_full(const int& N,
   arma::vec as_weights(N);
   arma::uvec as_draw_vec(1);
   double as_draw;
-  arma::rowvec vcm_diag = {pow(sig_sq_x(0), -1),
-                           pow(sig_sq_x(1), -1),
-                           pow(sig_sq_x(2), -1),
-                           pow(sig_sq_x(3), -1),
-                           pow(sig_sq_x(4), -1),
-                           pow(sig_sq_x(5), -1)};
+  arma::rowvec vcm_diag = {arma::pow(sig_sq_x.t(), -1)};
+
   arma::mat mean_diff(N, D);
   // draw trajectory
   NumericVector b_draw_vec(1);
@@ -198,29 +192,35 @@ arma::mat cbpf_as_c5_full(const int& N,
   mat x_out(TT, D);
   // I. INITIALIZATION (t = 0)
   // Sampling initial condition from prior
-  mmu = Za1_beta1[0]/(1.0 - phi_x(0));
+  mmu = as_scalar(Za_beta.submat(0, 0, 0, 0))/(1.0 - phi_x(0));
   sdd = sqrt(sig_sq_x(0)/(1.0 - pow(phi_x(0), 2)));
   xa1.col(0) = mmu + sdd * arma::randn(N, 1);
+  xa.submat(id_x(0), 0, id_x(1) - 1, 0) = xa1.col(0);
 
-  mmu = Za2_beta2[0]/(1.0 - phi_x(1));
+  mmu = as_scalar(Za_beta.submat(0, 1, 0, 1))/(1.0 - phi_x(1));
   sdd = sqrt(sig_sq_x(1)/(1.0 - pow(phi_x(1), 2)));
   xa2.col(0) = mmu + sdd * arma::randn(N, 1);
+  xa.submat(id_x(1), 0, id_x(2) - 1, 0) = xa2.col(0);
 
-  mmu = Za3_beta3[0]/(1.0 - phi_x(2));
+  mmu = as_scalar(Za_beta.submat(0, 2, 0, 2))/(1.0 - phi_x(2));
   sdd = sqrt(sig_sq_x(2)/(1.0 - pow(phi_x(2), 2)));
   xa3.col(0) = mmu + sdd * arma::randn(N, 1);
+  xa.submat(id_x(2), 0, id_x(3) - 1, 0) = xa3.col(0);
 
-  mmu = Za4_beta4[0]/(1.0 - phi_x(3));
+  mmu = as_scalar(Za_beta.submat(0, 3, 0, 3))/(1.0 - phi_x(3));
   sdd = sqrt(sig_sq_x(3)/(1.0 - pow(phi_x(3), 2)));
   xa4.col(0) = mmu + sdd * arma::randn(N, 1);
+  xa.submat(id_x(3), 0, id_x(4) - 1, 0) = xa4.col(0);
 
-  mmu = Za5_beta5[0]/(1.0 - phi_x(4));
+  mmu = as_scalar(Za_beta.submat(0, 4, 0, 4))/(1.0 - phi_x(4));
   sdd = sqrt(sig_sq_x(4)/(1.0 - pow(phi_x(4), 2)));
   xa5.col(0) = mmu + sdd * arma::randn(N, 1);
+  xa.submat(id_x(4), 0, id_x(5) - 1, 0) = xa5.col(0);
 
-  mmu = Za6_beta6[0]/(1.0 - phi_x(5));
+  mmu = as_scalar(Za_beta.submat(0, 5, 0, 5))/(1.0 - phi_x(5));
   sdd = sqrt(sig_sq_x(5)/(1.0 - pow(phi_x(5), 2)));
   xa6.col(0) = mmu + sdd * arma::randn(N, 1);
+  xa.submat(id_x(5), 0, id_x(6) - 1, 0) = xa6.col(0);
 
   // weighting (set to 1/N since there is no measurement y_t=0 at t=0)
   w.col(0) = w_norm;
@@ -229,27 +229,27 @@ arma::mat cbpf_as_c5_full(const int& N,
   id_as = Rcpp::RcppArmadillo::sample(id_as_lnspc, N, true, w_norm);
   a.col(0) = id_as;
   // propagation
-  eval_f = f_cpp(xa1.col(0), phi_x(0), Za1_beta1[0]);
+  eval_f = f_cpp(xa1.col(0), phi_x(0), as_scalar(Za_beta.submat(0, 0, 0, 0)));
   eval_f = eval_f.elem(id_as);
   xa1.col(0) = eval_f + sqrt(sig_sq_x(0))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa2.col(0), phi_x(1), Za2_beta2[0]);
+  eval_f = f_cpp(xa2.col(0), phi_x(1), as_scalar(Za_beta.submat(0, 1, 0, 1)));
   eval_f = eval_f.elem(id_as);
   xa2.col(0) = eval_f + sqrt(sig_sq_x(1))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa3.col(0), phi_x(2), Za3_beta3[0]);
+  eval_f = f_cpp(xa3.col(0), phi_x(2), as_scalar(Za_beta.submat(0, 2, 0, 2)));
   eval_f = eval_f.elem(id_as);
   xa3.col(0) = eval_f + sqrt(sig_sq_x(2))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa4.col(0), phi_x(3), Za4_beta4[0]);
+  eval_f = f_cpp(xa4.col(0), phi_x(3), as_scalar(Za_beta.submat(0, 3, 0, 3)));
   eval_f = eval_f.elem(id_as);
   xa4.col(0) = eval_f + sqrt(sig_sq_x(3))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa5.col(0), phi_x(4), Za5_beta5[0]);
+  eval_f = f_cpp(xa5.col(0), phi_x(4), as_scalar(Za_beta.submat(0, 4, 0, 4)));
   eval_f = eval_f.elem(id_as);
   xa5.col(0) = eval_f + sqrt(sig_sq_x(4))*arma::randn(N, 1);
 
-  eval_f = f_cpp(xa6.col(0), phi_x(5), Za6_beta6[0]);
+  eval_f = f_cpp(xa6.col(0), phi_x(5), as_scalar(Za_beta.submat(0, 5, 0, 5)));
   eval_f = eval_f.elem(id_as);
   xa6.col(0) = eval_f + sqrt(sig_sq_x(5))*arma::randn(N, 1);
 
@@ -281,32 +281,32 @@ arma::mat cbpf_as_c5_full(const int& N,
     a.col(t) = id_as;
 
     // propagation
-    eval_f = f_cpp(xa1.col(t - 1), phi_x(0), Za1_beta1[t]);
+    eval_f = f_cpp(xa1.col(t - 1), phi_x(0), as_scalar(Za_beta.submat(t, 0, t, 0)));
     mean_diff.col(0) = eval_f - x_r(t);
     eval_f = eval_f.elem(id_as);
     xa1.col(t) = eval_f + sqrt(sig_sq_x(0))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa2.col(t - 1), phi_x(1), Za2_beta2[t]);
+    eval_f = f_cpp(xa2.col(t - 1), phi_x(1), as_scalar(Za_beta.submat(t, 1, t, 1)));
     mean_diff.col(1) = eval_f - x_r(TT + t);
     eval_f = eval_f.elem(id_as);
     xa2.col(t) = eval_f + sqrt(sig_sq_x(1))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa3.col(t - 1), phi_x(2), Za3_beta3[t]);
+    eval_f = f_cpp(xa3.col(t - 1), phi_x(2), as_scalar(Za_beta.submat(t, 2, t, 2)));
     mean_diff.col(2) = eval_f - x_r(TT*2 + t);
     eval_f = eval_f.elem(id_as);
     xa3.col(t) = eval_f + sqrt(sig_sq_x(2))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa4.col(t - 1), phi_x(3), Za4_beta4[t]);
+    eval_f = f_cpp(xa4.col(t - 1), phi_x(3), as_scalar(Za_beta.submat(t, 3, t, 3)));
     mean_diff.col(3) = eval_f - x_r(TT*3 + t);
     eval_f = eval_f.elem(id_as);
     xa4.col(t) = eval_f + sqrt(sig_sq_x(3))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa5.col(t - 1), phi_x(4), Za5_beta5[t]);
+    eval_f = f_cpp(xa5.col(t - 1), phi_x(4), as_scalar(Za_beta.submat(t, 4, t, 4)));
     mean_diff.col(4) = eval_f - x_r(TT*4 + t);
     eval_f = eval_f.elem(id_as);
     xa5.col(t) = eval_f + sqrt(sig_sq_x(4))*arma::randn(N, 1);
 
-    eval_f = f_cpp(xa6.col(t - 1), phi_x(5), Za6_beta6[t]);
+    eval_f = f_cpp(xa6.col(t - 1), phi_x(5), as_scalar(Za_beta.submat(t, 5, t, 5)));
     mean_diff.col(5) = eval_f - x_r(TT*5 + t);
     eval_f = eval_f.elem(id_as);
     xa6.col(t) = eval_f + sqrt(sig_sq_x(5))*arma::randn(N, 1);
