@@ -6,7 +6,17 @@ using namespace Rcpp;
 using namespace arma;
 
 // [[Rcpp::export]]
-// C++11 only example
+List test_diff(double x, double eps) {
+  double out_val = 0;
+  out_val = 1 - std::abs(x);
+  bool out_bool;
+  if(out_val < eps) {
+    out_bool = true;
+  } else {
+    out_bool = false;
+  }
+  return(List::create(out_bool, out_val));
+}
 
 arma::mat testf(arma::mat A){
   // A.transform( [](double val) { return (val + 123.0); } );
