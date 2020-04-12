@@ -1,4 +1,4 @@
-// #define ARMA_NO_DEBUG
+#define ARMA_NO_DEBUG
 #include <RcppArmadillo.h>
 #include <RcppArmadilloExtensions/sample.h>
 //[[Rcpp::depends(RcppArmadillo)]]
@@ -204,9 +204,9 @@ arma::mat cbpf_as_c2_full(const int& N,
   // weights
   double w_max;
   arma::vec w_norm(N);
+  w_norm.fill(1.0/N);
   arma::vec w_log(N);
   NumericVector w_norm2(N);
-  w_norm.fill(1.0/N);
   arma::mat w(N, TT);
   // ancestor weights
   arma::vec as_weights(N);
@@ -223,7 +223,6 @@ arma::mat cbpf_as_c2_full(const int& N,
   NumericVector b_draw_vec(1);
   int b_draw;
   // output containter
-  // mat x_out(D, TT);
   mat x_out(TT, D);
   //
   // I. INITIALIZATION (t = 0)
@@ -449,7 +448,6 @@ arma::mat cbpf_as_c2_full(const int& N,
   arma::uvec t_ind;
   for (arma::uword t = TT-2; t >= 1; --t) {
     arma::uvec t_ind = {t};
-    // t_ind(0) = t;
     xa1.col(t) = xa1(ind, t_ind);
     xa2.col(t) = xa2(ind, t_ind);
     xa3.col(t) = xa3(ind, t_ind);
@@ -657,12 +655,12 @@ List pgas2_full_rng_R(const int& N,
                                                 phi_x(d, m - 1),
                                                 z_add);
       err_siq_sq_x = (dot(temp_vec_col2, temp_vec_col2)) * 0.5;
-      // sig_sq_x(d, m)  = 1/(R::rgamma(prior_a, 1.0/(prior_b + err_siq_sq_x)));
-      sig_sq_x(d, m)  = 1/randg<double>(distr_param(prior_a, 1.0/(prior_b + err_siq_sq_x)));;
+      sig_sq_x(d, m)  = 1/(R::rgamma(prior_a, 1.0/(prior_b + err_siq_sq_x)));
+      // sig_sq_x(d, m)  = 1/randg<double>(distr_param(prior_a, 1.0/(prior_b + err_siq_sq_x)));;
       Omega_xa(d, 0)  = inv((trans(Z.cols(id_zet(d), id_zet(d + 1) - 1)) * Z.cols(id_zet(d), id_zet(d + 1) - 1))/sig_sq_x(d, m) + prior_V_xa1);
       mu_xa(d, 0) = Omega_xa(d, 0) * (trans(Z.cols(id_zet(d), id_zet(d + 1) - 1)) * temp_vec_col)/sig_sq_x(d, m);
-      // // mu_xa(d, 0) = mvrnorm_c(mu_xa(d, 0), Omega_xa(d, 0));
-      mu_xa(d, 0) = mvnrnd(mu_xa(d, 0), Omega_xa(d, 0));
+      mu_xa(d, 0) = mvrnorm_c(mu_xa(d, 0), Omega_xa(d, 0));
+      // mu_xa(d, 0) = mvnrnd(mu_xa(d, 0), Omega_xa(d, 0));
       phi_x(d, m) = (mu_xa(d, 0))(0);
       bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m) =  (mu_xa(d, 0)).subvec(1, (D - 1));
     }

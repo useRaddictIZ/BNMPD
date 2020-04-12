@@ -123,15 +123,15 @@ vec mvrnorm_c(const vec& mu, const mat& Sigma){
 }
 
 // [[Rcpp::export]]
-mat cbpf_as_c5_short(const int& N,
-                     const int& TT,
-                     const int& DD,
-                     const vec& num_counts,
-                     const mat& y,
-                     const mat& Z_beta,
-                     const vec& sig_sq_x,
-                     const vec& phi_x,
-                     const vec& x_r) {
+mat cbpf_as_cpp(const int& N,
+                const int& TT,
+                const int& DD,
+                const vec& num_counts,
+                const mat& y,
+                const mat& Z_beta,
+                const vec& sig_sq_x,
+                const vec& phi_x,
+                const vec& x_r) {
   // 0. DATA CONTAINERS
   // garbage containers storing intermediate results
   double sdd = 0;
@@ -272,16 +272,16 @@ mat cbpf_as_c5_short(const int& N,
 }
 
 //[[Rcpp::export]]
-List pgas2_short_rng_arma(const int& N,
-                          const int& TT,
-                          const int& DD,
-                          const int& MM,
-                          const mat& y,
-                          const vec& num_counts,
-                          const mat& Z,
-                          const vec& priors,
-                          const List& par_init,
-                          const vec& traj_init) {
+List pgas_cpp(const int& N,
+              const int& TT,
+              const int& DD,
+              const int& MM,
+              const mat& y,
+              const vec& num_counts,
+              const mat& Z,
+              const vec& priors,
+              const List& par_init,
+              const vec& traj_init) {
   // garbage testing constants
   int counter_stuck;
   // Initialize result containers:
@@ -346,12 +346,12 @@ List pgas2_short_rng_arma(const int& N,
   for (int d = 0; d < DD; ++d) {
     Z_beta.col(d) = Z.submat(0, id_bet(d), TT - 1, id_bet(d + 1) - 1) * bet.submat(id_bet(d), 0, id_bet(d + 1) - 1, 0);
   }
-  out_cPF = cbpf_as_c5_short(N, TT, DD,
-                             num_counts, y,
-                             Z_beta,
-                             sig_sq_x.col(0),
-                             phi_x.col(0),
-                             Xa.col(0));
+  out_cPF = cbpf_as_cpp(N, TT, DD,
+                        num_counts, y,
+                        Z_beta,
+                        sig_sq_x.col(0),
+                        phi_x.col(0),
+                        Xa.col(0));
   for(int d = 0; d < DD; ++d) {
     Xa.submat(TT*d, 0, TT*(d + 1) - 1, 0) = out_cPF.col(d);
   }
@@ -384,12 +384,12 @@ List pgas2_short_rng_arma(const int& N,
       bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m) =  (mu_xa(d, 0)).subvec(1, (dim_pars(d) - 2));
       Z_beta.col(d) = Z.submat(0, id_bet(d), TT - 1, id_bet(d + 1) - 1) * bet.submat(id_bet(d), m, id_bet(d + 1) - 1, m);
     }
-    out_cPF = cbpf_as_c5_short(N, TT, DD,
-                               num_counts, y,
-                               Z_beta,
-                               sig_sq_x.col(m),
-                               phi_x.col(m),
-                               Xa.col(m - 1));
+    out_cPF = cbpf_as_cpp(N, TT, DD,
+                          num_counts, y,
+                          Z_beta,
+                          sig_sq_x.col(m),
+                          phi_x.col(m),
+                          Xa.col(m - 1));
     for(int d = 0; d < DD; ++d) {
       Xa.submat(TT*d, m, TT*(d + 1) - 1, m) = out_cPF.col(d);
     }

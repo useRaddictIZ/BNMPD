@@ -1,4 +1,4 @@
-// #define ARMA_NO_DEBUG
+#define ARMA_NO_DEBUG
 #include <RcppArmadillo.h>
 #include <RcppArmadilloExtensions/sample.h>
 //[[Rcpp::depends(RcppArmadillo)]]
