@@ -140,7 +140,7 @@ dic_cpp <- function(y, X_list, num_counts, burnin) {
   # sum_sum_log_rhs <- pred_den_cpp3(y_cpp, X_array_cpp, num_counts, DD, TT, MM, TRUE)
   #
   # dic2 <- 2*(sum_log_lhs - sum_sum_log_rhs)
-  dic <-  dic_cpp_core(y_cpp, X_post_means_cpp, X_array_cpp, num_counts, DD, TT, MM)
+  dic <-  dic_core(y_cpp, X_post_means_cpp, X_array_cpp, num_counts, DD, TT, MM)
   return(dic)
 }
 waic <- function(y, X_list, num_counts, burnin) {
@@ -186,12 +186,12 @@ waic_cpp <- function(y, X_list, num_counts, burnin) {
 
   MM <- MM - burnin + 1
 
-  waic <- waic_core_cpp(y_cpp,
-                        X_array_cpp,
-                        num_counts,
-                        DD,
-                        TT,
-                        MM)
+  waic <- waic_core(y_cpp,
+                    X_array_cpp,
+                    num_counts,
+                    DD,
+                    TT,
+                    MM)
   return(waic)
 }
 lppd_dic_waic_test <- function(y, X_list, num_counts, burnin) {
@@ -226,14 +226,14 @@ test_fun1 <- function(y, X_list, num_counts, burnin) {
 
   MM <- MM - burnin + 1
 
-  lppd <- lppd_cpp(y_cpp,
-                   X_array_cpp,
-                   num_counts,
-                   DD,
-                   TT,
-                   MM)
+  lppd <- lppd_core(y_cpp,
+                    X_array_cpp,
+                    num_counts,
+                    DD,
+                    TT,
+                    MM)
   return(lppd)
-  # out1 <- pred_den_cpp_2(y_cpp,
+  # out1 <- pred_den_2(y_cpp,
   #                        X_array_cpp,
   #                        num_counts,
   #                        DD,

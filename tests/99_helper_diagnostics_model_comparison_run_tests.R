@@ -2,8 +2,7 @@
 library(Rmpfr)
 library(BH)
 Sys.setenv("PKG_LIBS" = "-lmpfr -lgmp")
-# Rcpp::sourceCpp("./tests/99_helper_diagnostics_model_comparison.cpp")
-Rcpp::sourceCpp("./tests/99_helper_diagnostics_model_comparison_short.cpp")
+Rcpp::sourceCpp("./tests/99_helper_diagnostics_model_comparison.cpp")
 source("./tests/99_helper_diagnostics_model_comparison.R")
 
 load("~/Dropbox/research/usa_energy/04-results/empirical/09_CA.RData")
@@ -52,11 +51,6 @@ ALL <- lppd_dic_waic_test(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = n
 lppd <- test_fun1(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, 9998)
 dic <- dic_cpp(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, 9998)
 waic <- waic_cpp(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, 9998)
-my_test_benchmark <- function(burn){
-  a <- dic_cpp(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, burn);
-  b <- waic_cpp(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, burn);
-  return(list(a, b))
-}
 
 all.equal(ALL[[1]], lppd)
 all.equal(ALL[[2]], dic)
@@ -65,5 +59,10 @@ print(rbind(ALL[[1]], lppd), digits = 22)
 print(rbind(ALL[[2]], dic), digits = 22)
 print(rbind(ALL[[3]], waic), digits = 22)
 #
-bench_me <- microbenchmark::microbenchmark(lppd_dic_waic_test(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, 9990),
-                                           my_test_benchmark(9990))
+# my_test_benchmark <- function(burn){
+# a <- dic_cpp(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, burn);
+# b <- waic_cpp(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, burn);
+# return(list(a, b))
+# }
+# bench_me <- microbenchmark::microbenchmark(lppd_dic_waic_test(y = y_t, X_list = out_pgas_CA_09$xtraj, num_counts = num_counts, 9990),
+#                                            my_test_benchmark(9990))
